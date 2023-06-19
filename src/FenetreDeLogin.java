@@ -16,17 +16,18 @@ public class FenetreDeLogin extends GridPane{
 
     private TextField email;
     private PasswordField mdp;
-
     private Text erreurMdpMsg;
     private Text erreurEmail;
+    private AppliVae appli;
+    private ConnexionMySQL connexionMySQL;
 
-    public FenetreDeLogin(){
+    public FenetreDeLogin(AppliVae appli, ConnexionMySQL connexionMySQL){
+        this.appli = appli;
+        this.connexionMySQL = connexionMySQL;
         this.email = new TextField();
         this.mdp = new PasswordField();
-        
         this.erreurMdpMsg = new Text("");
         this.erreurEmail = new Text("");
-
         this.ajouteTextField();
     }
 
@@ -58,7 +59,7 @@ public class FenetreDeLogin extends GridPane{
 
         // Création du bouton SE CONNECTER
         Button seConnecter = new Button("SE CONNECTER");
-        seConnecter.setOnAction(new ControleurConnexion(this));
+        seConnecter.setOnAction(new ControleurConnexion(this, this.appli, this.connexionMySQL));
         this.add(seConnecter,50,40);
         seConnecter.getStyleClass().add("button-connection");
 

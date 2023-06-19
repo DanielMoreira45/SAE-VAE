@@ -6,12 +6,23 @@ import javafx.scene.control.Button;
 
 public class ControleurCreerCompte implements EventHandler<ActionEvent>{
     
-    // La vue de l'application
+    /**
+     * La vue FenetreCoInsc
+     */ 
     private FenetreCreationCompte vue;
 
-    public ControleurCreerCompte(FenetreCreationCompte vue){
+    /**
+     * La vue de l'application
+     */
+    private AppliVae appli;
+    private ConnexionMySQL connexionMySQL;
+
+    public ControleurCreerCompte(FenetreCreationCompte vue, AppliVae appli, ConnexionMySQL connexionMySQL){
         this.vue = vue;
+        this.appli = appli;
+        this.connexionMySQL = connexionMySQL;
     }
+
 
     /**
      * L'action consiste à changer de fenêtre pour aller à la page de connexion
@@ -29,11 +40,14 @@ public class ControleurCreerCompte implements EventHandler<ActionEvent>{
         try {
             VerificateurMDP.estValide(this.vue.getMdp());
             try{
-            ConnexionMySQL laCoInscri = vue.getConnexionMySQL();
-            UtilisateurBD userBd = new UtilisateurBD(laCoInscri);
-            Utilisateur user = new Utilisateur(0, vue.getPseudo(), vue.getMail(), vue.getMdp(), 2);
-            userBd.insererUtilisateur(user);
-            
+                System.out.println("ControleurConnextion"+this.connexionMySQL);
+                System.out.println("avant");
+                UtilisateurBD userBd = new UtilisateurBD(this.connexionMySQL);
+                Utilisateur user = new Utilisateur(0, vue.getPseudo(), vue.getMail(), vue.getMdp(), 2);
+                System.out.println("apres");
+                userBd.insererUtilisateur(user);
+                System.out.println("apres1");
+
             }
             catch(SQLException e){
                 vue.popUpErreurSQL(e);

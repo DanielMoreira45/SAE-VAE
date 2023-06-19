@@ -1,15 +1,24 @@
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
 public class ControleurConnexion implements EventHandler<ActionEvent>{
     
-    // La vue de l'application
+        /**
+     * La vue FenetreCoInsc
+     */ 
     private FenetreDeLogin vue;
 
-    public ControleurConnexion(FenetreDeLogin vue){
+    /**
+     * La vue de l'application
+     */
+    private AppliVae appli;
+    private ConnexionMySQL connexionMySQL;
+
+    public ControleurConnexion(FenetreDeLogin vue, AppliVae appli, ConnexionMySQL connexionMySQL){
         this.vue = vue;
+        this.appli = appli;
+        this.connexionMySQL = connexionMySQL;
     }
 
     /**
@@ -25,6 +34,7 @@ public class ControleurConnexion implements EventHandler<ActionEvent>{
             try {
                 if (this.vue.getMdp().equals("erreur")) throw new Exception();
                 // Faire la suite pour créer un compte
+                this.appli.modeAccueil();
             } catch (Exception e) {
                 System.out.println("b");
                 this.vue.setMdpErreur();
@@ -38,3 +48,4 @@ public class ControleurConnexion implements EventHandler<ActionEvent>{
 	}
 
 }
+

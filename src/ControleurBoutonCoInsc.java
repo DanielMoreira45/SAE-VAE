@@ -22,11 +22,7 @@ public class ControleurBoutonCoInsc implements EventHandler<ActionEvent>{
             this.vue.modeLogin();
         }
         else{
-            try {
-                this.vue.modeCreationCompte();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
+            this.vue.modeCreationCompte();
         }
 	}
 
