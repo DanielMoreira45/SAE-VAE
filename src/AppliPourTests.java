@@ -24,7 +24,7 @@ public class AppliPourTests extends Application {
     @Override
     public void start(Stage stage) {
         Pane root = new VueVente();
-        this.scene = new Scene(root, 1000, 800);
+        this.scene = new Scene(root, 1000, 1000);
         stage.setScene(scene);
         stage.setTitle("Test page Vente");
         stage.show();

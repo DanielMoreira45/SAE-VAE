@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -8,10 +11,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -38,6 +37,24 @@ public class VueVente extends BorderPane {
         this.setCenter(this.partieCentrale());
     }
 
+    private void initDesPhotos() {
+        this.listeDesPhotos = new ArrayList<>();
+        ImageView imageParDefaut = new ImageView(new Image("file:./img/defaultImage.png"));
+        imageParDefaut.setFitWidth(200);
+        imageParDefaut.setPreserveRatio(true);
+        imageParDefaut.setStyle("-fx-background-radius : 0.8em;");
+        this.listeDesPhotos.add(imageParDefaut);
+    }
+
+    public void ajoutImage(String lien) {
+        if (this.listeDesPhotos.size() < 4) {
+            ImageView nouvImg = new ImageView(new Image(lien));
+            nouvImg.setFitWidth(200);
+            nouvImg.setPreserveRatio(true);
+            this.listeDesPhotos.add(nouvImg);
+        }
+    }
+
     /**
      * Méthode permettant de créer le titre principal de la page.
      * @return Text : le titre principal.
@@ -55,11 +72,13 @@ public class VueVente extends BorderPane {
     private VBox partieCentrale() {
         VBox laBoite = new VBox(10);
         laBoite.setPadding(new Insets(20));
+        VBox sectionPhotos = this.sectionDesPhotos();
         VBox sectionTitre = this.sectionTitreVente();
         VBox sectionDesc = this.sectionDescriptionVente();
         HBox hboxBoiteCatMarqueEtat = this.regroupementSectionCategorieMarqueEtat();
         HBox hboxPrixDureeAjout = this.regroupementPrixDureeAjout();
-        laBoite.getChildren().addAll(this.titrePrincipal(), sectionTitre, sectionDesc, hboxBoiteCatMarqueEtat, hboxPrixDureeAjout);
+        laBoite.getChildren().addAll(this.titrePrincipal(), sectionPhotos, sectionTitre, sectionDesc, hboxBoiteCatMarqueEtat, hboxPrixDureeAjout);
+        VBox.setMargin(sectionPhotos, new Insets(0, 50, 0, 50));
         VBox.setMargin(sectionTitre, new Insets(0, 50, 0, 50));
         VBox.setMargin(sectionDesc, new Insets(0, 50, 0, 50));
         VBox.setMargin(hboxBoiteCatMarqueEtat, new Insets(0, 50, 0, 50));
@@ -173,7 +192,18 @@ public class VueVente extends BorderPane {
     private HBox boitePhotos() {
         HBox boiteDesPhotos = new HBox(5);
         boiteDesPhotos.setPadding(new Insets(10));
+        for(ImageView img : this.listeDesPhotos) {
+            boiteDesPhotos.getChildren().add(img);
+        }
+        return boiteDesPhotos;
+    }
 
+    private VBox sectionDesPhotos() {
+        VBox vboxDesPhotos = new VBox(5);
+        this.initDesPhotos();
+        vboxDesPhotos.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
+        vboxDesPhotos.getChildren().addAll(this.titreDesSection(this.listeDesPhotos.size() + "/4"), this.boitePhotos());
+        return vboxDesPhotos;
     }
 
     /**
