@@ -13,12 +13,12 @@ public class VenteBD {
     }
     public void insereVente(Vente v, Objet o, Status status) {
         PreparedStatement s = this.laConnexionMySQL.preparedStatement("INSERT INTO VENTE VALUES (?,?,?,?,?,?,?)");
-        s.setDouble(1, v.getIdVente());
+        s.setInt(1, v.getIdVente());
         s.setDouble(2, v.getPrixBase());
         s.setDouble(3, v.getPrixMin());
         s.setDate(4, v.getdebutVente());
         s.setDate(5, v.getfinVe());
-        s.setDouble(6, o.getidObjet());
+        s.setInt(6, o.getidObjet());
         s.setString(7, status);
         s.executeQuery();
     }
