@@ -1,7 +1,7 @@
 import java.util.*;
 
 /**
- * 
+ * Classe Utilisateur permetant de modeliser un utilisateur
  */
 public class Utilisateur {
     /**
@@ -41,7 +41,7 @@ public class Utilisateur {
     private Set<Enchere> lesEncheres;
 
     /**
-     * Default constructor
+     * constructeur pour avoir un utilisateur
      */
     public Utilisateur(int id, String pseudo, String email, String mdp, int role) {
         this.id = id;
@@ -160,11 +160,21 @@ public class Utilisateur {
         this.role = nouveauRole;
     }
 
+    /**
+     * Permet d'optenir les encheres le l'utilisateur
+     * 
+     * @return un ensemble d'encheres
+     */
     public Set<Enchere> getLesEncheres() {
         return lesEncheres;
     }
 
-    public void setLesEncheres(Set<Enchere> lesEncheres) {
-        this.lesEncheres = lesEncheres;
+    /**
+     * Permet d'ajouter une enchere a l'utilisateur
+     * 
+     * @param enchere l'enchere de l'utilisateur
+     */
+    public void ajouteEnchere(Enchere enchere) {
+        this.lesEncheres.add(enchere);
     }
 }
