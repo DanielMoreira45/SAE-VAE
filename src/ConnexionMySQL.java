@@ -1,9 +1,5 @@
 
-import java.sql.Statement;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * 
@@ -29,7 +25,7 @@ public class ConnexionMySQL {
     public void connecter() {
         Connection c;
         try {
-            c= DriverManager.getConnection("jdbc:mysql://servinfo-mariadb:3306/DBmoreira", "moreira", "moreira");
+            c= DriverManager.getConnection("jdbc:mysql://servinfo-mariadb:3306/DBmoreira","moreira", "moreira");
             this.mysql = c;
         } catch (SQLException e) {
             System.out.println("Msg : "+e.getMessage() + e.getErrorCode());

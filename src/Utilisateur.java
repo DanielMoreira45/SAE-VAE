@@ -32,7 +32,7 @@ public class Utilisateur {
     /**private double id;
      * Le role de l'utilisateur
      */
-    private Roles role;
+    private int role;
 
     /**
      * Ensemble des enchères créées par l'utilisateur
@@ -43,7 +43,7 @@ public class Utilisateur {
     /**
      * Default constructor
      */
-    public Utilisateur(Integer id,String pseudo, String email, String mdp, Roles role) {
+    public Utilisateur(Integer id,String pseudo, String email, String mdp, int role) {
         this.id = id;
         this.pseudo = pseudo;
         this.email = email;
@@ -64,7 +64,7 @@ public class Utilisateur {
      * Setter id
      * @param id
      */
-    public void setId(double id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -136,7 +136,7 @@ public class Utilisateur {
      * Getter role
      * @return (Roles) role
      */
-    public Roles getRole() {
+    public int getRole() {
         return this.role;
     }
 
@@ -144,7 +144,7 @@ public class Utilisateur {
      * Setter role
      * @param nouveauRole 
      */
-    public void ChangeRole(Roles nouveauRole) {
+    public void ChangeRole(int nouveauRole) {
         this.role = nouveauRole;
     }
 }

@@ -16,7 +16,7 @@ public class UtilisateurBD {
         this.laConnexionMySQL = laConnexionMySQL;
     }
 
-    public int maxIdUtilisateur() throws SQLException {
+    int maxIdUtilisateur() throws SQLException {
         this.st = laConnexionMySQL.createStatement();
         ResultSet resultats = this.st.executeQuery("SELECT max(idut) FROM UTILISATEUR;");
         resultats.next();
@@ -25,7 +25,7 @@ public class UtilisateurBD {
         return nb;
     }
 
-    public void insererUtilisateur(Utilisateur j, Roles role) throws SQLException {
+    public void insererUtilisateur(Utilisateur j) throws SQLException {
         PreparedStatement ps = laConnexionMySQL.preparedStatement("INSERT INTO UTILISATEUR VALUES(?, ?, ?, ?, ?, ?)");
         ps.setInt((1), idLibre() + 1);
         ps.setString(2, j.getPseudo());
@@ -33,7 +33,7 @@ public class UtilisateurBD {
         ps.setString(4, j.getMotDePasse());
         String estActive = j.estActive() ? "O" : "N";
         ps.setString(5, estActive);
-        ps.setInt(6, 1);
+        ps.setInt(6, j.getRole());
         ps.executeUpdate();
     }
 
@@ -66,5 +66,16 @@ public class UtilisateurBD {
     return 0;
     }
 
+    public void majUtilisateur(Utilisateur j) throws SQLException {
+        PreparedStatement ps = laConnexionMySQL.preparedStatement("INSERT INTO UTILISATEUR VALUES(?, ?, ?, ?, ?, ?)");
+        ps.setInt((1), idLibre() + 1);
+        ps.setString(2, j.getPseudo());
+        ps.setString(3, j.getEmail());
+        ps.setString(4, j.getMotDePasse());
+        String estActive = j.estActive() ? "O" : "N";
+        ps.setString(5, estActive);
+        ps.setInt(6, j.getRole());
+        ps.executeUpdate();
+    }
 
 }
