@@ -12,7 +12,7 @@ public class AppliVae extends Application{
     /**
      * Le panel central de la vue
      */
-    private BorderPane panelCentral;
+    private Pane panelCentral;
 
     /**
      * La scene
@@ -47,56 +47,60 @@ public class AppliVae extends Application{
     /**
      * 
      */
-    private PageCoInsc pageCoInsc;
+    private FenetreCoInsc pageCoInsc;
 
     /**
      * 
      */
-    private PageMiseEnVente pageMiseEnVente;
+    //private PageMiseEnVente pageMiseEnVente;
 
     /**
      * 
      */
-    private PageAccueil pageAccueil;
+    //private PageAccueil pageAccueil;
 
     /**
      * 
      */
-    private PageProfilUtilisateur pageProfilUtilisateur;
+    //private PageProfilUtilisateur pageProfilUtilisateur;
+
+    /**
+     * 
+     */
+    private ConnexionMySQL connexionMySQL;
 
 
 
 
     @Override
-    public void init(){
-        this.scene = this.laScene();
-        this.laConnexionUtilisateur = new UtilisateurBD();
-        this.laConnexionVente = new VenteBD();
-        this.laConnexionObjet = new ObjetBD();
-        this.laConnexionEncherir = new EncherirBD();
+    public void init() throws ClassNotFoundException{
+        this.laScene();
+        //this.connexionMySQL = new ConnexionMySQL();
+        this.laConnexionUtilisateur = new UtilisateurBD(this.connexionMySQL);
+        this.laConnexionVente = new VenteBD(this.connexionMySQL);
+        this.laConnexionObjet = new ObjetBD(this.connexionMySQL);
+        this.laConnexionEncherir = new EncherirBD(this.connexionMySQL);
 
-        this.pageCoInsc = new PageCoInsc(this.scene, this.laConnexionUtilisateur, this);
-        this.pageMiseEnVente = new PageMiseEnVente(this.user, this.laConnexionVente);
-        this.pageAccueil = new PageAccueil(this.laConnexionVente, this);
-        this.pageProfilUtilisateur = new PageProfilUtilisateur();
+        this.pageCoInsc = new FenetreCoInsc();
+        //this.pageMiseEnVente = new PageMiseEnVente(this.user, this.laConnexionVente);
+        //this.pageAccueil = new PageAccueil(this.laConnexionVente, this);
+        //this.pageProfilUtilisateur = new PageProfilUtilisateur();
+        scene.getStylesheets().add("css.css");
     }
 
-    private Scene laScene(){
+    private void laScene(){
         BorderPane fenetre = new BorderPane();
-        fenetre.setTop(this.titre());
+        //fenetre.setTop(this.titre());
         fenetre.setCenter(this.panelCentral);
+        this.scene = new Scene(fenetre, 1080, 1920);
     }
 
-    private Pane titre(){
+    /*private Pane titre(){
 
-    }
+    }*/
 
-    public void modeConnexion(){
-        this.pageCoInsc.modeLogin();
-    }
-
-    public void modeInscription(){
-        this.pageCoInsc.modeCreationCompte();
+    public void modeCoInsc(){
+        this.scene.setRoot(pageCoInsc);
     }
 
     public void modeMiseEnVente(){
@@ -116,18 +120,22 @@ public class AppliVae extends Application{
     }
 
     public boolean isConnect(){
-
+        return false;
     }
     
     public PreparedStatement preparedStatement(String requete){
-        
+        return null;
     }
 
     @Override
     public void start(Stage stage){
         stage.setTitle("Appli VAE");
-        stage.setScene(this.laScene());
-        this.modeConnexion();
+        stage.setHeight(1080);
+        stage.setWidth(1920);
+        stage.setFullScreen(false);
+        stage.setFullScreenExitHint("");
+        stage.setScene(this.scene);
+        this.modeCoInsc();
         stage.show();
     }
 
@@ -138,5 +146,4 @@ public class AppliVae extends Application{
     public static void main(String[] args){
         launch(args);
     }
-
 }
