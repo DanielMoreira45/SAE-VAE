@@ -92,11 +92,11 @@ public class AppliVae extends Application{
     }
 
     public void modeConnexion(){
-        this.pageCoInsc.afficherPageConnexion();
+        this.pageCoInsc.modeLogin();
     }
 
     public void modeInscription(){
-        this.pageCoInsc.afficherPageInscription();
+        this.pageCoInsc.modeCreationCompte();
     }
 
     public void modeMiseEnVente(){
