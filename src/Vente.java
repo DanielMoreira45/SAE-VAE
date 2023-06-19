@@ -1,4 +1,5 @@
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -6,178 +7,195 @@ import java.util.*;
  */
 public class Vente {
 
-    /**
-     * Default constructor
-     */
-    public Vente() {
-    }
 
     /**
-     * 
+     * ID de la vente
      */
-    private Double IdVente;
+    private int idVente;
 
     /**
-     * 
+     * Prix de base de la vente
      */
     private Double prixBase;
 
     /**
-     * 
+     * Prix minimum de la vente 
      */
     private Double prixMin;
 
     /**
-     * 
+     * Date de début de la vente
      */
     private String debutVe;
 
     /**
-     * 
+     * Date de fin de la vente
      */
     private String  finVe;
 
     /**
-     * @return
+     * Status de la vente
      */
-    public Double getIDVente() {
-        return this.IdVente;
+    private Status status;
+
+    /**
+     * Objet de la vente
+     */
+    private Objet objetVente;
+
+    /**
+     * Les enchères de la vente
+     */
+    private List<Enchere> encheres;
+
+
+
+    /**
+     * Default constructor
+     */
+    public Vente(int idVente, Double prixBase, Double prixMin, String debutVe, String finVe, Status status, Objet objetVente) {
+        this.idVente = idVente;
+        this.prixBase = prixBase;
+        this.prixMin = prixMin;
+        this.debutVe = debutVe;
+        this.finVe = finVe;
+        this.status = status;
+        this.objetVente = objetVente;
+        this.encheres = new ArrayList<>();
     }
 
     /**
+     * Getter id
+     * @return (Double) id
+     */
+    public int getIDVente() {
+        return this.idVente;
+    }
+
+    /**
+     * Setter id
      * @param nouveauID 
-     * @return
      */
-    public void setIDVente(Double nouveauID) {
-        // TODO implement here
-        return null;
+    public void setIDVente(int nouveauID) {
+        this.idVente = nouveauID;
     }
 
     /**
-     * @return
+     * Getter prixBase
+     * @return (Double) prixBase
      */
     public Double getPrixBase() {
-        // TODO implement here
-        return null;
+        return this.prixBase;
     }
 
     /**
+     * Setter prixBase
      * @param nouveauPrixBase 
-     * @return
      */
     public void setPrixBase(Double nouveauPrixBase) {
-        // TODO implement here
-        return null;
+        this.prixBase = nouveauPrixBase;
     }
 
     /**
-     * @return
+     * Getter prixMin
+     * @return (Double) prixMin
      */
     public Double getPrixMin() {
-        // TODO implement here
-        return null;
+        return this.prixMin;
     }
 
     /**
+     * Setter prixMin
      * @param nouveauPrixMininum 
-     * @return
      */
     public void setPrixMin(Double nouveauPrixMininum) {
-        // TODO implement here
-        return null;
+        this.prixMin = nouveauPrixMininum;
     }
 
     /**
-     * @return
+     * Getter debutVente
+     * @return (String) debutVe
      */
     public String getDebutVente() {
-        // TODO implement here
-        return "";
+        return this.debutVe;
     }
 
     /**
+     * Setter debutVente
      * @param nouveauDebutVente 
-     * @return
      */
-    public String setDebutVente(void nouveauDebutVente) {
-        // TODO implement here
-        return "";
+    public void setDebutVente(String nouveauDebutVente) {
+        this.debutVe = nouveauDebutVente;
     }
 
     /**
-     * @return
+     * Getter finVe
+     * @return (String) finVe
      */
     public String getFinVente() {
-        // TODO implement here
-        return "";
+        return this.finVe;
     }
 
     /**
+     * Setter finVe
      * @param nouveauFinVente 
-     * @return
      */
     public void setFinVente(String nouveauFinVente) {
-        // TODO implement here
-        return null;
+        this.finVe = nouveauFinVente;
     }
 
     /**
+     * Setter status
      * @param nouveauStatus 
-     * @return
      */
     public void changeStatus(Status nouveauStatus) {
-        // TODO implement here
-        return null;
+        this.status = nouveauStatus;
     }
 
     /**
-     * @return
+     * Getter status
+     * @return (Status) status
      */
     public Status getStatus() {
-        // TODO implement here
-        return null;
+        return this.status;
     }
 
     /**
-     * @return
+     * Renvoie le prix final à la fin de la vente
+     * @return (Double) le prix final de la vente
      */
-    public Double prixFinal() {
-        // TODO implement here
-        return null;
+    public Double prixFinal() throws ExceptionVentePasTerminee{
+        Date dateAjd = new SimpleDateFormat("").parse(this.finVe); // mettre le format de la date --------------------------------------------------------------------
+        if (Calendar.getInstance().getTime().before(dateAjd)){
+            throw new ExceptionVentePasTerminee();
+        }
+        return this.encheres.get(this.encheres.size()-1).getMontant();
     }
 
     /**
-     * @return
+     * Getter objetVente
+     * @return (Objet) objetVente
      */
     public Objet getObjet() {
-        // TODO implement here
-        return null;
+        return this.objetVente;
     }
 
     /**
-     * @return
+     * Getter encheres
+     * @return (List<Enchere>) encheres
      */
     public List<Enchere> getEncheres() {
-        // TODO implement here
-        return null;
+        return this.encheres;
     }
 
     /**
+     * Ajoute une enchère sur la vente
      * @param nouvelleEnchere 
-     * @return
      */
-    public void ajouteEnchere(Enchere nouvelleEnchere) {
-        // TODO implement here
-        return null;
+    public void ajouteEnchere(Enchere nouvelleEnchere) throws ExceptionPrixIncorrect{
+        if (nouvelleEnchere.getMontant() < this.prixMin || nouvelleEnchere.getMontant() < this.encheres.get(this.encheres.size()-1).getMontant()){
+            throw new ExceptionPrixIncorrect();
+        }
+        this.encheres.add(nouvelleEnchere);
     }
-
-    /**
-     * @param nomUtilsateur 
-     * @return
-     */
-    public List<Objet> objetDUnVendeur(Utilisateur nomUtilsateur) {
-        // TODO implement here
-        return null;
-    }
-
 }
