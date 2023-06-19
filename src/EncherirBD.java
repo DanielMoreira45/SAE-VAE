@@ -21,12 +21,13 @@ public class EncherirBD {
         s.setDouble(4, e.getMontant());
         s.executeQuery();
     }
-    
+
     public void supprimeEnchere(Enchere e) throws SQLException{
         PreparedStatement s = this.laConnexionMySQL.preparedStatement("DELETE FROM ENCHERIR WHERE idut = ?, idve = ?, montant = ?, dateheure = ?");
         s.setInt(1, e.getEncherisseur().getId());
         s.setDouble(2, e.getVente().getIDVente());
         s.setDouble(3, e.getMontant());
-        s.setTimestamp(3, new Timestamp(e.getDateHeure()));
+        s.setTimestamp(4, new Timestamp(e.getDateHeure()));
+        s.executeQuery();
     }
 }
