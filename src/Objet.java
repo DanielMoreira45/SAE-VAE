@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.Locale.Category;
 
 import javax.swing.text.html.ImageView;
 
@@ -47,11 +48,14 @@ public class Objet {
     /**
      * Constructeur
      */
-    public Objet(Double idOb, String description, String nomOb, ImageView img) {
+    public Objet(Double idOb, String description, String nomOb, ImageView img, Vente vente, Utilisateur vendeur, Categorie categorie) {
         this.idOb = idOb;
         this.description = description;
         this.nomOb = nomOb;
         this.img = img;
+        this.vente = vente;
+        this.categorie = categorie;
+        this.vendeur = vendeur;
     }
 
     /**
