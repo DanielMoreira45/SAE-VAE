@@ -25,15 +25,15 @@ public class UtilisateurBD {
         return nb;
     }
 
-    public void insererUtilisateur(Utilisateur j, Role role) throws SQLException {
-        PreparedStatement ps = laConnexionMySQL.prepareStatement("INSERT INTO UTILISATEUR VALUES(?, ?, ?, ?, ?, ?)");
-        ps.setInt((1), maxIdUtilisateur() + 1);
+    public void insererUtilisateur(Utilisateur j, Roles role) throws SQLException {
+        PreparedStatement ps = laConnexionMySQL.preparedStatement("INSERT INTO UTILISATEUR VALUES(?, ?, ?, ?, ?, ?)");
+        ps.setInt((1), idLibre() + 1);
         ps.setString(2, j.getPseudo());
         ps.setString(3, j.getEmail());
         ps.setString(4, j.getMotDePasse());
         String estActive = j.estActive() ? "O" : "N";
         ps.setString(5, estActive);
-        ps.setInt(6, role);
+        ps.setInt(6, 1);
         ps.executeUpdate();
     }
 
@@ -65,5 +65,6 @@ public class UtilisateurBD {
         }
     return 0;
     }
+
 
 }
