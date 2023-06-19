@@ -73,17 +73,18 @@ public class AppliVae extends Application{
 
     /**
      * Initialise tous les attributs
+     * @throws ClassNotFoundException
      */
     @Override
-    public void init(){
+    public void init() throws ClassNotFoundException{
         this.laScene();
-        //this.connexionMySQL = new ConnexionMySQL();
+        this.connexionMySQL = new ConnexionMySQL();
         this.laConnexionUtilisateur = new UtilisateurBD(this.connexionMySQL);
         this.laConnexionVente = new VenteBD(this.connexionMySQL);
         this.laConnexionObjet = new ObjetBD(this.connexionMySQL);
         this.laConnexionEncherir = new EncherirBD(this.connexionMySQL);
 
-        this.pageCoInsc = new FenetreCoInsc();
+        this.pageCoInsc = new FenetreCoInsc(this, this.connexionMySQL);
         //this.pageMiseEnVente = new PageMiseEnVente(this.user, this.laConnexionVente);
         //this.pageAccueil = new PageAccueil(this.laConnexionVente, this);
         //this.pageProfilUtilisateur = new PageProfilUtilisateur();
@@ -118,6 +119,7 @@ public class AppliVae extends Application{
      */
     public void modeAccueil(){
         //this.scene.setRoot(this.pageAccueil)
+        System.out.println("Page d'accueil");
     }
 
     /**
