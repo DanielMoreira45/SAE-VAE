@@ -77,5 +77,4 @@ public class UtilisateurBD {
         ps.setInt(6, j.getRole());
         ps.executeUpdate();
     }
-
 }
