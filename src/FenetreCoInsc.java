@@ -76,7 +76,7 @@ public class FenetreCoInsc extends HBox {
         this.panelCentral.setCenter(new FenetreDeLogin());
     }
 
-    public void modeCreationCompte() {
+    public void modeCreationCompte() throws ClassNotFoundException {
         this.seConnecter.setDisable(false);
         this.creerCompte.setDisable(true);
         this.rectangleC.setFill(Color.web("#a3a3a3aa"));

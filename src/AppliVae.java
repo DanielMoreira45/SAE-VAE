@@ -85,7 +85,7 @@ public class AppliVae extends Application{
         //this.pageMiseEnVente = new PageMiseEnVente(this.user, this.laConnexionVente);
         //this.pageAccueil = new PageAccueil(this.laConnexionVente, this);
         //this.pageProfilUtilisateur = new PageProfilUtilisateur();
-        scene.getStylesheets().add("css.css");
+        scene.getStylesheets().add("file:src/css.css");
     }
 
     private void laScene(){

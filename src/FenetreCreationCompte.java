@@ -1,9 +1,11 @@
 import javafx.util.Duration;
 import javafx.animation.ScaleTransition;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -17,21 +19,32 @@ public class FenetreCreationCompte extends GridPane{
     private TextField mail;
     private PasswordField mdp;
     private PasswordField mdpConfirme;
-
     private Text erreurMdpMsg;
     private Text erreurMdpConfirmationMsg;
+    private ConnexionMySQL connex;
+
+    public String getPseudo(){
+        return this.pseudo.getText();
+    }
+
+    public String getMail(){
+        return this.mail.getText();
+    }
+
+    public ConnexionMySQL getConnexionMySQL(){
+        return this.connex;
+    }
 
 
-    public FenetreCreationCompte() {
+    public FenetreCreationCompte() throws ClassNotFoundException {
         this.pseudo = new TextField();
         this.mail = new TextField();
         this.mdp = new PasswordField();
         this.mdpConfirme = new PasswordField();
-
         this.erreurMdpMsg = new Text("");
         this.erreurMdpConfirmationMsg = new Text("");
-
         this.ajouteTextField();
+        connex = new ConnexionMySQL();
     }
 
     public void ajouteTextField(){
@@ -120,4 +133,12 @@ public class FenetreCreationCompte extends GridPane{
     public void setMessageMdpConfirmationErreur(String msg) {
         this.erreurMdpConfirmationMsg.setText(msg);
     }
+
+    public void popUpErreurSQL(Exception e){
+    Alert alert = new Alert(AlertType.ERROR);
+    alert.setTitle("Erreur");
+    alert.setHeaderText("Une erreur s'est produite");
+    alert.setContentText("Description de l'erreur : " + e.getMessage());
+    alert.showAndWait();
+}
 }

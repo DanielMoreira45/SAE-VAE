@@ -1,3 +1,5 @@
+import java.sql.SQLException;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -26,7 +28,16 @@ public class ControleurCreerCompte implements EventHandler<ActionEvent>{
         }
         try {
             VerificateurMDP.estValide(this.vue.getMdp());
-            // Faire la suite pour créer un compte
+            try{
+            ConnexionMySQL laCoInscri = vue.getConnexionMySQL();
+            UtilisateurBD userBd = new UtilisateurBD(laCoInscri);
+            Utilisateur user = new Utilisateur(0, vue.getPseudo(), vue.getMail(), vue.getMdp(), 2);
+            userBd.insererUtilisateur(user);
+            
+            }
+            catch(SQLException e){
+                vue.popUpErreurSQL(e);
+            }
         } catch (FormatMotDePasseException e) {
             this.vue.setMdpErreur();
             this.vue.setMessageErreur(e.getMessage());
