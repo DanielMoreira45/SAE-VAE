@@ -11,7 +11,7 @@ public class Objet {
     /**
      * L'ID de l'objet
      */
-    private Double idOb;
+    private int idOb;
 
     /**
      * La description de l'objet
@@ -48,7 +48,7 @@ public class Objet {
     /**
      * Constructeur
      */
-    public Objet(Double idOb, String description, String nomOb, ImageView img, Vente vente, Utilisateur vendeur, Categorie categorie) {
+    public Objet(int idOb, String description, String nomOb, ImageView img, Vente vente, Utilisateur vendeur, Categorie categorie) {
         this.idOb = idOb;
         this.description = description;
         this.nomOb = nomOb;
@@ -62,7 +62,7 @@ public class Objet {
      * Getter idOb
      * @return (Double) idOb
      */
-    public Double getidObjet() {
+    public int getidObjet() {
         return this.idOb;
     }
 
@@ -70,7 +70,7 @@ public class Objet {
      * Setter idOb
      * @param idObjet 
      */
-    public void setidObjet(Double idObjet) {
+    public void setidObjet(int idObjet) {
         this.idOb = idObjet;
     }
 
