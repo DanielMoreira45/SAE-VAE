@@ -103,6 +103,8 @@ public class VueVente extends BorderPane {
 
     private void initBoutonAjoutPhotos() {
         ImageView imageAjoutPhoto = new ImageView(new Image("file:./img/ajoutPhoto.png"));
+        imageAjoutPhoto.setFitWidth(50);
+        imageAjoutPhoto.setPreserveRatio(true);
         this.ajoutPhotos = new Button("Ajoutez des photos", imageAjoutPhoto);
         this.ajoutPhotos.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: grey;");
     }
@@ -189,20 +191,26 @@ public class VueVente extends BorderPane {
 
     // Création des différentes boites.
 
-    private HBox boitePhotos() {
+    private HBox boitePhotos(double largeur, double hauteur) {
         HBox boiteDesPhotos = new HBox(5);
         boiteDesPhotos.setPadding(new Insets(10));
         for(ImageView img : this.listeDesPhotos) {
             boiteDesPhotos.getChildren().add(img);
+        }
+        if (this.listeDesPhotos.size() < 4) {
+            boiteDesPhotos.getChildren().add(this.ajoutPhotos);
+            this.ajoutPhotos.setAlignment(Pos.CENTER);
+            HBox.setMargin(this.ajoutPhotos, new Insets(((int)hauteur/2), ((int)largeur/2), 0, 0));
         }
         return boiteDesPhotos;
     }
 
     private VBox sectionDesPhotos() {
         VBox vboxDesPhotos = new VBox(5);
+        this.initBoutonAjoutPhotos();
         this.initDesPhotos();
         vboxDesPhotos.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
-        vboxDesPhotos.getChildren().addAll(this.titreDesSection(this.listeDesPhotos.size() + "/4"), this.boitePhotos());
+        vboxDesPhotos.getChildren().addAll(new HBox(5, this.titreDesSection("Ajoute jusqu'à 4 photos"), this.titreDesSection(this.listeDesPhotos.size()-1 + "/4")), this.boitePhotos(vboxDesPhotos.getWidth(), vboxDesPhotos.getHeight()));
         return vboxDesPhotos;
     }
 
@@ -350,7 +358,11 @@ public class VueVente extends BorderPane {
         HBox laBoite = new HBox(10);
         int largeur = 350;
         this.initBoutonValidation();
-        laBoite.getChildren().addAll(this.sectionDesPrix(largeur), this.sectionDates(), this.ajoutVente);
+        VBox sectionPrix = this.sectionDesPrix(largeur);
+        sectionPrix.setFillWidth(true);
+        VBox sectionDatesVbox = this.sectionDates();
+        sectionDatesVbox.setFillWidth(true);
+        laBoite.getChildren().addAll(sectionPrix, sectionDatesVbox, this.ajoutVente);
         HBox.setMargin(this.ajoutVente, new Insets(60, 0, 0, 20));
         this.ajoutVente.setAlignment(Pos.CENTER);
         return laBoite;
