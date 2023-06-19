@@ -41,8 +41,7 @@ public class Vente {
      * @return
      */
     public Double getIDVente() {
-        // TODO implement here
-        return null;
+        return this.IdVente;
     }
 
     /**
