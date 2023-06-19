@@ -24,4 +24,11 @@ public class VenteBD {
         s.setInt(7, v.getStatus());
         s.executeQuery();
     }
+    public void supprimeVente(Vente v) throws SQLException {
+        PreparedStatement s = this.laConnexionMySQL.preparedStatement("DELETE FROM VENTE WHERE idve = ?, idob = ?, idst = ?");
+        s.setInt(1, v.getIDVente());
+        s.setInt(2, v.getObjet().getidObjet());
+        s.setInt(3, v.getStatus());        
+        s.executeQuery();
+    }
 }
