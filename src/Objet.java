@@ -1,5 +1,6 @@
-
 import java.util.*;
+
+import javax.swing.text.html.ImageView;
 
 /**
  * 
@@ -7,114 +8,130 @@ import java.util.*;
 public class Objet {
 
     /**
-     * Default constructor
-     */
-    public Objet() {
-    }
-
-    /**
-     * 
+     * L'ID de l'objet
      */
     private Double idOb;
 
     /**
-     * 
+     * La description de l'objet
      */
     private String description;
 
     /**
-     * 
+     * Le nom de l'objet
      */
     private String nomOb;
 
     /**
-     * 
+     * L'image de l'objet
      */
     public ImageView img;
 
     /**
-     * @return
+     * La vente associée à l'objet
+     */
+    private Vente vente;
+
+    /**
+     * La catégorie de l'objet
+     */
+    private Categorie categorie;
+
+    /**
+     * L'utilisateur qui met l'objet en vente
+     */
+    private Utilisateur vendeur;
+
+
+
+    /**
+     * Constructeur
+     */
+    public Objet(Double idOb, String description, String nomOb, ImageView img) {
+        this.idOb = idOb;
+        this.description = description;
+        this.nomOb = nomOb;
+        this.img = img;
+    }
+
+    /**
+     * Getter idOb
+     * @return (Double) idOb
      */
     public Double getidObjet() {
-        // TODO implement here
-        return null;
+        return this.idOb;
     }
 
     /**
+     * Setter idOb
      * @param idObjet 
-     * @return
      */
     public void setidObjet(Double idObjet) {
-        // TODO implement here
-        return null;
+        this.idOb = idObjet;
     }
 
     /**
-     * @return
+     * Getter description
+     * @return (String) description
      */
     public String getDescription() {
-        // TODO implement here
-        return "";
+        return this.description;
     }
 
     /**
-     * @param nouvelleDescription 
-     * @return
+     * Setter description
+     * @param nouvelleDescription
      */
     public void setDescription(String nouvelleDescription) {
-        // TODO implement here
-        return null;
+        this.description = nouvelleDescription;
     }
 
     /**
-     * @return
+     * Getter nomOb
+     * @return (String) nomOb
      */
     public String getNomObjet() {
-        // TODO implement here
-        return "";
+        return this.nomOb;
     }
 
     /**
+     * Setter nomOb
      * @param nouveauNomObjet 
-     * @return
      */
     public void setNomObjet(String nouveauNomObjet) {
-        // TODO implement here
-        return null;
+        this.nomOb = nouveauNomObjet;
     }
 
     /**
-     * @return
+     * Getter categorie
+     * @return (Categorie) categorie
      */
     public Categorie getCategorie() {
-        // TODO implement here
-        return null;
+        return this.categorie;
     }
 
     /**
+     * Setter categorie
      * @param nouvelleCategorie 
-     * @return
      */
     public void SetCategorie(Categorie nouvelleCategorie) {
-        // TODO implement here
-        return null;
+        this.categorie = categorie;
     }
 
     /**
-     * @return
+     * Getter img
+     * @return (ImageView) img
      */
     public ImageView getImage() {
-        // TODO implement here
-        return null;
+        return this.img;
     }
 
     /**
+     * Setter img
      * @param nouvelleImage 
-     * @return
      */
     public void setImage(ImageView nouvelleImage) {
-        // TODO implement here
-        return null;
+        this.img = nouvelleImage;
     }
 
 }
