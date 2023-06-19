@@ -1,127 +1,128 @@
-
 import java.util.*;
 
 /**
  * 
  */
 public class Utilisateur {
-
     /**
-     * Default constructor
-     */
-    public Utilisateur() {
-    }
-
-    /**
-     * 
+     * Pseudo de l'utilisateur
      */
     private String pseudo;
 
     /**
-     * 
+     * Email de l'utilisateur
      */
     private String email;
 
     /**
-     * 
+     * Mot de passe de l'utilisateur
      */
     private String mdp;
 
     /**
-     * 
+     * Indique si l'utilisateur est actif ou non (true s'il est actif, false sinon)
      */
-    private Boolean active;
+    private boolean active;
 
     /**
-     * @return
+     * Le role de l'utilisateur
+     */
+    private Roles role;
+
+    /**
+     * Ensemble des enchères créées par l'utilisateur
+     */
+    private Set<Enchere> lesEncheres; 
+
+
+    /**
+     * Default constructor
+     */
+    public Utilisateur(String pseudo, String email, String mdp, Roles role) {
+        this.pseudo = pseudo;
+        this.email = email;
+        this.mdp = mdp;
+        this.active = true;
+        this.role = role;
+    }
+
+    /**
+     * Getter pseudo
+     * @return (String) pseudo
      */
     public String getPseudo() {
-        // TODO implement here
-        return "";
+        return this.pseudo;
     }
 
     /**
+     * Setter pseudo
      * @param nouveauPseudo 
-     * @return
      */
     public void setPseudo(String nouveauPseudo) {
-        // TODO implement here
-        return null;
+        this.pseudo = nouveauPseudo;
     }
 
     /**
-     * @return
+     * Getter email
+     * @return (String) email
      */
     public String getEmail() {
-        // TODO implement here
-        return "";
+        return this.email;
     }
 
     /**
+     * Setter email
      * @param nouvelleEmail 
-     * @return
      */
     public void setEmail(String nouvelleEmail) {
-        // TODO implement here
-        return null;
+        this.email = nouvelleEmail;
     }
 
     /**
-     * @return
+     * Indique si l'utilisateur est actif
+     * @return (boolean) true si l'utilisateur est actif, false sinon
      */
     public Boolean estActive() {
-        // TODO implement here
-        return null;
+        return this.active;
     }
 
     /**
+     * Setter active
      * @param active 
-     * @return
      */
     public void setActive(Boolean active) {
-        // TODO implement here
-        return null;
+        this.active = active;
     }
 
     /**
-     * @return
+     * Getter mdp
+     * @return (String) mdp
      */
     public String getMotDePasse() {
-        // TODO implement here
-        return "";
+        return mdp;
     }
 
     /**
+     * Setter mdp
      * @param nouveauMDP 
-     * @return
      */
     public void setMotDePasse(String nouveauMDP) {
-        // TODO implement here
-        return null;
+        this.mdp = nouveauMDP;
     }
 
     /**
-     * @return
+     * Getter role
+     * @return (Roles) role
      */
     public Roles getRole() {
-        // TODO implement here
-        return null;
+        return this.role;
     }
 
     /**
+     * Setter role
      * @param nouveauRole 
-     * @return
      */
     public void ChangeRole(Roles nouveauRole) {
-        // TODO implement here
-        return null;
+        this.role = nouveauRole;
     }
-
-    /**
-     * 
-     */
-    public void Operation1() {
-        // TODO implement here
-    }
-
 }
