@@ -1,4 +1,3 @@
-
-public class ExceptionVentePasTerminee {
-
+public class ExceptionVentePasTerminee extends Exception{
+    public ExceptionVentePasTerminee(){}
 }

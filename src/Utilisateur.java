@@ -7,7 +7,7 @@ public class Utilisateur {
     /**
      * Id de l'utilisateur
      */
-    private Integer id;
+    private int id;
 
     /**
      * Pseudo de l'utilisateur
@@ -43,7 +43,7 @@ public class Utilisateur {
     /**
      * Default constructor
      */
-    public Utilisateur(Integer id,String pseudo, String email, String mdp, int role) {
+    public Utilisateur(int id,String pseudo, String email, String mdp, Roles role) {
         this.id = id;
         this.pseudo = pseudo;
         this.email = email;
@@ -56,7 +56,7 @@ public class Utilisateur {
      * Getter id
      * @return (double) id
      */
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
