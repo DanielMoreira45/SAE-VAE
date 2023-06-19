@@ -4,11 +4,21 @@ import javafx.scene.control.Button;
 
 public class ControleurCreerCompte implements EventHandler<ActionEvent>{
     
-    // La vue de l'application
+    /**
+     * La vue FenetreCoInsc
+     */ 
     private FenetreCreationCompte vue;
 
-    public ControleurCreerCompte(FenetreCreationCompte vue){
+    /**
+     * La vue de l'application
+     */
+    private AppliVae appli;
+    private ConnexionMySQL connexionMySQL;
+
+    public ControleurCreerCompte(FenetreCreationCompte vue, AppliVae appli, ConnexionMySQL connexionMySQL){
         this.vue = vue;
+        this.appli = appli;
+        this.connexionMySQL = connexionMySQL;
     }
 
     /**
@@ -27,6 +37,7 @@ public class ControleurCreerCompte implements EventHandler<ActionEvent>{
         try {
             VerificateurMDP.estValide(this.vue.getMdp());
             // Faire la suite pour créer un compte
+            this.appli.modeAccueil();
         } catch (FormatMotDePasseException e) {
             this.vue.setMdpErreur();
             this.vue.setMessageErreur(e.getMessage());
