@@ -11,13 +11,19 @@ public class EncherirBD {
     public EncherirBD(ConnexionMySQL laConnexionMySQL) {
         this.laConnexionMySQL = laConnexionMySQL;
     }
-    public insereEnchere(Enchere e,Utilisateur u, Vente v){
+    public void insereEnchere(Enchere e){
         PreparedStatement s = this.laConnexionMySQL.preparedStatement("INSERT INTO ENCHERIR VALUES (?,?,?,?)");
-        s.setDouble(1, u.getIdUtilisateur());
-        s.setDouble(2, v.getIDVente());
-        s.setDate(0, e.getDateHeure());
+        s.setDouble(1, s.getIDUtilisateur());
+        s.setDouble(2, s.getIDVente());
+        s.setDate(3, e.getDateHeure());
         s.setDouble(4, e.getMontant());
         s.executeQuery();
     }
-
+    public void supprimeEnchere(Enchere e){
+        PreparedStatement s = this.laConnexionMySQL.preparedStatement("DELETE FROM ENCHERIR WHERE idut = ?, idve = ?, montant = ?, dateheure = ?");
+        s.setDouble(1, e.getIDUtilisateur());
+        s.setDouble(2, e.getIDVente());
+        s.setDouble(3, e.getMontant());
+        s.setDate(4, e.getDateHeure());
+    }
 }
