@@ -7,7 +7,6 @@ import java.util.*;
  */
 public class Vente {
 
-
     /**
      * ID de la vente
      */
@@ -19,7 +18,7 @@ public class Vente {
     private Double prixBase;
 
     /**
-     * Prix minimum de la vente 
+     * Prix minimum de la vente
      */
     private Double prixMin;
 
@@ -48,13 +47,14 @@ public class Vente {
      */
     private List<Enchere> encheres;
 
-
-
     /**
      * constructeur pour avoir un nouvelle vente
-     * @throws ParseException Si la date n'est pas sous la bonne forme, la bonne forme est : dd/MM/yy:hh/mm/ss
+     * 
+     * @throws ParseException Si la date n'est pas sous la bonne forme, la bonne
+     *                        forme est : dd/MM/yy:hh/mm/ss
      */
-    public Vente(int idVente, Double prixBase, Double prixMin, String debutVe, String finVe, int status, Objet objetVente) throws ParseException {
+    public Vente(int idVente, Double prixBase, Double prixMin, String debutVe, String finVe, int status,
+            Objet objetVente) throws ParseException {
         SimpleDateFormat lecteur = new SimpleDateFormat("dd/MM/yy:hh/mm/ss");
         this.idVente = idVente;
         this.prixBase = prixBase;
@@ -68,6 +68,7 @@ public class Vente {
 
     /**
      * Getter id
+     * 
      * @return (Double) id
      */
     public int getIDVente() {
@@ -76,6 +77,7 @@ public class Vente {
 
     /**
      * Setter id
+     * 
      * @param nouveauID le nouvelle id de la vente
      */
     public void setIDVente(int nouveauID) {
@@ -84,6 +86,7 @@ public class Vente {
 
     /**
      * Getter prixBase
+     * 
      * @return (Double) prixBase
      */
     public Double getPrixBase() {
@@ -92,6 +95,7 @@ public class Vente {
 
     /**
      * Setter prixBase
+     * 
      * @param nouveauPrixBase le nouveau prix de base
      */
     public void setPrixBase(Double nouveauPrixBase) {
@@ -100,6 +104,7 @@ public class Vente {
 
     /**
      * Getter prixMin
+     * 
      * @return (Double) prixMin
      */
     public Double getPrixMin() {
@@ -108,6 +113,7 @@ public class Vente {
 
     /**
      * Setter prixMin
+     * 
      * @param nouveauPrixMinimum le nouveau prix minimum
      */
     public void setPrixMin(Double nouveauPrixMinimum) {
@@ -116,6 +122,7 @@ public class Vente {
 
     /**
      * Getter debutVente
+     * 
      * @return (String) debutVe
      */
     public Long getDebutVente() {
@@ -123,9 +130,11 @@ public class Vente {
     }
 
     /**
-     * Setter debutVente 
+     * Setter debutVente
+     * 
      * @param nouveauDebutVente la nouvelle date de debut de la vente
-     * @throws ParseException Si la date n'est pas sous la bonne forme, la bonne forme est : dd/MM/yy:hh/mm/ss
+     * @throws ParseException Si la date n'est pas sous la bonne forme, la bonne
+     *                        forme est : dd/MM/yy:hh/mm/ss
      */
     public void setDebutVente(String nouveauDebutVente) throws ParseException {
         SimpleDateFormat lecteur = new SimpleDateFormat("dd/MM/yy:hh/mm/ss");
@@ -134,6 +143,7 @@ public class Vente {
 
     /**
      * Getter finVe
+     * 
      * @return (String) finVe
      */
     public Long getFinVente() {
@@ -142,8 +152,10 @@ public class Vente {
 
     /**
      * Setter finVe
+     * 
      * @param nouveauFinVente la nouvelle date de fin de la vente
-     * @throws ParseException Si la date n'est pas sous la bonne forme, la bonne forme est : dd/MM/yy:hh/mm/ss
+     * @throws ParseException Si la date n'est pas sous la bonne forme, la bonne
+     *                        forme est : dd/MM/yy:hh/mm/ss
      */
     public void setFinVente(String nouveauFinVente) throws ParseException {
         SimpleDateFormat lecteur = new SimpleDateFormat("dd/MM/yy:hh/mm/ss");
@@ -152,6 +164,7 @@ public class Vente {
 
     /**
      * Setter status
+     * 
      * @param nouveauStatus le nouveau status de la vente
      */
     public void changeStatus(int nouveauStatus) {
@@ -160,6 +173,7 @@ public class Vente {
 
     /**
      * Getter status
+     * 
      * @return (int) status
      */
     public int getStatus() {
@@ -168,18 +182,21 @@ public class Vente {
 
     /**
      * Renvoie le prix final à la fin de la vente
+     * 
      * @return (Double) le prix final de la vente
-     * @throws ParseException Si la date n'est pas sous la bonne forme, la bonne forme est : dd/MM/yy:hh/mm/ss
+     * @throws ParseException Si la date n'est pas sous la bonne forme, la bonne
+     *                        forme est : dd/MM/yy:hh/mm/ss
      */
-    public Double prixFinal() throws ExceptionVentePasTerminee, ParseException{
-        if (Calendar.getInstance().getTime().before(this.finVe)){
+    public Double prixFinal() throws ExceptionVentePasTerminee, ParseException {
+        if (Calendar.getInstance().getTime().before(this.finVe)) {
             throw new ExceptionVentePasTerminee();
         }
-        return this.encheres.get(this.encheres.size()-1).getMontant();
+        return this.encheres.get(this.encheres.size() - 1).getMontant();
     }
 
     /**
      * Getter objetVente
+     * 
      * @return (Objet) objetVente
      */
     public Objet getObjet() {
@@ -188,6 +205,7 @@ public class Vente {
 
     /**
      * Getter encheres
+     * 
      * @return (List<Enchere>) la liste des encheres sur la vente
      */
     public List<Enchere> getEncheres() {
@@ -196,10 +214,12 @@ public class Vente {
 
     /**
      * Ajoute une enchère sur la vente
+     * 
      * @param nouvelleEnchere la nouvelle enchere
      */
-    public void ajouteEnchere(Enchere nouvelleEnchere) throws ExceptionPrixIncorrecte{
-        if (nouvelleEnchere.getMontant() < this.prixMin || nouvelleEnchere.getMontant() < this.encheres.get(this.encheres.size()-1).getMontant()){
+    public void ajouteEnchere(Enchere nouvelleEnchere) throws ExceptionPrixIncorrecte {
+        if (nouvelleEnchere.getMontant() < this.prixMin
+                || nouvelleEnchere.getMontant() < this.encheres.get(this.encheres.size() - 1).getMontant()) {
             throw new ExceptionPrixIncorrecte();
         }
         this.encheres.add(nouvelleEnchere);
