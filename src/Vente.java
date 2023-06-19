@@ -1,4 +1,4 @@
-import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -26,17 +26,17 @@ public class Vente {
     /**
      * Date de début de la vente
      */
-    private String debutVe;
+    private Date debutVe;
 
     /**
      * Date de fin de la vente
      */
-    private String  finVe;
+    private Date finVe;
 
     /**
      * Status de la vente
      */
-    private Status status;
+    private int status;
 
     /**
      * Objet de la vente
@@ -52,13 +52,15 @@ public class Vente {
 
     /**
      * Default constructor
+     * @throws ParseException
      */
-    public Vente(int idVente, Double prixBase, Double prixMin, String debutVe, String finVe, Status status, Objet objetVente) {
+    public Vente(int idVente, Double prixBase, Double prixMin, String debutVe, String finVe, int status, Objet objetVente) throws ParseException {
+        SimpleDateFormat lecteur = new SimpleDateFormat("dd/MM/yy:hh/mm/ss");
         this.idVente = idVente;
         this.prixBase = prixBase;
         this.prixMin = prixMin;
-        this.debutVe = debutVe;
-        this.finVe = finVe;
+        this.debutVe = lecteur.parse(debutVe);
+        this.finVe = lecteur.parse(finVe);
         this.status = status;
         this.objetVente = objetVente;
         this.encheres = new ArrayList<>();
@@ -116,57 +118,61 @@ public class Vente {
      * Getter debutVente
      * @return (String) debutVe
      */
-    public String getDebutVente() {
-        return this.debutVe;
+    public Long getDebutVente() {
+        return this.debutVe.getTime();
     }
 
     /**
      * Setter debutVente
      * @param nouveauDebutVente 
+     * @throws ParseException
      */
-    public void setDebutVente(String nouveauDebutVente) {
-        this.debutVe = nouveauDebutVente;
+    public void setDebutVente(String nouveauDebutVente) throws ParseException {
+        SimpleDateFormat lecteur = new SimpleDateFormat("dd/MM/yy:hh/mm/ss");
+        this.debutVe = lecteur.parse(nouveauDebutVente);
     }
 
     /**
      * Getter finVe
      * @return (String) finVe
      */
-    public String getFinVente() {
-        return this.finVe;
+    public Long getFinVente() {
+        return this.finVe.getTime();
     }
 
     /**
      * Setter finVe
      * @param nouveauFinVente 
+     * @throws ParseException
      */
-    public void setFinVente(String nouveauFinVente) {
-        this.finVe = nouveauFinVente;
+    public void setFinVente(String nouveauFinVente) throws ParseException {
+        SimpleDateFormat lecteur = new SimpleDateFormat("dd/MM/yy:hh/mm/ss");
+        this.finVe = lecteur.parse(nouveauFinVente);
     }
 
     /**
      * Setter status
      * @param nouveauStatus 
      */
-    public void changeStatus(Status nouveauStatus) {
+    public void changeStatus(int nouveauStatus) {
         this.status = nouveauStatus;
     }
 
     /**
      * Getter status
-     * @return (Status) status
+     * @return (int) status
      */
-    public Status getStatus() {
+    public int getStatus() {
         return this.status;
     }
 
     /**
      * Renvoie le prix final à la fin de la vente
      * @return (Double) le prix final de la vente
+     * @throws ParseException
      */
-    public Double prixFinal() throws ExceptionVentePasTerminee{
-        Date dateAjd = new SimpleDateFormat("").parse(this.finVe); // mettre le format de la date --------------------------------------------------------------------
-        if (Calendar.getInstance().getTime().before(dateAjd)){
+    public Double prixFinal() throws ExceptionVentePasTerminee, ParseException{
+        if (Calendar.getInstance().getTime().before(this.finVe)){
             throw new ExceptionVentePasTerminee();
         }
         return this.encheres.get(this.encheres.size()-1).getMontant();
@@ -192,9 +198,9 @@ public class Vente {
      * Ajoute une enchère sur la vente
      * @param nouvelleEnchere 
      */
-    public void ajouteEnchere(Enchere nouvelleEnchere) throws ExceptionPrixIncorrect{
+    public void ajouteEnchere(Enchere nouvelleEnchere) throws ExceptionPrixIncorrecte{
         if (nouvelleEnchere.getMontant() < this.prixMin || nouvelleEnchere.getMontant() < this.encheres.get(this.encheres.size()-1).getMontant()){
-            throw new ExceptionPrixIncorrect();
+            throw new ExceptionPrixIncorrecte();
         }
         this.encheres.add(nouvelleEnchere);
     }
