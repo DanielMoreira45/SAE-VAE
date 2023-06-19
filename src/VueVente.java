@@ -2,9 +2,16 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -12,20 +19,23 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class VueVente extends BorderPane {
+    Button ajoutPhotos;
+    List<ImageView> listeDesPhotos;
     TextField tfTitreVente;
     TextArea descriptionVente;
-    ComboBox<Categorie> choixCategorie;
+    ComboBox<String> choixCategorie;
     ComboBox<String> choixMarque;
     ComboBox<String> choixEtat;
     TextField prixMin;
     TextField prixMax;
-    // Gestion dates
+    DatePicker dateDebut;
+    DatePicker dateFin;
     Button ajoutVente;
 
     public VueVente() {
         super();
-        this.setTop(new BarreDeNav());
-        this.setCenter(this.boiteCentrale());
+        // this.setTop(new BarreDeNav());
+        this.setCenter(this.partieCentrale());
     }
 
     /**
@@ -42,16 +52,16 @@ public class VueVente extends BorderPane {
      * Méthode permettant de créer la boite centrale de la page.
      * @return VBox : la boite contenant toutes les sections de la page.
      */
-    private VBox boiteCentrale() {
+    private VBox partieCentrale() {
         VBox laBoite = new VBox(10);
         laBoite.setPadding(new Insets(20));
-        VBox boiteTitre = this.boiteTextFieldTitreVente();
-        VBox boiteDesc = this.boiteTextAreaDescriptionVente();
-        HBox hboxBoiteCatMarqueEtat = this.boiteCatMarqueEtat();
-        HBox hboxPrixDureeAjout = this.boitePrixDureeAjout();
-        laBoite.getChildren().addAll(this.titrePrincipal(), boiteTitre, boiteDesc, hboxBoiteCatMarqueEtat, hboxPrixDureeAjout);
-        VBox.setMargin(boiteTitre, new Insets(0, 50, 0, 50));
-        VBox.setMargin(boiteDesc, new Insets(0, 50, 0, 50));
+        VBox sectionTitre = this.sectionTitreVente();
+        VBox sectionDesc = this.sectionDescriptionVente();
+        HBox hboxBoiteCatMarqueEtat = this.regroupementSectionCategorieMarqueEtat();
+        HBox hboxPrixDureeAjout = this.regroupementPrixDureeAjout();
+        laBoite.getChildren().addAll(this.titrePrincipal(), sectionTitre, sectionDesc, hboxBoiteCatMarqueEtat, hboxPrixDureeAjout);
+        VBox.setMargin(sectionTitre, new Insets(0, 50, 0, 50));
+        VBox.setMargin(sectionDesc, new Insets(0, 50, 0, 50));
         VBox.setMargin(hboxBoiteCatMarqueEtat, new Insets(0, 50, 0, 50));
         VBox.setMargin(hboxPrixDureeAjout, new Insets(0, 50, 0, 50));
         return laBoite;
@@ -70,12 +80,22 @@ public class VueVente extends BorderPane {
         return titreDeLaBoite;
     }
 
+    // Initialisation des attributs de la classe
+
+    private void initBoutonAjoutPhotos() {
+        ImageView imageAjoutPhoto = new ImageView(new Image("file:./img/ajoutPhoto.png"));
+        this.ajoutPhotos = new Button("Ajoutez des photos", imageAjoutPhoto);
+        this.ajoutPhotos.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: grey;");
+    }
+
     /**
      * Méthode permettant d'initialiser le TextField pour le titre de la vente.
      */
     private void initTextFieldTitre() {
         this.tfTitreVente = new TextField();
         this.tfTitreVente.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
+        // this.tfTitreVente.setBackground(new BackgroundImage(new Image("file:./img/fondTextFieldVente.png"), BackgroundRepeat.NO_REPEAT,
+        //                                                               BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.AUTO));
     }
 
     /**
@@ -91,7 +111,13 @@ public class VueVente extends BorderPane {
      */
     private void initComboBoxCategorie() {
         this.choixCategorie = new ComboBox<>();
-        this.choixCategorie.getItems().addAll(Categorie.values());
+        this.choixCategorie.getItems().addAll(Categorie.ACCESSOIRE, Categorie.CHAUSSURE, 
+                                              Categorie.ELECTROMENAGER, Categorie.INFORMATIQUE,
+                                              Categorie.JEUX, Categorie.LIVRE,
+                                              Categorie.MEUBLE, Categorie.MUSIQUE,
+                                              Categorie.OUTIL, Categorie.SPORT,
+                                              Categorie.USTENSILECUISINE, Categorie.VEHICULE,
+                                              Categorie.VETEMENT);
         this.choixCategorie.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
     }
 
@@ -100,6 +126,7 @@ public class VueVente extends BorderPane {
      */
     private void initComboBoxMarque() {
         this.choixMarque = new ComboBox<>();
+        this.choixMarque.getItems().add("(À venir...)");
         this.choixMarque.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
     }
 
@@ -108,23 +135,52 @@ public class VueVente extends BorderPane {
      */
     private void initComboBoxEtat() {
         this.choixEtat = new ComboBox<>();
+        this.choixEtat.getItems().addAll("À venir", "En cours",
+                                              "À valider", "Validée",
+                                              "Non conclue");
         this.choixEtat.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
     }
 
+    /**
+     * Méthode permettant d'initialiser les TextFields pour les prix.
+     */
     private void initTfPrix() {
         this.prixMin = new TextField();
         this.prixMax = new TextField();
-        this.prixMin.setMaxWidth(50);
-        this.prixMax.setMaxWidth(50);
+        this.prixMin.setMaxWidth(70);
+        this.prixMax.setMaxWidth(70);
         this.prixMin.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
         this.prixMax.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
+    }
+
+    /**
+     * Méthode permettant d'initialiser les champs de sélection de dates.
+     */
+    private void initDates() {
+        this.dateDebut = new DatePicker();
+        this.dateDebut.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
+        this.dateFin = new DatePicker();
+        this.dateFin.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
+    }
+
+    private void initBoutonValidation() {
+        this.ajoutVente = new Button("Ajouter le produit > ");
+        this.ajoutVente.setStyle("-fx-background-color : white; -fx-background-radius : 0.8em; -fx-border-color : black; -fx-border-radius : 0.8em;");
+    }
+
+    // Création des différentes boites.
+
+    private HBox boitePhotos() {
+        HBox boiteDesPhotos = new HBox(5);
+        boiteDesPhotos.setPadding(new Insets(10));
+
     }
 
     /**
      * Méthode permettant de créer la boite contenant la zone de saisie du titre de la vente.
      * @return VBox : une boite contenant le titre de la zone et le textField associé.
      */
-    private VBox boiteTextFieldTitreVente() {
+    private VBox sectionTitreVente() {
         VBox vboxTitreVente = new VBox(5);
         this.initTextFieldTitre();
         vboxTitreVente.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
@@ -137,7 +193,7 @@ public class VueVente extends BorderPane {
      * Méthode permettant de créer la boite contenant la zone de saisie de la description de la vente.
      * @return VBox : une boite contenant le titre de la zone et le textArea associé.
      */
-    private VBox boiteTextAreaDescriptionVente() {
+    private VBox sectionDescriptionVente() {
         VBox vboxDescVente = new VBox(5);
         this.initTextAreaDesc();
         vboxDescVente.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
@@ -151,7 +207,7 @@ public class VueVente extends BorderPane {
      * @param largeur int : la largeur de la boite à créer.
      * @return VBox : la boite contenant le titre de la section et la ComboBox concernée.
      */
-    private VBox boiteCategorie(int largeur) {
+    private VBox sectionCategorie(int largeur) {
         VBox vboxCategorie = new VBox(5);
         vboxCategorie.setPrefWidth(largeur);
         this.initComboBoxCategorie();
@@ -162,58 +218,61 @@ public class VueVente extends BorderPane {
     }
 
     /**
-     * Méthode permettant de créer la boite contenant le ComboBox de la marque.
+     * Méthode permettant de créer la section contenant le ComboBox de la marque.
      * @param largeur int : la largeur de la boite à créer.
      * @return VBox : la boite contenant le titre de la section et la ComboBox concernée.
      */
-    private VBox boiteMarque(int largeur) {
+    private VBox sectionMarque(int largeur) {
         VBox vboxMarque = new VBox(5);
         vboxMarque.setPrefWidth(largeur);
         this.initComboBoxMarque();
         vboxMarque.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
         vboxMarque.getChildren().addAll(this.titreDesSection("Marque"), this.choixMarque);
-        VBox.setMargin(this.choixMarque, new Insets(5, 50, 15, 50));
+        VBox.setMargin(this.choixMarque, new Insets(5, 0, 15, 70));
         return vboxMarque;
     }
 
     /**
-     * Méthode permettant de créer la boite contenant le ComboBox de l'état.
+     * Méthode permettant de créer la section contenant le ComboBox de l'état.
      * @param largeur int : la largeur de la boite à créer.
      * @return VBox : la boite contenant le titre de la section et la ComboBox concernée.
      */
-    private VBox boiteEtat(int largeur) {
+    private VBox sectionEtat(int largeur) {
         VBox vboxEtat = new VBox(5);
         vboxEtat.setPrefWidth(largeur);
         this.initComboBoxEtat();
         vboxEtat.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
         vboxEtat.getChildren().addAll(this.titreDesSection("État"), this.choixEtat);
-        VBox.setMargin(this.choixEtat, new Insets(5, 50, 15, 50));
+        VBox.setMargin(this.choixEtat, new Insets(5, 0, 15, 68));
         return vboxEtat;
     }
 
     /**
-     * Méthode permettant de créer une boite contenant les boites de la catégorie, de la marque et de l'état.
+     * Méthode permettant de regrouper dans une boite, les sections de la catégorie, de la marque et de l'état.
      * @return HBox : la boite contenant les autres boites concernées.
      */
-    private HBox boiteCatMarqueEtat() {
+    private HBox regroupementSectionCategorieMarqueEtat() {
         HBox laBoite = new HBox(30);
         int largeur = 268;
-        laBoite.getChildren().addAll(this.boiteCategorie(largeur), this.boiteMarque(largeur), this.boiteEtat(largeur));
+        laBoite.getChildren().addAll(this.sectionCategorie(largeur), this.sectionMarque(largeur), this.sectionEtat(largeur));
         return laBoite;
     }
 
     /**
-     * Méthode permettant de créer la boite contenant les labels et les TextFields des prix.
-     * @param largeur double : la largeur de la boite à créer.
+     * Méthode permettant de créer une boite contenant les labels et les TextFields des prix.
+     * Cette boite est située dans la section des prix.
+     * @param largeur int : la largeur de la boite à créer.
      * @return HBox : la boite contenant les labels et les TextFields des prix.
      */
-    private HBox boiteTfPrix(double largeur) {
-        HBox laBoite = new HBox(20);
+    private HBox boiteTfPrix(int largeur) {
+        HBox laBoite = new HBox(150);
         laBoite.setPrefWidth((int)largeur);
-        laBoite.setPadding(new Insets(10));
-        VBox prixMin = new VBox(new Label("minimum"), this.prixMin);
-        VBox prixVise = new VBox(new Label("visé"), this.prixMax);
-        laBoite.getChildren().addAll(prixMin, prixVise);
+        laBoite.setPadding(new Insets(25));
+        VBox boitePrixMin = new VBox(new Label("minimum"), this.prixMin);
+        VBox boitePrixVise = new VBox(new Label("visé"), this.prixMax);
+        boitePrixMin.setAlignment(Pos.CENTER);
+        boitePrixVise.setAlignment(Pos.CENTER);
+        laBoite.getChildren().addAll(boitePrixMin, boitePrixVise);
         return laBoite;
     }
 
@@ -222,25 +281,48 @@ public class VueVente extends BorderPane {
      * @param largeur int : la largeur de la boite à créer.
      * @return VBox : la boite contenant le titre de la section et les éléments concernés.
      */
-    private VBox boiteDesPrix(int largeur) {
+    private VBox sectionDesPrix(int largeur) {
         VBox vboxDesPrix = new VBox(5);
         this.initTfPrix();
-        HBox laBoiteDestfPrix = this.boiteTfPrix(vboxDesPrix.getWidth());
+        HBox laBoiteDestfPrix = this.boiteTfPrix((int)vboxDesPrix.getWidth());
         vboxDesPrix.setPrefWidth(largeur);
         vboxDesPrix.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
         vboxDesPrix.getChildren().addAll(this.titreDesSection("Prix minimun & prix visé"), laBoiteDestfPrix);
-        laBoiteDestfPrix.setAlignment(Pos.CENTER);
+        laBoiteDestfPrix.setAlignment(Pos.BASELINE_CENTER);
         return vboxDesPrix;
     }
 
+    private VBox boiteChampsDates() {
+        VBox vboxDesDates = new VBox(5);
+        this.initDates();
+        vboxDesDates.getChildren().addAll(new VBox(5, new Label("début"), this.dateDebut), new VBox(5, new Label("fin"), this.dateFin));
+        return vboxDesDates;
+    }
+
     /**
-     * Méthode permettant de créer une boite contenant les boites des prix, de la durée et le bouton de validation.
+     * Méthode permettant de créer la section des dates.
+     * @return VBox : la boite contenant le titre de la section avec les champs pour gérer les dates.
+     */
+    private VBox sectionDates() {
+        VBox vboxPourLesDates = new VBox(5);
+        vboxPourLesDates.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
+        VBox lesChampsDates = this.boiteChampsDates();
+        vboxPourLesDates.getChildren().addAll(this.titreDesSection("Durée et date"), lesChampsDates);
+        VBox.setMargin(lesChampsDates, new Insets(5, 50, 15, 50));
+        return vboxPourLesDates;
+    }
+
+    /**
+     * Méthode permettant de regrouper les sections prix, durée, ainsi que le bouton de validation.
      * @return HBox : la boite contenant les autres boites concernées.
      */
-    private HBox boitePrixDureeAjout() {
+    private HBox regroupementPrixDureeAjout() {
         HBox laBoite = new HBox(10);
-        int largeur = 268;
-        laBoite.getChildren().addAll(this.boiteDesPrix(largeur));
+        int largeur = 350;
+        this.initBoutonValidation();
+        laBoite.getChildren().addAll(this.sectionDesPrix(largeur), this.sectionDates(), this.ajoutVente);
+        HBox.setMargin(this.ajoutVente, new Insets(60, 0, 0, 20));
+        this.ajoutVente.setAlignment(Pos.CENTER);
         return laBoite;
     }
 }
