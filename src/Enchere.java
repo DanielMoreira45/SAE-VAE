@@ -15,7 +15,8 @@ public class Enchere {
      * @param v       La vente sur la quelle l'enchere a été mise
      * @param montant Le montant de l'enchere
      * @param date    La date de l'enchere sous la forme (dd/MM/yy:hh/mm/ss)
-     * @throws ParseException Si la date n'est pas sous la bonne forme
+     * @throws ParseException Si la date n'est pas sous la bonne forme, la bonne
+     *                        forme est : dd/MM/yy:hh/mm/ss
      */
     public Enchere(Utilisateur u, Vente v, Double montant, String date) throws ParseException {
         SimpleDateFormat lecteur = new SimpleDateFormat("dd/MM/yy:hh/mm/ss");
@@ -66,8 +67,8 @@ public class Enchere {
      * 
      * @return la date sous la forme (dd/MM/yy:hh/mm/ss)
      */
-    public Date getDateHeure() {
-        return dateHeure;
+    public Long getDateHeure() {
+        return dateHeure.getTime();
     }
 
     /**
