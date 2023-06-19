@@ -1,10 +1,14 @@
-import java.sql.PreparedStatement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
  */
 public class UtilisateurBD {
     private ConnexionMySQL laConnexionMySQL;
+    Statement st;
+
     /**
      * Default constructor
      */
@@ -12,39 +16,54 @@ public class UtilisateurBD {
         this.laConnexionMySQL = laConnexionMySQL;
     }
 
+    public int maxIdUtilisateur() throws SQLException {
+        this.st = laConnexionMySQL.createStatement();
+        ResultSet resultats = this.st.executeQuery("SELECT max(idut) FROM UTILISATEUR;");
+        resultats.next();
+        int nb = resultats.getInt(1);
+        resultats.close();
+        return nb;
+    }
 
-    int maxIdUtilisateur() throws SQLException {
-		this.st = laConnexion.createStatement();
-		this.resultats = this.st.executeQuery("SELECT max(idut) FROM UTILISATEUR;");
-		resultats.next();
-		int nb = resultats.getInt(1);
-		this.resultats.close();
-		return nb;
-	}
-
-
-    public int insererUtilisateur(Utilisateur j, Role role) throws SQLException {
-		PreparedStatement ps = laConnexion.prepareStatement("INSERT INTO JOUEUR VALUES(?, ?, ?, ?, ?, ?)");
-		ps.setInt((1),  maxIdJoueur() + 1);
-		ps.setString(2, j.getPseudo());
-		ps.setString(3, j.getEmail());
-		ps.setString(4, j.getMotDePasse());
-        ps.setChar(5, j.estActive());
+    public void insererUtilisateur(Utilisateur j, Role role) throws SQLException {
+        PreparedStatement ps = laConnexionMySQL.prepareStatement("INSERT INTO UTILISATEUR VALUES(?, ?, ?, ?, ?, ?)");
+        ps.setInt((1), maxIdUtilisateur() + 1);
+        ps.setString(2, j.getPseudo());
+        ps.setString(3, j.getEmail());
+        ps.setString(4, j.getMotDePasse());
+        String estActive = j.estActive() ? "O" : "N";
+        ps.setString(5, estActive);
         ps.setInt(6, role);
-		ps.executeUpdate();
-	}
+        ps.executeUpdate();
+    }
 
+    public void effacerJoueur(int num) throws SQLException {
+        this.st = laConnexionMySQL.createStatement();
+        String query;
+        query = "DELETE FROM UTILISATEUR WHERE idUt =" + num + ";";
+        this.st.executeUpdate(query);
+        st.executeUpdate(query);
+    }
 
-    
-
-
-
-
-
-    
-
-
-
-
+    public int idLibre() throws SQLException {
+        this.st = laConnexionMySQL.createStatement();
+        ResultSet resultats = this.st.executeQuery("SELECT count(idUt) FROM UTILISATEUR");
+        resultats.next();
+        int nb = resultats.getInt(1);
+        Integer maxId = maxIdUtilisateur();
+        if (nb == maxId) {
+            return maxId;
+        } else {
+            ResultSet lesId = this.st.executeQuery("SELECT idUt FROM UTILISATEUR");
+            while (lesId.next()) {
+                Integer actu = lesId.getInt(1);
+                ResultSet leProchain = this.st.executeQuery("SELECT idUt FROM UTILISATEUR WHERE idUt =" + (actu + 1));
+                if (!leProchain.next()) {
+                    return actu + 1;
+                }
+            }
+        }
+    return 0;
+    }
 
 }
