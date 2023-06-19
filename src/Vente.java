@@ -160,17 +160,17 @@ public class Vente {
         return this.status;
     }
 
-    /**
-     * Renvoie le prix final à la fin de la vente
-     * @return (Double) le prix final de la vente
-     */
-    public Double prixFinal() throws ExceptionVentePasTerminee{
-        Date dateAjd = new SimpleDateFormat("").parse(this.finVe); // mettre le format de la date --------------------------------------------------------------------
-        if (Calendar.getInstance().getTime().before(dateAjd)){
-            throw new ExceptionVentePasTerminee();
-        }
-        return this.encheres.get(this.encheres.size()-1).getMontant();
-    }
+    // /**
+    //  * Renvoie le prix final à la fin de la vente
+    //  * @return (Double) le prix final de la vente
+    //  */
+    // public Double prixFinal() throws ExceptionVentePasTerminee{
+    //     Date dateAjd = new SimpleDateFormat("").parse(this.finVe); // mettre le format de la date --------------------------------------------------------------------
+    //     if (Calendar.getInstance().getTime().before(dateAjd)){
+    //         throw new ExceptionVentePasTerminee();
+    //     }
+    //     return this.encheres.get(this.encheres.size()-1).getMontant();
+    // }
 
     /**
      * Getter objetVente
@@ -192,10 +192,10 @@ public class Vente {
      * Ajoute une enchère sur la vente
      * @param nouvelleEnchere 
      */
-    public void ajouteEnchere(Enchere nouvelleEnchere) throws ExceptionPrixIncorrect{
-        if (nouvelleEnchere.getMontant() < this.prixMin || nouvelleEnchere.getMontant() < this.encheres.get(this.encheres.size()-1).getMontant()){
-            throw new ExceptionPrixIncorrect();
-        }
-        this.encheres.add(nouvelleEnchere);
-    }
+    // public void ajouteEnchere(Enchere nouvelleEnchere) throws ExceptionPrixIncorrect{
+    //     if (nouvelleEnchere.getMontant() < this.prixMin || nouvelleEnchere.getMontant() < this.encheres.get(this.encheres.size()-1).getMontant()){
+    //         throw new ExceptionPrixIncorrect();
+    //     }
+    //     this.encheres.add(nouvelleEnchere);
+    // }
 }
