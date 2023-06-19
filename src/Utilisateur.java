@@ -5,6 +5,11 @@ import java.util.*;
  */
 public class Utilisateur {
     /**
+     * Id de l'utilisateur
+     */
+    private double id;
+
+    /**
      * Pseudo de l'utilisateur
      */
     private String pseudo;
@@ -24,7 +29,7 @@ public class Utilisateur {
      */
     private boolean active;
 
-    /**
+    /**private double id;
      * Le role de l'utilisateur
      */
     private Roles role;
@@ -38,12 +43,29 @@ public class Utilisateur {
     /**
      * Default constructor
      */
-    public Utilisateur(String pseudo, String email, String mdp, Roles role) {
+    public Utilisateur(double id,String pseudo, String email, String mdp, Roles role) {
+        this.id = id;
         this.pseudo = pseudo;
         this.email = email;
         this.mdp = mdp;
         this.active = true;
         this.role = role;
+    }
+
+    /**
+     * Getter id
+     * @return (double) id
+     */
+    public double getId() {
+        return id;
+    }
+
+    /**
+     * Setter id
+     * @param id
+     */
+    public void setId(double id) {
+        this.id = id;
     }
 
     /**
