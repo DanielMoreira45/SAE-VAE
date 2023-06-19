@@ -66,8 +66,8 @@ public class Enchere {
      * 
      * @return la date sous la forme (dd/MM/yy:hh/mm/ss)
      */
-    public Date getDateHeure() {
-        return dateHeure;
+    public Long getDateHeure() {
+        return dateHeure.getTime();
     }
 
     /**
