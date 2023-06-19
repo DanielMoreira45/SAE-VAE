@@ -21,8 +21,12 @@ public class FenetreCoInsc extends HBox {
     private Rectangle rectangleC;
     private Rectangle rectangleI;
 
-    public FenetreCoInsc(){
+    private AppliVae appli;
+    private ConnexionMySQL connexionMySQL;
+
+    public FenetreCoInsc(AppliVae appli, ConnexionMySQL connexionMySQL){
         this.panelCentral = new BorderPane();
+        this.appli = appli;
 
         /*stage.setTitle("Fenetre de connexion");
         stage.setHeight(1080);
@@ -73,7 +77,7 @@ public class FenetreCoInsc extends HBox {
         this.creerCompte.setDisable(false);
         this.rectangleC.setFill(Color.web("#4FA0FF"));
         this.rectangleI.setFill(Color.web("#a3a3a3aa"));
-        this.panelCentral.setCenter(new FenetreDeLogin());
+        this.panelCentral.setCenter(new FenetreDeLogin(this.appli, this.connexionMySQL));
     }
 
     public void modeCreationCompte() {
@@ -81,7 +85,7 @@ public class FenetreCoInsc extends HBox {
         this.creerCompte.setDisable(true);
         this.rectangleC.setFill(Color.web("#a3a3a3aa"));
         this.rectangleI.setFill(Color.web("#4FA0FF"));
-        this.panelCentral.setCenter(new FenetreCreationCompte());
+        this.panelCentral.setCenter(new FenetreCreationCompte(this.appli, this.connexionMySQL));
     }
     
     // pour mettre l'image a gauche
