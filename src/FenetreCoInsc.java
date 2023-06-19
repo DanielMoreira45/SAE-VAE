@@ -1,5 +1,4 @@
 import javafx.animation.ScaleTransition;
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,13 +8,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class FenetreCoInsc extends Application {
-    private HBox root;
+public class FenetreCoInsc extends HBox {
     private BorderPane panelCentral;
     private Button seConnecter;
     private Button creerCompte;
@@ -23,7 +21,27 @@ public class FenetreCoInsc extends Application {
     private Rectangle rectangleC;
     private Rectangle rectangleI;
 
-    
+    public FenetreCoInsc(){
+        this.panelCentral = new BorderPane();
+
+        /*stage.setTitle("Fenetre de connexion");
+        stage.setHeight(1080);
+        stage.setWidth(1920);
+        stage.setFullScreen(false);
+        stage.setFullScreenExitHint("");*/
+
+        this.ajouteConnexion();
+        this.gridButton();
+        this.modeLogin();
+        this.getChildren().addAll(this.ajouteImage(), this.panelCentral);
+        
+        
+        
+
+        //stage.setScene(scene);
+        //stage.show();
+    }
+    /*
     @Override
     public void init() {
         this.root = new HBox();
@@ -48,7 +66,7 @@ public class FenetreCoInsc extends Application {
 
         stage.setScene(scene);
         stage.show();
-    }
+    }*/
 
     public void modeLogin() {
         this.seConnecter.setDisable(true);
@@ -138,8 +156,8 @@ public class FenetreCoInsc extends Application {
             scaleTransitionReverse.play();
         });
     }
-
+/*
     public static void main(String[] args) {
         launch(args);
-    }
+    }*/
 }
