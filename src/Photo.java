@@ -1,3 +1,8 @@
+
+import java.awt.image.BufferedImage;
+
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Photo {
@@ -9,6 +14,14 @@ public class Photo {
         this.idph = idph;
         this.titreph = titreph;
         this.imageView = imageView;
+    }
+
+    public ImageView convertirImageView() {
+            Image image = imageView.getImage();
+            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+            ImageView imageView = new ImageView(SwingFXUtils.toFXImage(bufferedImage, null));
+            return imageView;
+        }
     }
 
     public Integer getIdph() {

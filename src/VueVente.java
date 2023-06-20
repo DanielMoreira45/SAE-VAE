@@ -78,6 +78,10 @@ public class VueVente extends VBox {
         return this.choixEtat.getValue();
     }
 
+    public String getDesc(){
+        return this.descriptionVente.getText();
+    }
+
     public Integer getPrixMin(){
         return Integer.valueOf(prixMin.getText());
     }
@@ -92,6 +96,14 @@ public class VueVente extends VBox {
 
     public Integer getPrixMax(){
         return Integer.valueOf(prixMin.getText());
+    }
+
+    public List<Photo> getPhotos(){
+        return this.lesPhotos;
+    }
+
+    public Utilisateur getVendeur(){
+        return this.utilisateur;
     }
 
 

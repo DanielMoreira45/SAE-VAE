@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.scene.image.Image;
 
 /**
@@ -23,7 +26,7 @@ public class Objet {
     /**
      * L'image de l'objet
      */
-    public Image img;
+    public List<Photo> photoObj;
 
     /**
      * La vente associée à l'objet
@@ -43,20 +46,20 @@ public class Objet {
     /**
      * Constructeur
      */
-    public Objet(int idOb, String description, String nomOb, Image img, Vente vente, Utilisateur vendeur, int categorie) {
+    public Objet(int idOb, String description, String nomOb, List<Photo> photos, Vente vente, Utilisateur vendeur, int categorie) {
         this.idOb = idOb;
         this.description = description;
         this.nomOb = nomOb;
-        this.img = img;
+        this.photoObj = new ArrayList<>();
         this.vente = vente;
         this.categorie = categorie;
         this.vendeur = vendeur;
     }
-    public Objet(int idOb, String description, String nomOb, Image img, Utilisateur vendeur, int categorie) {
+    public Objet(int idOb, String description, String nomOb,List<Photo> photos, Utilisateur vendeur, int categorie) {
         this.idOb = idOb;
         this.description = description;
         this.nomOb = nomOb;
-        this.img = img;
+        this.photoObj = new ArrayList<>();
         this.vente = null;
         this.categorie = categorie;
         this.vendeur = vendeur;
@@ -138,8 +141,8 @@ public class Objet {
      * 
      * @return (Image) img
      */
-    public Image getImage() {
-        return this.img;
+    public List<Photo> getImage() {
+        return this.photoObj;
     }
 
     /**
@@ -147,8 +150,8 @@ public class Objet {
      * 
      * @param nouvelleImage
      */
-    public void setImage(Image nouvelleImage) {
-        this.img = nouvelleImage;
+    public void addImage(Photo laPhoto) {
+        this.photoObj.add(laPhoto);
     }
 
     public Vente getVente() {

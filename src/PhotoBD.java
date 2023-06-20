@@ -10,9 +10,10 @@ import java.sql.Statement;
 
 import javax.imageio.ImageIO;
 
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.embed.swing.SwingFXUtils;
+// import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 
 
 
@@ -48,9 +49,7 @@ public void insertPhoto(Photo photo, Objet o) throws SQLException {
         pstmt.setInt(4, o.getidObjet());
         pstmt.executeUpdate();
     } 
-    catch (IOException e) {
-        e.printStackTrace();
-    }
+}
     
 
     int maxIdPhoto() throws SQLException {
