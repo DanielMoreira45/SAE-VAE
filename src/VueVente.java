@@ -86,10 +86,13 @@ public class VueVente extends VBox {
         return this.descriptionVente.getText();
     }
 
-    public Integer getPrixMin(){
-        return 1;
+    public Double getPrixMin(){
+        return Double.valueOf(prixMin.getText());
     }
-
+    
+    public Double getPrixMax(){
+        return Double.valueOf(prixMax.getText());
+    }
     public LocalDate dateDebut(){
         return dateDebut.getValue();
     }
@@ -101,9 +104,6 @@ public class VueVente extends VBox {
         return this.tfTitreVente.getText();
     }
 
-    public Integer getPrixMax(){
-        return 2;
-    }
 
     public List<Photo> getPhotos(){
         return this.lesPhotos;
@@ -553,7 +553,7 @@ public class VueVente extends VBox {
     public void popUpCompteConnecte(String titre) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Objet mit vente.");
-        alert.setHeaderText("L'objet " + titre +"à bien était mit en vente");
+        alert.setHeaderText("L'objet " + titre +"' à bien était mit en vente");
         alert.showAndWait();
     }
 

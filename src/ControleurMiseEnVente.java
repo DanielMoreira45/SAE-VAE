@@ -1,4 +1,5 @@
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
 import javafx.event.ActionEvent;
@@ -12,6 +13,7 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
     private ConnexionMySQL laConnexionMySQL;
     Integer idLibre = null;
     PhotoBD photoBd;
+    Objet obj = null;
 
     public ControleurMiseEnVente(VueVente vue, ConnexionMySQL laConnexionMySQL) {
         this.vue = vue;
@@ -27,10 +29,10 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
     public void handle(ActionEvent actionEvent) {
         String cat = vue.getCategorie();
         String marque = vue.getMarque();
-        Integer prixMin = vue.getPrixMin();
-        Integer prixMax = vue.getPrixMax();
-        LocalDate dateDeBut = vue.dateDebut();
-        LocalDate dateFin = vue.dateFin();
+        Double prixMin = vue.getPrixMin();
+        Double prixMax = vue.getPrixMax();
+        String dateDeBut = vue.dateDebut().toString() + " 00:00:00"; // pour correspondre au String du modèle Vente
+        String dateFin = vue.dateFin().toString()+ " 00:00:00"; // + pour correspondre au String du modèle Vente
         String desc = vue.getDesc();
         List<Photo> lesPhotos = vue.getPhotos();
         String titrePh = vue.getTitre();
@@ -41,6 +43,8 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
         System.out.println(dateDeBut);
         System.out.println(dateFin);
         ObjetBD objetBD = new ObjetBD(laConnexionMySQL);
+        VenteBD venteDeOb= new VenteBD(laConnexionMySQL);
+
         try {
             this.idLibre = objetBD.maxIdObjet()+1;
         } catch (SQLException e) {
@@ -52,7 +56,6 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
             this.photoBd = new PhotoBD(laConnexionMySQL);
             System.out.println("Connexion PhotoBD");
             try {
-                
                 vue.ajoutImage();
                 Photo photo = new Photo(photoBd.maxIdPhoto() + 1, vue.getTitre(), vue.getImageView());
                 System.out.println("Creation instance photo");
@@ -63,16 +66,24 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
             }
         }
         if (bouton.getText().equals("Ajouter le produit > ")) {
-            System.out.println("rentre dans la condition");
             if (prixMin != null && prixMax != null && cat != null && dateFin != null && dateDeBut != null) {
                 try {
-                    Objet obj = new Objet(objetBD.maxIdObjet()+1, desc, titreOb, lesPhotos, vue.getVendeur(), 1);
+                    this.obj = new Objet(objetBD.maxIdObjet()+1, desc, titreOb, lesPhotos, vue.getVendeur(), 1);
                     objetBD.insereObjet(obj);
                     for (Photo photos : lesPhotos) {
                         photoBd.insertPhoto(photos, obj);
                     }
                     vue.popUpCompteConnecte(titreOb);
                 } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                try{
+                    Vente vente = new Vente(venteDeOb.maxIdVente()+1, prixMin, prixMax, dateDeBut, dateFin, 1, this.obj);
+                    venteDeOb.insereVente(vente);
+                }
+                catch(SQLException e){
+                    e.printStackTrace();
+                } catch (ParseException e) {
                     e.printStackTrace();
                 }
             }

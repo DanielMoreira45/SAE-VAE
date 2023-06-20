@@ -116,4 +116,14 @@ public class VenteBD {
         }
         return ventes;
     }
+
+    int maxIdVente() throws SQLException {
+        Statement st = laConnexionMySQL.createStatement();
+        ResultSet resultats = st.executeQuery("SELECT max(idve) FROM VENTE;");
+        resultats.next();
+        int nb = resultats.getInt(1);
+        resultats.close();
+        return nb;
+    }
+
 }
