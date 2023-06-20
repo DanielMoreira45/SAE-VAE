@@ -76,33 +76,37 @@ public class UtilisateurBD {
         return this.idLibre;
     }
 
-    public Map<String, Object> rechercherJoueurParPseudo(String pseudo) throws SQLException {
+    public Map<String, Object> rechercherJoueurParMail(String mail) throws SQLException {
         Map<String, Object> resultat = null;
-        String query = "SELECT * FROM UTILISATEUR WHERE pseudo = ?";
+        String query = "SELECT * FROM UTILISATEUR WHERE emailut = ?";
+        System.out.println("rentrefonction");
         PreparedStatement statement = laConnexionMySQL.preparedStatement(query);
-        statement.setString(1, pseudo);
+        statement.setString(1, mail);
+        System.out.println("preparedinsertinmail");
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
-            resultat = new HashMap<>();
+            System.out.println("rentrer dans le next");
+            resultat = new HashMap<String, Object>();
             int id = resultSet.getInt("idUt");
-            String email = resultSet.getString("email");
-            String motDePasse = resultSet.getString("motDePasse");
-            boolean estActif = resultSet.getString("estActif").equalsIgnoreCase("O");
-            int role = resultSet.getInt("role");
-            // Ajouter les valeurs au dictionnaire avec les noms des colonnes en tant que clés
-            resultat.put("idUt", id);
-            resultat.put("email", email);
-            resultat.put("motDePasse", motDePasse);
-            resultat.put("estActif", estActif);
-            resultat.put("role", role);
+            String pseudo = resultSet.getString("pseudout");
+            String email = resultSet.getString("emailut");
+            String motDePasse = resultSet.getString("mdput");
+            boolean estActif = resultSet.getString("activeut").equalsIgnoreCase("O");
+            System.out.println("pre put");
+            int role = resultSet.getInt("idrole");
+            resultat.put("idut", id);
+            System.out.println("ça put");
+            resultat.put("pseudout", pseudo);
+            resultat.put("emailut", email);
+            resultat.put("mdput", motDePasse);
+            resultat.put("activeut", estActif);
+            resultat.put("idrole", role);
         }
         resultSet.close();
         statement.close();
-
+    
         return resultat;
     }
-
-
 
 
     public void majUtilisateur(Utilisateur j) throws SQLException {
