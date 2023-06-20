@@ -40,14 +40,16 @@ public class ControleurCreerCompte implements EventHandler<ActionEvent>{
         try {
             VerificateurMDP.estValide(this.vue.getMdp());
             try{
-                System.out.println("ControleurConnextion"+this.connexionMySQL);
+                System.out.println("ControleurConnexion"+this.connexionMySQL);
                 System.out.println("avant");
                 UtilisateurBD userBd = new UtilisateurBD(this.connexionMySQL);
-                Utilisateur user = new Utilisateur(0, vue.getPseudo(), vue.getMail(), vue.getMdp(), 2);
                 System.out.println("apres");
+                int idLibre = userBd.idLibre();
+                System.out.println(idLibre);
+                Utilisateur user = new Utilisateur(idLibre, vue.getPseudo(), vue.getMail(), vue.getMdp(), 2);
                 userBd.insererUtilisateur(user);
+                vue.popUpCompteValide(user.getPseudo());
                 System.out.println("apres1");
-
             }
             catch(SQLException e){
                 vue.popUpErreurSQL(e);

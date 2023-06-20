@@ -1,6 +1,8 @@
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -8,6 +10,7 @@ import java.util.List;
 public class UtilisateurBD {
     private ConnexionMySQL laConnexionMySQL;
     Statement st;
+    Integer idLibre = null;
 
     /**
      * Default constructor
@@ -29,7 +32,8 @@ public class UtilisateurBD {
     public void insererUtilisateur(Utilisateur j) throws SQLException {
         System.out.println("Utilisateur BD"+this.laConnexionMySQL);
         PreparedStatement ps = laConnexionMySQL.preparedStatement("INSERT INTO UTILISATEUR VALUES(?, ?, ?, ?, ?, ?)");
-        ps.setInt((1), 1010);
+        System.out.println(idLibre());
+        ps.setInt((1), idLibre());
         ps.setString(2, j.getPseudo());
         ps.setString(3, j.getEmail());
         ps.setString(4, j.getMotDePasse());
@@ -61,12 +65,45 @@ public class UtilisateurBD {
                 Integer actu = lesId.getInt(1);
                 ResultSet leProchain = this.st.executeQuery("SELECT idUt FROM UTILISATEUR WHERE idUt =" + (actu + 1));
                 if (!leProchain.next()) {
-                    return actu + 1;
+                    this.idLibre= actu + 1;
                 }
             }
         }
-    return 0;
+    return this.idLibre;
     }
+
+    public Integer getIDlibre(){
+        return this.idLibre;
+    }
+
+    public Map<String, Object> rechercherJoueurParPseudo(String pseudo) throws SQLException {
+        Map<String, Object> resultat = null;
+        String query = "SELECT * FROM UTILISATEUR WHERE pseudo = ?";
+        PreparedStatement statement = laConnexionMySQL.preparedStatement(query);
+        statement.setString(1, pseudo);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            resultat = new HashMap<>();
+            int id = resultSet.getInt("idUt");
+            String email = resultSet.getString("email");
+            String motDePasse = resultSet.getString("motDePasse");
+            boolean estActif = resultSet.getString("estActif").equalsIgnoreCase("O");
+            int role = resultSet.getInt("role");
+            // Ajouter les valeurs au dictionnaire avec les noms des colonnes en tant que clés
+            resultat.put("idUt", id);
+            resultat.put("email", email);
+            resultat.put("motDePasse", motDePasse);
+            resultat.put("estActif", estActif);
+            resultat.put("role", role);
+        }
+        resultSet.close();
+        statement.close();
+
+        return resultat;
+    }
+
+
+
 
     public void majUtilisateur(Utilisateur j) throws SQLException {
         PreparedStatement ps = laConnexionMySQL.preparedStatement("INSERT INTO UTILISATEUR VALUES(?, ?, ?, ?, ?, ?)");

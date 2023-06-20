@@ -147,4 +147,18 @@ public class FenetreCreationCompte extends GridPane{
     alert.setContentText("Description de l'erreur : " + e.getMessage());
     alert.showAndWait();
 }
+public void popUpCompteValide(Exception e){
+    Alert alert = new Alert(AlertType.ERROR);
+    alert.setTitle("Erreur");
+    alert.setHeaderText("Une erreur s'est produite");
+    alert.setContentText("Description de l'erreur : " + e.getMessage());
+    alert.showAndWait();
+}
+public void popUpCompteValide(String nomCompte) {
+    Alert alert = new Alert(AlertType.INFORMATION);
+    alert.setTitle("Confirmation de création de compte");
+    alert.setHeaderText("Compte créé avec succès");
+    alert.setContentText("Le compte '" + nomCompte + "' a été créé avec succès.");
+    alert.showAndWait();
+}
 }

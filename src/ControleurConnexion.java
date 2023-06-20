@@ -31,6 +31,7 @@ public class ControleurConnexion implements EventHandler<ActionEvent>{
             if (this.vue.getEmail().equals("erreur")) throw new Exception();
             this.vue.setEmailErreur(false);
             this.vue.setMessageEmailErreur("");
+            
             try {
                 if (this.vue.getMdp().equals("erreur")) throw new Exception();
                 // Faire la suite pour créer un compte
