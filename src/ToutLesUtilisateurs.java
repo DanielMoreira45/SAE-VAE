@@ -5,12 +5,12 @@ public class ToutLesUtilisateurs{
 
 
 
-  public List<Utilisateur> trueUtilisateursConnexion(){
+  public List<Utilisateur> trieUtilisateursConnexion(){
     return this.lesUtilisateurs;
   }
 
 
-  public List<Utilisateur> trueUtilisateursConnexionDecroissant(){
+  public List<Utilisateur> trieUtilisateursConnexionDecroissant(){
     return this.lesUtilisateurs;
   }
 

@@ -53,7 +53,8 @@ public class Vente {
      * @throws ParseException Si la date n'est pas sous la bonne forme, la bonne
      *                        forme est : dd/MM/yy:hh/mm/ss
      */
-    public Vente(int idVente, Double prixBase, Double prixMin, String debutVe, String finVe, int status, Objet objetVente) throws ParseException {
+    public Vente(int idVente, Double prixBase, Double prixMin, String debutVe, String finVe, int status,
+            Objet objetVente) throws ParseException {
         SimpleDateFormat lecteur = new SimpleDateFormat("dd/MM/yy:hh/mm/ss");
         this.idVente = idVente;
         this.prixBase = prixBase;
