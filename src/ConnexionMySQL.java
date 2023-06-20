@@ -17,19 +17,23 @@ public class ConnexionMySQL {
      * Default constructor
      */
     public ConnexionMySQL() throws ClassNotFoundException{
-        Class.forName("org.mariabd.jdbc.Driver");
+        Class.forName("org.mariadb.jdbc.Driver");
     }
     /**
      * 
      */
     public void connecter() {
-        Connection c;
-        try {
-            c= DriverManager.getConnection("jdbc:mysql://servinfo-mariadb:3306/DBmoreira","moreira", "moreira");
-            this.mysql = c;
-        } catch (SQLException e) {
-            System.out.println("Msg : "+e.getMessage() + e.getErrorCode());
-        }
+        // si tout c'est bien passé la connexion n'est plus nulle
+		Connection c;
+		try {
+			c = DriverManager.getConnection("jdbc:mysql://servinfo-mariadb:3306/"+"DBmoreira","moreira","moreira");
+			this.mysql=c;
+		} catch ( SQLException ex ) {
+			System.out.println("Msg : " + ex.getMessage() + ex.getErrorCode());
+		}
+		this.connecte=this.mysql!=null;
+
+		System.out.println(this.connecte);
     }
     public boolean isConnecte() {
         return this.connecte;
