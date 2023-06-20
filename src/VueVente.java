@@ -20,7 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class VueVente extends BorderPane {
+public class VueVente extends VBox {
     Button ajoutPhotos;
     List<ImageView> listeDesPhotos;
     TextField tfTitreVente;
@@ -35,9 +35,22 @@ public class VueVente extends BorderPane {
     Button ajoutVente;
 
     public VueVente() {
-        super();
+        super(10);
         // this.setTop(new NavBar());
-        this.setCenter(this.partieCentrale());
+        // this.setCenter(this.partieCentrale());
+        Insets insetsParDefaut = new Insets(2, 70, 2, 70);
+        this.setPadding(new Insets(20));
+        VBox sectionPhotos = this.sectionDesPhotos();
+        VBox sectionTitre = this.sectionTitreVente();
+        VBox sectionDesc = this.sectionDescriptionVente();
+        GridPane gpBoiteCatMarqueEtat = this.regroupementSectionCategorieMarqueEtat();
+        GridPane gpPrixDureeAjout = this.regroupementPrixDureeAjout();
+        this.getChildren().addAll(this.titrePrincipal(), sectionPhotos, sectionTitre, sectionDesc, gpBoiteCatMarqueEtat, gpPrixDureeAjout);
+        VBox.setMargin(sectionPhotos, insetsParDefaut);
+        VBox.setMargin(sectionTitre, insetsParDefaut);
+        VBox.setMargin(sectionDesc, insetsParDefaut);
+        VBox.setMargin(gpBoiteCatMarqueEtat, insetsParDefaut);
+        VBox.setMargin(gpPrixDureeAjout, insetsParDefaut);
     }
 
     /**
@@ -75,28 +88,6 @@ public class VueVente extends BorderPane {
         Text titreDeLaPage = new Text("Mise en vente");
         titreDeLaPage.setFont(Font.font("Arial", 32));
         return titreDeLaPage;
-    }
-
-    /**
-     * Méthode permettant de créer la boite centrale de la page.
-     * @return VBox : la boite contenant toutes les sections de la page.
-     */
-    private VBox partieCentrale() {
-        Insets insetsParDefaut = new Insets(2, 70, 2, 70);
-        VBox laBoite = new VBox(10);
-        laBoite.setPadding(new Insets(20));
-        VBox sectionPhotos = this.sectionDesPhotos();
-        VBox sectionTitre = this.sectionTitreVente();
-        VBox sectionDesc = this.sectionDescriptionVente();
-        GridPane gpBoiteCatMarqueEtat = this.regroupementSectionCategorieMarqueEtat();
-        GridPane gpPrixDureeAjout = this.regroupementPrixDureeAjout();
-        laBoite.getChildren().addAll(this.titrePrincipal(), sectionPhotos, sectionTitre, sectionDesc, gpBoiteCatMarqueEtat, gpPrixDureeAjout);
-        VBox.setMargin(sectionPhotos, insetsParDefaut);
-        VBox.setMargin(sectionTitre, insetsParDefaut);
-        VBox.setMargin(sectionDesc, insetsParDefaut);
-        VBox.setMargin(gpBoiteCatMarqueEtat, insetsParDefaut);
-        VBox.setMargin(gpPrixDureeAjout, insetsParDefaut);
-        return laBoite;
     }
 
     /**
