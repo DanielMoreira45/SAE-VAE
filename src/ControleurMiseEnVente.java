@@ -23,6 +23,9 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent>{
         if (bouton.getText().equals("Ajoutez des photos")){
             vue.ajoutImage();
         }
+        if (bouton.getText().equals("Categorie")){
+            vue.ajoutImage();
+        }
 	}
 
 }
