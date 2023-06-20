@@ -9,16 +9,25 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
+import javafx.scene.image.ImageView;
+import javafx.scene.shape.Circle;
 
 
 
 public class NavBar extends Application{
 
+    private Image profileImage;
+
+
     @Override
     public void init() {
-
+        Image profileImage = new Image("pp.jpeg");
+        ImageView imagePP = new ImageView(profileImage);
     }
 
     public void start(Stage stage) throws Exception{
@@ -29,7 +38,7 @@ public class NavBar extends Application{
         stage.setFullScreen(true);
         this.ajouteNavBar(root);
         stage.setFullScreenExitHint("");
-        
+
         scene.getStylesheets().add("styleAcceuil.css");
 
         stage.setScene(scene);
@@ -45,10 +54,15 @@ public void ajouteNavBar(BorderPane root){
     haut.getStyleClass().add("bottom-border");
 
     
+    Button boutonLogo = new Button();
     ImageView imageView = new ImageView(new Image("logo.png"));
     imageView.setFitHeight(70);
     imageView.setFitWidth(70);
-    haut.getChildren().add(imageView);
+    boutonLogo.setGraphic(imageView);
+    boutonLogo.setCursor(Cursor.HAND);
+    boutonLogo.setStyle("-fx-background-color: transparent;");
+
+    haut.getChildren().add(boutonLogo);
 
     // Rectangle Bleu
     HBox rectangleB = new HBox(10);
@@ -108,7 +122,22 @@ public void ajouteNavBar(BorderPane root){
     HBox.setMargin(navBar2, new Insets(15, 770, 0, 15));
     HBox.setMargin(rectangleB, new Insets(15, 0, 10, 200));
     HBox.setMargin(bouton, new Insets(15,0,0,0));
-    
+
+    Image profileImage = new Image("morty.jpg");
+    // Créer un ImageView pour afficher l'image
+    ImageView imagePP = new ImageView(profileImage);
+    imagePP.setFitWidth(70); // Largeur de l'image
+    imagePP.setFitHeight(70); // Hauteur de l'image
+
+    //mettre l'image de profile un cercle
+    Circle clip = new Circle(30, 30, 30);
+    imagePP.setClip(clip);
+    //ajouter l'image de profile dans un StackPane
+    StackPane stack = new StackPane();
+    stack.getChildren().addAll(imagePP);
+    stack.setPadding(new Insets(0,0,0,0));
+    stack.setStyle("-fx-background-color: transparent;");
+    bouton.getChildren().add(stack);
     root.setTop(haut);
 
 }
