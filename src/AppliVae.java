@@ -52,7 +52,7 @@ public class AppliVae extends Application{
     /**
      * Page de mise en vente
      */
-    //private PageMiseEnVente pageMiseEnVente;
+    private VueVente pageVente;
 
     /**
      * Page d'accueil
@@ -69,6 +69,15 @@ public class AppliVae extends Application{
      */
     private ConnexionMySQL connexionMySQL;
 
+    /**
+     * La barre de navigation
+     */
+    private NavBar navBar;
+
+    private BorderPane root;
+
+    private Utilisateur utilisateurActuel; ///////////////////////////////////////////////// A FAIRE
+
 
 
     /**
@@ -78,17 +87,23 @@ public class AppliVae extends Application{
     @Override
     public void init() throws ClassNotFoundException{
         this.laScene();
-        this.connexionMySQL = new ConnexionMySQL();
+        try{
+            this.connexionMySQL = new ConnexionMySQL();
+            this.connexionMySQL.connecter();
+        }
+        catch(Exception e){System.out.println(e);}
         this.laConnexionUtilisateur = new UtilisateurBD(this.connexionMySQL);
         this.laConnexionVente = new VenteBD(this.connexionMySQL);
         this.laConnexionObjet = new ObjetBD(this.connexionMySQL);
         this.laConnexionEncherir = new EncherirBD(this.connexionMySQL);
 
         this.pageCoInsc = new FenetreCoInsc(this, this.connexionMySQL);
-        //this.pageMiseEnVente = new PageMiseEnVente(this.user, this.laConnexionVente);
+        this.pageVente = new VueVente(this, this.connexionMySQL);
         //this.pageAccueil = new PageAccueil(this.laConnexionVente, this);
         //this.pageProfilUtilisateur = new PageProfilUtilisateur();
+        this.navBar = new NavBar(this, this.connexionMySQL);
         scene.getStylesheets().add("file:src/css.css");
+        this.root = (BorderPane) this.scene.getRoot();
     }
 
     /**
@@ -104,21 +119,26 @@ public class AppliVae extends Application{
      * Permet de passer à l'affichage de la page d'inscription/connexion
      */
     public void modeCoInsc(){
-        this.scene.setRoot(this.pageCoInsc);
+        this.root.setCenter(this.pageCoInsc);
     }
 
     /**
      * Permet de passer à l'affichage de la page de mise en vente
      */
     public void modeMiseEnVente(){
-        //this.scene.setRoot(this.pageMiseEnVente);
+        scene.getStylesheets().setAll("styleAccueil.css");
+        this.root.setTop(this.navBar);
+        this.root.setCenter(this.pageVente);
     }
 
     /**
      * Permet de passer à l'affichage de la page d'accueil
      */
     public void modeAccueil(){
-        //this.scene.setRoot(this.pageAccueil)
+        scene.getStylesheets().setAll("styleAccueil.css");
+        //scene.getStylesheets().add("styleAccueil.css");
+        //this.scene.setRoot(this.pageAccueil);modeleToutLesUtilisateurs
+        this.root.setTop(this.navBar);
         System.out.println("Page d'accueil");
     }
 
