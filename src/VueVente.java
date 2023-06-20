@@ -13,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -115,8 +116,6 @@ public class VueVente extends BorderPane {
     private void initTextFieldTitre() {
         this.tfTitreVente = new TextField();
         this.tfTitreVente.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
-        // this.tfTitreVente.setBackground(new BackgroundImage(new Image("file:./img/fondTextFieldVente.png"), BackgroundRepeat.NO_REPEAT,
-        //                                                               BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.AUTO));
     }
 
     /**
@@ -191,18 +190,18 @@ public class VueVente extends BorderPane {
 
     // Création des différentes boites.
 
-    private HBox boitePhotos(double largeur, double hauteur) {
+    private StackPane boitePhotos() {
         HBox boiteDesPhotos = new HBox(5);
+        StackPane boutonEtPhotos = new StackPane();
         boiteDesPhotos.setPadding(new Insets(10));
         for(ImageView img : this.listeDesPhotos) {
             boiteDesPhotos.getChildren().add(img);
         }
+        boutonEtPhotos.getChildren().add(boiteDesPhotos);
         if (this.listeDesPhotos.size() < 4) {
-            boiteDesPhotos.getChildren().add(this.ajoutPhotos);
-            this.ajoutPhotos.setAlignment(Pos.CENTER);
-            HBox.setMargin(this.ajoutPhotos, new Insets(((int)hauteur/2), ((int)largeur/2), 0, 0));
+            boutonEtPhotos.getChildren().add(this.ajoutPhotos);
         }
-        return boiteDesPhotos;
+        return boutonEtPhotos;
     }
 
     private VBox sectionDesPhotos() {
@@ -210,7 +209,7 @@ public class VueVente extends BorderPane {
         this.initBoutonAjoutPhotos();
         this.initDesPhotos();
         vboxDesPhotos.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
-        vboxDesPhotos.getChildren().addAll(new HBox(5, this.titreDesSection("Ajoute jusqu'à 4 photos"), this.titreDesSection(this.listeDesPhotos.size()-1 + "/4")), this.boitePhotos(vboxDesPhotos.getWidth(), vboxDesPhotos.getHeight()));
+        vboxDesPhotos.getChildren().addAll(new HBox(5, this.titreDesSection("Ajoute jusqu'à 4 photos"), this.titreDesSection(this.listeDesPhotos.size()-1 + "/4")), this.boitePhotos());
         return vboxDesPhotos;
     }
 
@@ -306,8 +305,16 @@ public class VueVente extends BorderPane {
         HBox laBoite = new HBox(150);
         laBoite.setPrefWidth((int)largeur);
         laBoite.setPadding(new Insets(25));
-        VBox boitePrixMin = new VBox(new Label("minimum"), this.prixMin);
-        VBox boitePrixVise = new VBox(new Label("visé"), this.prixMax);
+        Label euroMin = new Label("€");
+        Label euroMax = new Label("€");
+        StackPane champMin = new StackPane(this.prixMin, euroMin);
+        StackPane champVise = new StackPane(this.prixMax, euroMax);
+        StackPane.setAlignment(euroMin, Pos.CENTER_RIGHT);
+        StackPane.setAlignment(euroMax, Pos.CENTER_RIGHT);
+        StackPane.setMargin(euroMax, new Insets(10));
+        StackPane.setMargin(euroMin, new Insets(10));
+        VBox boitePrixMin = new VBox(new Label("minimum"), champMin);
+        VBox boitePrixVise = new VBox(new Label("visé"), champVise);
         boitePrixMin.setAlignment(Pos.CENTER);
         boitePrixVise.setAlignment(Pos.CENTER);
         laBoite.getChildren().addAll(boitePrixMin, boitePrixVise);
@@ -330,6 +337,10 @@ public class VueVente extends BorderPane {
         return vboxDesPrix;
     }
 
+    /**
+     * Méthode permettant de créer une boite pour regrouper les champs des dates.
+     * @return VBox : une boite contenant les champs des dates.
+     */
     private VBox boiteChampsDates() {
         VBox vboxDesDates = new VBox(5);
         this.initDates();
