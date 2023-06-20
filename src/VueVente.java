@@ -36,8 +36,6 @@ public class VueVente extends VBox {
 
     public VueVente() {
         super(10);
-        // this.setTop(new NavBar());
-        // this.setCenter(this.partieCentrale());
         Insets insetsParDefaut = new Insets(2, 70, 2, 70);
         this.setPadding(new Insets(20));
         VBox sectionPhotos = this.sectionDesPhotos();
