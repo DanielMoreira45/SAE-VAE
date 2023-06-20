@@ -1,0 +1,9 @@
+.title {
+    -fx-background-color: #b2d6ff
+}
+
+.button-without-background {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+}
