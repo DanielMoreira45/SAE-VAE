@@ -1,5 +1,4 @@
 import javafx.animation.ScaleTransition;
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,13 +8,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class FenetreCoInsc extends Application {
-    private HBox root;
+public class FenetreCoInsc extends HBox {
     private BorderPane panelCentral;
     private Button seConnecter;
     private Button creerCompte;
@@ -23,7 +21,31 @@ public class FenetreCoInsc extends Application {
     private Rectangle rectangleC;
     private Rectangle rectangleI;
 
-    
+    private AppliVae appli;
+    private ConnexionMySQL connexionMySQL;
+
+    public FenetreCoInsc(AppliVae appli, ConnexionMySQL connexionMySQL){
+        this.panelCentral = new BorderPane();
+        this.appli = appli;
+
+        /*stage.setTitle("Fenetre de connexion");
+        stage.setHeight(1080);
+        stage.setWidth(1920);
+        stage.setFullScreen(false);
+        stage.setFullScreenExitHint("");*/
+
+        this.ajouteConnexion();
+        this.gridButton();
+        this.modeLogin();
+        this.getChildren().addAll(this.ajouteImage(), this.panelCentral);
+        
+        
+        
+
+        //stage.setScene(scene);
+        //stage.show();
+    }
+    /*
     @Override
     public void init() {
         this.root = new HBox();
@@ -48,14 +70,14 @@ public class FenetreCoInsc extends Application {
 
         stage.setScene(scene);
         stage.show();
-    }
+    }*/
 
     public void modeLogin() {
         this.seConnecter.setDisable(true);
         this.creerCompte.setDisable(false);
         this.rectangleC.setFill(Color.web("#4FA0FF"));
         this.rectangleI.setFill(Color.web("#a3a3a3aa"));
-        this.panelCentral.setCenter(new FenetreDeLogin());
+        this.panelCentral.setCenter(new FenetreDeLogin(this.appli, this.connexionMySQL));
     }
 
     public void modeCreationCompte() {
@@ -63,7 +85,7 @@ public class FenetreCoInsc extends Application {
         this.creerCompte.setDisable(true);
         this.rectangleC.setFill(Color.web("#a3a3a3aa"));
         this.rectangleI.setFill(Color.web("#4FA0FF"));
-        this.panelCentral.setCenter(new FenetreCreationCompte());
+        this.panelCentral.setCenter(new FenetreCreationCompte(this.appli, this.connexionMySQL));
     }
     
     // pour mettre l'image a gauche
@@ -138,8 +160,8 @@ public class FenetreCoInsc extends Application {
             scaleTransitionReverse.play();
         });
     }
-
+/*
     public static void main(String[] args) {
         launch(args);
-    }
+    }*/
 }

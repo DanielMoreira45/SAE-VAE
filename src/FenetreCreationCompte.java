@@ -21,8 +21,13 @@ public class FenetreCreationCompte extends GridPane{
     private Text erreurMdpMsg;
     private Text erreurMdpConfirmationMsg;
 
+    private AppliVae appli;
+    private ConnexionMySQL connexionMySQL;
 
-    public FenetreCreationCompte() {
+
+    public FenetreCreationCompte(AppliVae appli, ConnexionMySQL connexionMySQL) {
+        this.appli = appli;
+        this.connexionMySQL = connexionMySQL;
         this.pseudo = new TextField();
         this.mail = new TextField();
         this.mdp = new PasswordField();
@@ -49,7 +54,7 @@ public class FenetreCreationCompte extends GridPane{
         this.erreurMdpConfirmationMsg.setFont(Font.font("Varela", FontWeight.THIN, 10));
         this.erreurMdpConfirmationMsg.setFill(Color.RED);
         
-        this.pseudo.setPrefWidth(400); // Largeur préférée de 350 pixels
+        this.pseudo.setPrefWidth(400); // Largeur préférée de 350 pFenetreCreationCompteixels
         this.pseudo.setPrefHeight(48); // Hauteur préférée de 40 pixels
 
         this.mail.setPrefWidth(400); // Largeur préférée de 350 pixels
@@ -78,7 +83,7 @@ public class FenetreCreationCompte extends GridPane{
 
         // Création du bouton SE CONNECTER
         Button creerCompte = new Button("CRÉÉR UN COMPTE");
-        creerCompte.setOnAction(new ControleurCreerCompte(this));
+        creerCompte.setOnAction(new ControleurCreerCompte(this, this.appli, this.connexionMySQL));
         this.add(creerCompte,50,40);
         creerCompte.getStyleClass().add("button-connection");
 

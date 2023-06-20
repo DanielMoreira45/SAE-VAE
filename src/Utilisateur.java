@@ -1,7 +1,7 @@
 import java.util.*;
 
 /**
- * 
+ * Classe Utilisateur permetant de modeliser un utilisateur
  */
 public class Utilisateur {
     /**
@@ -29,7 +29,8 @@ public class Utilisateur {
      */
     private boolean active;
 
-    /**private double id;
+    /**
+     * private double id;
      * Le role de l'utilisateur
      */
     private int role;
@@ -37,13 +38,12 @@ public class Utilisateur {
     /**
      * Ensemble des enchères créées par l'utilisateur
      */
-    private Set<Enchere> lesEncheres; 
-
+    private Set<Enchere> lesEncheres;
 
     /**
-     * Default constructor
+     * constructeur pour avoir un utilisateur
      */
-    public Utilisateur(int id,String pseudo, String email, String mdp, Roles role) {
+    public Utilisateur(int id, String pseudo, String email, String mdp, int role) {
         this.id = id;
         this.pseudo = pseudo;
         this.email = email;
@@ -54,6 +54,7 @@ public class Utilisateur {
 
     /**
      * Getter id
+     * 
      * @return (double) id
      */
     public int getId() {
@@ -62,6 +63,7 @@ public class Utilisateur {
 
     /**
      * Setter id
+     * 
      * @param id
      */
     public void setId(int id) {
@@ -70,6 +72,7 @@ public class Utilisateur {
 
     /**
      * Getter pseudo
+     * 
      * @return (String) pseudo
      */
     public String getPseudo() {
@@ -78,7 +81,8 @@ public class Utilisateur {
 
     /**
      * Setter pseudo
-     * @param nouveauPseudo 
+     * 
+     * @param nouveauPseudo
      */
     public void setPseudo(String nouveauPseudo) {
         this.pseudo = nouveauPseudo;
@@ -86,6 +90,7 @@ public class Utilisateur {
 
     /**
      * Getter email
+     * 
      * @return (String) email
      */
     public String getEmail() {
@@ -94,7 +99,8 @@ public class Utilisateur {
 
     /**
      * Setter email
-     * @param nouvelleEmail 
+     * 
+     * @param nouvelleEmail
      */
     public void setEmail(String nouvelleEmail) {
         this.email = nouvelleEmail;
@@ -102,6 +108,7 @@ public class Utilisateur {
 
     /**
      * Indique si l'utilisateur est actif
+     * 
      * @return (boolean) true si l'utilisateur est actif, false sinon
      */
     public Boolean estActive() {
@@ -110,7 +117,8 @@ public class Utilisateur {
 
     /**
      * Setter active
-     * @param active 
+     * 
+     * @param active
      */
     public void setActive(Boolean active) {
         this.active = active;
@@ -118,6 +126,7 @@ public class Utilisateur {
 
     /**
      * Getter mdp
+     * 
      * @return (String) mdp
      */
     public String getMotDePasse() {
@@ -126,7 +135,8 @@ public class Utilisateur {
 
     /**
      * Setter mdp
-     * @param nouveauMDP 
+     * 
+     * @param nouveauMDP
      */
     public void setMotDePasse(String nouveauMDP) {
         this.mdp = nouveauMDP;
@@ -134,7 +144,8 @@ public class Utilisateur {
 
     /**
      * Getter role
-     * @return (Roles) role
+     * 
+     * @return (int) role
      */
     public int getRole() {
         return this.role;
@@ -142,9 +153,28 @@ public class Utilisateur {
 
     /**
      * Setter role
-     * @param nouveauRole 
+     * 
+     * @param nouveauRole
      */
     public void ChangeRole(int nouveauRole) {
         this.role = nouveauRole;
+    }
+
+    /**
+     * Permet d'optenir les encheres le l'utilisateur
+     * 
+     * @return un ensemble d'encheres
+     */
+    public Set<Enchere> getLesEncheres() {
+        return lesEncheres;
+    }
+
+    /**
+     * Permet d'ajouter une enchere a l'utilisateur
+     * 
+     * @param enchere l'enchere de l'utilisateur
+     */
+    public void ajouteEnchere(Enchere enchere) {
+        this.lesEncheres.add(enchere);
     }
 }

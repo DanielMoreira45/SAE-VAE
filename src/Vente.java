@@ -1,12 +1,11 @@
-import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * 
+ * Classe Vente permetant de modeliser une vente
  */
 public class Vente {
-
 
     /**
      * ID de la vente
@@ -19,24 +18,24 @@ public class Vente {
     private Double prixBase;
 
     /**
-     * Prix minimum de la vente 
+     * Prix minimum de la vente
      */
     private Double prixMin;
 
     /**
      * Date de début de la vente
      */
-    private String debutVe;
+    private Date debutVe;
 
     /**
      * Date de fin de la vente
      */
-    private String  finVe;
+    private Date finVe;
 
     /**
      * Status de la vente
      */
-    private Status status;
+    private int status;
 
     /**
      * Objet de la vente
@@ -48,17 +47,20 @@ public class Vente {
      */
     private List<Enchere> encheres;
 
-
-
     /**
-     * Default constructor
+     * constructeur pour avoir un nouvelle vente
+     * 
+     * @throws ParseException Si la date n'est pas sous la bonne forme, la bonne
+     *                        forme est : dd/MM/yy:hh/mm/ss
      */
-    public Vente(int idVente, Double prixBase, Double prixMin, String debutVe, String finVe, Status status, Objet objetVente) {
+    public Vente(int idVente, Double prixBase, Double prixMin, String debutVe, String finVe, int status,
+            Objet objetVente) throws ParseException {
+        SimpleDateFormat lecteur = new SimpleDateFormat("dd/MM/yy:hh/mm/ss");
         this.idVente = idVente;
         this.prixBase = prixBase;
         this.prixMin = prixMin;
-        this.debutVe = debutVe;
-        this.finVe = finVe;
+        this.debutVe = lecteur.parse(debutVe);
+        this.finVe = lecteur.parse(finVe);
         this.status = status;
         this.objetVente = objetVente;
         this.encheres = new ArrayList<>();
@@ -66,6 +68,7 @@ public class Vente {
 
     /**
      * Getter id
+     * 
      * @return (Double) id
      */
     public int getIDVente() {
@@ -74,7 +77,8 @@ public class Vente {
 
     /**
      * Setter id
-     * @param nouveauID 
+     * 
+     * @param nouveauID le nouvelle id de la vente
      */
     public void setIDVente(int nouveauID) {
         this.idVente = nouveauID;
@@ -82,6 +86,7 @@ public class Vente {
 
     /**
      * Getter prixBase
+     * 
      * @return (Double) prixBase
      */
     public Double getPrixBase() {
@@ -90,7 +95,8 @@ public class Vente {
 
     /**
      * Setter prixBase
-     * @param nouveauPrixBase 
+     * 
+     * @param nouveauPrixBase le nouveau prix de base
      */
     public void setPrixBase(Double nouveauPrixBase) {
         this.prixBase = nouveauPrixBase;
@@ -98,6 +104,7 @@ public class Vente {
 
     /**
      * Getter prixMin
+     * 
      * @return (Double) prixMin
      */
     public Double getPrixMin() {
@@ -106,74 +113,90 @@ public class Vente {
 
     /**
      * Setter prixMin
-     * @param nouveauPrixMininum 
+     * 
+     * @param nouveauPrixMinimum le nouveau prix minimum
      */
-    public void setPrixMin(Double nouveauPrixMininum) {
-        this.prixMin = nouveauPrixMininum;
+    public void setPrixMin(Double nouveauPrixMinimum) {
+        this.prixMin = nouveauPrixMinimum;
     }
 
     /**
      * Getter debutVente
+     * 
      * @return (String) debutVe
      */
-    public String getDebutVente() {
-        return this.debutVe;
+    public Long getDebutVente() {
+        return this.debutVe.getTime();
     }
 
     /**
      * Setter debutVente
-     * @param nouveauDebutVente 
+     * 
+     * @param nouveauDebutVente la nouvelle date de debut de la vente
+     * @throws ParseException Si la date n'est pas sous la bonne forme, la bonne
+     *                        forme est : dd/MM/yy:hh/mm/ss
      */
-    public void setDebutVente(String nouveauDebutVente) {
-        this.debutVe = nouveauDebutVente;
+    public void setDebutVente(String nouveauDebutVente) throws ParseException {
+        SimpleDateFormat lecteur = new SimpleDateFormat("dd/MM/yy:hh/mm/ss");
+        this.debutVe = lecteur.parse(nouveauDebutVente);
     }
 
     /**
      * Getter finVe
+     * 
      * @return (String) finVe
      */
-    public String getFinVente() {
-        return this.finVe;
+    public Long getFinVente() {
+        return this.finVe.getTime();
     }
 
     /**
      * Setter finVe
-     * @param nouveauFinVente 
+     * 
+     * @param nouveauFinVente la nouvelle date de fin de la vente
+     * @throws ParseException Si la date n'est pas sous la bonne forme, la bonne
+     *                        forme est : dd/MM/yy:hh/mm/ss
      */
-    public void setFinVente(String nouveauFinVente) {
-        this.finVe = nouveauFinVente;
+    public void setFinVente(String nouveauFinVente) throws ParseException {
+        SimpleDateFormat lecteur = new SimpleDateFormat("dd/MM/yy:hh/mm/ss");
+        this.finVe = lecteur.parse(nouveauFinVente);
     }
 
     /**
      * Setter status
-     * @param nouveauStatus 
+     * 
+     * @param nouveauStatus le nouveau status de la vente
      */
-    public void changeStatus(Status nouveauStatus) {
+    public void changeStatus(int nouveauStatus) {
         this.status = nouveauStatus;
     }
 
     /**
      * Getter status
-     * @return (Status) status
+     * 
+     * @return (int) status
      */
-    public Status getStatus() {
+    public int getStatus() {
         return this.status;
     }
 
-    // /**
-    //  * Renvoie le prix final à la fin de la vente
-    //  * @return (Double) le prix final de la vente
-    //  */
-    // public Double prixFinal() throws ExceptionVentePasTerminee{
-    //     Date dateAjd = new SimpleDateFormat("").parse(this.finVe); // mettre le format de la date --------------------------------------------------------------------
-    //     if (Calendar.getInstance().getTime().before(dateAjd)){
-    //         throw new ExceptionVentePasTerminee();
-    //     }
-    //     return this.encheres.get(this.encheres.size()-1).getMontant();
-    // }
+    /**
+     * Renvoie le prix final à la fin de la vente
+     * 
+     * @return (Double) le prix final de la vente
+     * @throws ParseException Si la date n'est pas sous la bonne forme, la bonne
+     *                        forme est : dd/MM/yy:hh/mm/ss
+     */
+    public Double prixFinal() throws ExceptionVentePasTerminee, ParseException {
+        if (Calendar.getInstance().getTime().before(this.finVe)) {
+            throw new ExceptionVentePasTerminee();
+        }
+        return this.encheres.get(this.encheres.size() - 1).getMontant();
+    }
 
     /**
      * Getter objetVente
+     * 
      * @return (Objet) objetVente
      */
     public Objet getObjet() {
@@ -182,7 +205,8 @@ public class Vente {
 
     /**
      * Getter encheres
-     * @return (List<Enchere>) encheres
+     * 
+     * @return (List<Enchere>) la liste des encheres sur la vente
      */
     public List<Enchere> getEncheres() {
         return this.encheres;
@@ -190,12 +214,14 @@ public class Vente {
 
     /**
      * Ajoute une enchère sur la vente
-     * @param nouvelleEnchere 
+     * 
+     * @param nouvelleEnchere la nouvelle enchere
      */
-    // public void ajouteEnchere(Enchere nouvelleEnchere) throws ExceptionPrixIncorrect{
-    //     if (nouvelleEnchere.getMontant() < this.prixMin || nouvelleEnchere.getMontant() < this.encheres.get(this.encheres.size()-1).getMontant()){
-    //         throw new ExceptionPrixIncorrect();
-    //     }
-    //     this.encheres.add(nouvelleEnchere);
-    // }
+    public void ajouteEnchere(Enchere nouvelleEnchere) throws ExceptionPrixIncorrecte {
+        if (nouvelleEnchere.getMontant() < this.prixMin
+                || nouvelleEnchere.getMontant() < this.encheres.get(this.encheres.size() - 1).getMontant()) {
+            throw new ExceptionPrixIncorrecte();
+        }
+        this.encheres.add(nouvelleEnchere);
+    }
 }

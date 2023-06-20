@@ -1,7 +1,4 @@
-import java.util.*;
-import java.util.Locale.Category;
-
-import javax.swing.text.html.ImageView;
+import javafx.scene.image.Image;
 
 /**
  * 
@@ -26,7 +23,7 @@ public class Objet {
     /**
      * L'image de l'objet
      */
-    public ImageView img;
+    public Image img;
 
     /**
      * La vente associée à l'objet
@@ -36,19 +33,18 @@ public class Objet {
     /**
      * La catégorie de l'objet
      */
-    private Categorie categorie;
+    private int categorie;
 
     /**
      * L'utilisateur qui met l'objet en vente
      */
     private Utilisateur vendeur;
 
-
-
     /**
      * Constructeur
      */
-    public Objet(int idOb, String description, String nomOb, ImageView img, Vente vente, Utilisateur vendeur, Categorie categorie) {
+    public Objet(int idOb, String description, String nomOb, Image img, Vente vente, Utilisateur vendeur,
+            int categorie) {
         this.idOb = idOb;
         this.description = description;
         this.nomOb = nomOb;
@@ -60,6 +56,7 @@ public class Objet {
 
     /**
      * Getter idOb
+     * 
      * @return (Double) idOb
      */
     public int getidObjet() {
@@ -68,7 +65,8 @@ public class Objet {
 
     /**
      * Setter idOb
-     * @param idObjet 
+     * 
+     * @param idObjet
      */
     public void setidObjet(int idObjet) {
         this.idOb = idObjet;
@@ -76,6 +74,7 @@ public class Objet {
 
     /**
      * Getter description
+     * 
      * @return (String) description
      */
     public String getDescription() {
@@ -84,6 +83,7 @@ public class Objet {
 
     /**
      * Setter description
+     * 
      * @param nouvelleDescription
      */
     public void setDescription(String nouvelleDescription) {
@@ -92,6 +92,7 @@ public class Objet {
 
     /**
      * Getter nomOb
+     * 
      * @return (String) nomOb
      */
     public String getNomObjet() {
@@ -100,7 +101,8 @@ public class Objet {
 
     /**
      * Setter nomOb
-     * @param nouveauNomObjet 
+     * 
+     * @param nouveauNomObjet
      */
     public void setNomObjet(String nouveauNomObjet) {
         this.nomOb = nouveauNomObjet;
@@ -108,34 +110,53 @@ public class Objet {
 
     /**
      * Getter categorie
-     * @return (Categorie) categorie
+     * 
+     * @return (int) categorie
      */
-    public Categorie getCategorie() {
+    public int getCategorie() {
         return this.categorie;
     }
 
     /**
      * Setter categorie
-     * @param nouvelleCategorie 
+     * 
+     * @param nouvelleCategorie
      */
-    public void SetCategorie(Categorie nouvelleCategorie) {
-        this.categorie = categorie;
+    public void SetCategorie(int nouvelleCategorie) {
+        this.categorie = nouvelleCategorie;
     }
 
     /**
      * Getter img
-     * @return (ImageView) img
+     * 
+     * @return (Image) img
      */
-    public ImageView getImage() {
+    public Image getImage() {
         return this.img;
     }
 
     /**
      * Setter img
-     * @param nouvelleImage 
+     * 
+     * @param nouvelleImage
      */
-    public void setImage(ImageView nouvelleImage) {
+    public void setImage(Image nouvelleImage) {
         this.img = nouvelleImage;
     }
 
+    public Vente getVente() {
+        return vente;
+    }
+
+    public void setVente(Vente vente) {
+        this.vente = vente;
+    }
+
+    public Utilisateur getVendeur() {
+        return vendeur;
+    }
+
+    public void setVendeur(Utilisateur vendeur) {
+        this.vendeur = vendeur;
+    }
 }
