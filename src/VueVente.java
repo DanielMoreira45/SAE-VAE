@@ -38,6 +38,9 @@ public class VueVente extends VBox {
     Button ajoutVente;
     AppliVae appli;
     ConnexionMySQL connexionMySQL;
+    String titre = null;
+    ImageView imageActu = null;
+
 
     public VueVente(AppliVae appli, ConnexionMySQL connexionMySQL) {
         super(10);
@@ -99,12 +102,21 @@ public class VueVente extends VBox {
         
         File fichierImage = imageChoisi.showOpenDialog(null);
         if (fichierImage != null) {
+            this.titre = fichierImage.getName();
             Image image1 = new Image(fichierImage.toURI().toString());
-            ImageView imageView = new ImageView(image1);
-            this.listeDesPhotos.add(imageView);
+            this.imageActu = new ImageView(image1);
+            this.listeDesPhotos.add(imageActu);
         }
     }
-    
+
+    public String getTitre(){
+        return this.titre;
+    }
+
+
+    public ImageView getImageView(){
+        return this.imageActu;
+    }
 
     /**
      * Méthode permettant de créer le titre principal de la page.
