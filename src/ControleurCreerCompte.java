@@ -4,11 +4,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
-public class ControleurCreerCompte implements EventHandler<ActionEvent>{
-    
+public class ControleurCreerCompte implements EventHandler<ActionEvent> {
+
     /**
      * La vue FenetreCoInsc
-     */ 
+     */
     private FenetreCreationCompte vue;
 
     /**
@@ -17,47 +17,46 @@ public class ControleurCreerCompte implements EventHandler<ActionEvent>{
     private AppliVae appli;
     private ConnexionMySQL connexionMySQL;
 
-    public ControleurCreerCompte(FenetreCreationCompte vue, AppliVae appli, ConnexionMySQL connexionMySQL){
+    public ControleurCreerCompte(FenetreCreationCompte vue, AppliVae appli, ConnexionMySQL connexionMySQL) {
         this.vue = vue;
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
     }
-
 
     /**
      * L'action consiste à changer de fenêtre pour aller à la page de connexion
      * @param actionEvent l'événement action
      */
 	@Override
-	public void handle(ActionEvent actionEvent) {
-        if (VerificateurMDP.mdpConfirmationValide(this.vue.getMdp(), this.vue.getMdpConfirmation())) {
-            this.vue.setMessageMdpConfirmationErreur("");
-            this.vue.setMdpConfimationErreur(false);
-        } else {
-            this.vue.setMessageMdpConfirmationErreur("  * Les mots de passe saisis ne correspondent pas");
-            this.vue.setMdpConfimationErreur(true);
-        }
-        try {
-            VerificateurMDP.estValide(this.vue.getMdp());
-            try{
-                System.out.println("ControleurConnexion"+this.connexionMySQL);
-                System.out.println("avant");
-                UtilisateurBD userBd = new UtilisateurBD(this.connexionMySQL);
-                System.out.println("apres");
-                int idLibre = userBd.idLibre();
-                System.out.println(idLibre);
-                Utilisateur user = new Utilisateur(idLibre, vue.getPseudo(), vue.getMail(), vue.getMdp(), 2);
-                userBd.insererUtilisateur(user);
-                vue.popUpCompteValide(user.getPseudo());
-                System.out.println("apres1");
-            }
-            catch(SQLException e){
-                vue.popUpErreurSQL(e);
-            }
-        } catch (FormatMotDePasseException e) {
-            this.vue.setMdpErreur();
-            this.vue.setMessageErreur(e.getMessage());
-        }
-	}
+public void handle(ActionEvent actionEvent) {
+    if (!VerificateurMDP.mdpConfirmationValide(this.vue.getMdp(), this.vue.getMdpConfirmation())) {
+        this.vue.setMessageMdpConfirmationErreur("  * Les mots de passe saisis ne correspondent pas");
+        this.vue.setMdpConfimationErreur(true);
+        return; // Abandonne la création du compte si les mots de passe sont différents
+    } else {
+        this.vue.setMessageMdpConfirmationErreur("");
+        this.vue.setMdpConfimationErreur(false);
+    }
 
+    try {
+        VerificateurMDP.estValide(this.vue.getMdp());
+        try {
+            System.out.println("ControleurConnexion" + this.connexionMySQL);
+            System.out.println("avant");
+            UtilisateurBD userBd = new UtilisateurBD(this.connexionMySQL);
+            System.out.println("apres");
+            int idLibre = userBd.idLibre();
+            System.out.println(idLibre);
+            Utilisateur user = new Utilisateur(idLibre, vue.getPseudo(), vue.getMail(), vue.getMdp(), 2);
+            userBd.insererUtilisateur(user);
+            vue.popUpCompteValide(user.getPseudo());
+            System.out.println("apres1");
+        } catch (SQLException e) {
+            vue.popUpErreurSQL(e);
+        }
+    } catch (FormatMotDePasseException e) {
+        this.vue.setMdpErreur();
+        this.vue.setMessageErreur(e.getMessage());
+    }
+}
 }

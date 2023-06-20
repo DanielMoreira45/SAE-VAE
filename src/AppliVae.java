@@ -118,7 +118,7 @@ public class AppliVae extends Application{
      * Permet de passer à l'affichage de la page d'inscription/connexion
      */
     public void modeCoInsc(){
-        scene.getStylesheets().setAll("styleCoInsc.css");
+        scene.getStylesheets().setAll("file:src/styleCoInsc.css");
         this.root.setCenter(this.pageCoInsc);
     }
 
@@ -126,7 +126,7 @@ public class AppliVae extends Application{
      * Permet de passer à l'affichage de la page de mise en vente
      */
     public void modeMiseEnVente(){
-        scene.getStylesheets().setAll("styleNavBar.css");
+        scene.getStylesheets().setAll("file:src/styleNavBar.css");
         this.root.setTop(this.navBar);
         this.root.setCenter(this.pageVente);
     }
@@ -149,8 +149,8 @@ public class AppliVae extends Application{
         //this.scene.setRoot(this.pageProfilUtilisateur)
     }
 
-    public void setUser(Utilisateur utilisateur){
-
+    public void setUtilisateurActuel(Utilisateur utilisateur){
+        this.utilisateurActuel = utilisateur;
     }
 
     public boolean isConnect(){

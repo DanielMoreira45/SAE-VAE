@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 public class VueVente extends VBox {
     Button ajoutPhotos;
@@ -47,12 +50,15 @@ public class VueVente extends VBox {
         VBox sectionDesc = this.sectionDescriptionVente();
         GridPane gpBoiteCatMarqueEtat = this.regroupementSectionCategorieMarqueEtat();
         GridPane gpPrixDureeAjout = this.regroupementPrixDureeAjout();
-        this.getChildren().addAll(this.titrePrincipal(), sectionPhotos, sectionTitre, sectionDesc, gpBoiteCatMarqueEtat, gpPrixDureeAjout);
+        this.getChildren().addAll(this.titrePrincipal(), sectionPhotos, sectionTitre, sectionDesc, gpBoiteCatMarqueEtat,
+                gpPrixDureeAjout);
         VBox.setMargin(sectionPhotos, insetsParDefaut);
         VBox.setMargin(sectionTitre, insetsParDefaut);
         VBox.setMargin(sectionDesc, insetsParDefaut);
         VBox.setMargin(gpBoiteCatMarqueEtat, insetsParDefaut);
         VBox.setMargin(gpPrixDureeAjout, insetsParDefaut);
+        ControleurMiseEnVente cme = new ControleurMiseEnVente(this, connexionMySQL);
+        ajoutPhotos.setOnAction(cme);
     }
 
     /**
@@ -68,6 +74,7 @@ public class VueVente extends VBox {
 
     /**
      * Méthode permettant d'ajouter une nouvelle photo.
+     * 
      * @param lien String : le lien vers la photo.
      */
     public void ajoutImage(String lien) {
@@ -83,7 +90,25 @@ public class VueVente extends VBox {
     }
 
     /**
+     * Méthode permettant d'ajouter une nouvelle photo avec un filechooser.
+     */
+    public void ajoutImage() {
+        FileChooser imageChoisi = new FileChooser();
+        imageChoisi.setTitle("Ajoutez une image");
+        imageChoisi.getExtensionFilters().addAll(new ExtensionFilter("Text Files", "*.png"));
+        
+        File fichierImage = imageChoisi.showOpenDialog(null);
+        if (fichierImage != null) {
+            Image image1 = new Image(fichierImage.toURI().toString());
+            ImageView imageView = new ImageView(image1);
+            this.listeDesPhotos.add(imageView);
+        }
+    }
+    
+
+    /**
      * Méthode permettant de créer le titre principal de la page.
+     * 
      * @return Text : le titre principal.
      */
     private Text titrePrincipal() {
@@ -94,13 +119,15 @@ public class VueVente extends VBox {
 
     /**
      * Méthode permettant de créer un titre pour une section.
+     * 
      * @param nomSection String : le titre à mettre.
      * @return HBox : la boite contenant le titre de la section.
      */
     private HBox titreDesSection(String nomSection) {
         HBox titreDeLaBoite = new HBox(5, new Text(nomSection));
         titreDeLaBoite.setPadding(new Insets(5));
-        titreDeLaBoite.setStyle("-fx-effect: dropshadow(gaussian, grey, 12, 0, 2, 3); -fx-background-color : white; -fx-background-radius : 0.8em;");
+        titreDeLaBoite.setStyle(
+                "-fx-effect: dropshadow(gaussian, grey, 12, 0, 2, 3); -fx-background-color : white; -fx-background-radius : 0.8em;");
         titreDeLaBoite.setMaxWidth(titreDeLaBoite.getWidth());
         return titreDeLaBoite;
     }
@@ -112,7 +139,8 @@ public class VueVente extends VBox {
         imageAjoutPhoto.setFitWidth(50);
         imageAjoutPhoto.setPreserveRatio(true);
         this.ajoutPhotos = new Button("Ajoutez des photos", imageAjoutPhoto);
-        this.ajoutPhotos.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: grey;");
+        this.ajoutPhotos.setStyle(
+                "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: grey;");
     }
 
     /**
@@ -120,7 +148,8 @@ public class VueVente extends VBox {
      */
     private void initTextFieldTitre() {
         this.tfTitreVente = new TextField();
-        this.tfTitreVente.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
+        this.tfTitreVente.setStyle(
+                "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
     }
 
     /**
@@ -128,7 +157,8 @@ public class VueVente extends VBox {
      */
     private void initTextAreaDesc() {
         this.descriptionVente = new TextArea();
-        this.descriptionVente.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
+        this.descriptionVente.setStyle(
+                "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
     }
 
     /**
@@ -136,14 +166,15 @@ public class VueVente extends VBox {
      */
     private void initComboBoxCategorie() {
         this.choixCategorie = new ComboBox<>();
-        this.choixCategorie.getItems().addAll(Categorie.ACCESSOIRE, Categorie.CHAUSSURE, 
-                                              Categorie.ELECTROMENAGER, Categorie.INFORMATIQUE,
-                                              Categorie.JEUX, Categorie.LIVRE,
-                                              Categorie.MEUBLE, Categorie.MUSIQUE,
-                                              Categorie.OUTIL, Categorie.SPORT,
-                                              Categorie.USTENSILECUISINE, Categorie.VEHICULE,
-                                              Categorie.VETEMENT);
-        this.choixCategorie.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
+        this.choixCategorie.getItems().addAll(Categorie.ACCESSOIRE, Categorie.CHAUSSURE,
+                Categorie.ELECTROMENAGER, Categorie.INFORMATIQUE,
+                Categorie.JEUX, Categorie.LIVRE,
+                Categorie.MEUBLE, Categorie.MUSIQUE,
+                Categorie.OUTIL, Categorie.SPORT,
+                Categorie.USTENSILECUISINE, Categorie.VEHICULE,
+                Categorie.VETEMENT);
+        this.choixCategorie.setStyle(
+                "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
     }
 
     /**
@@ -152,7 +183,8 @@ public class VueVente extends VBox {
     private void initComboBoxMarque() {
         this.choixMarque = new ComboBox<>();
         this.choixMarque.getItems().add("(À venir...)");
-        this.choixMarque.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
+        this.choixMarque.setStyle(
+                "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
     }
 
     /**
@@ -161,9 +193,10 @@ public class VueVente extends VBox {
     private void initComboBoxEtat() {
         this.choixEtat = new ComboBox<>();
         this.choixEtat.getItems().addAll("À venir", "En cours",
-                                              "À valider", "Validée",
-                                              "Non conclue");
-        this.choixEtat.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
+                "À valider", "Validée",
+                "Non conclue");
+        this.choixEtat.setStyle(
+                "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
     }
 
     /**
@@ -174,8 +207,10 @@ public class VueVente extends VBox {
         this.prixMax = new TextField();
         this.prixMin.setMaxWidth(70);
         this.prixMax.setMaxWidth(70);
-        this.prixMin.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
-        this.prixMax.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
+        this.prixMin.setStyle(
+                "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
+        this.prixMax.setStyle(
+                "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
     }
 
     /**
@@ -183,27 +218,32 @@ public class VueVente extends VBox {
      */
     private void initDates() {
         this.dateDebut = new DatePicker();
-        this.dateDebut.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
+        this.dateDebut.setStyle(
+                "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
         this.dateFin = new DatePicker();
-        this.dateFin.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
+        this.dateFin.setStyle(
+                "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
     }
 
     private void initBoutonValidation() {
         this.ajoutVente = new Button("Ajouter le produit > ");
-        this.ajoutVente.setStyle("-fx-background-color : white; -fx-background-radius : 0.8em; -fx-border-color : black; -fx-border-radius : 0.8em;");
+        this.ajoutVente.setStyle(
+                "-fx-background-color : white; -fx-background-radius : 0.8em; -fx-border-color : black; -fx-border-radius : 0.8em;");
     }
 
     // Création des différentes boites.
 
     /**
      * Méthode permettant de créer la boite contenant toutes les photos importées.
-     * @return StackPane : la boite contenant les photos avec le bouton pour en ajouter.
+     * 
+     * @return StackPane : la boite contenant les photos avec le bouton pour en
+     *         ajouter.
      */
     private StackPane boitePhotos() {
         HBox boiteDesPhotos = new HBox(5);
         StackPane boutonEtPhotos = new StackPane();
         boiteDesPhotos.setPadding(new Insets(10));
-        for(ImageView img : this.listeDesPhotos) {
+        for (ImageView img : this.listeDesPhotos) {
             boiteDesPhotos.getChildren().add(img);
         }
         boutonEtPhotos.getChildren().add(boiteDesPhotos);
@@ -217,32 +257,42 @@ public class VueVente extends VBox {
         VBox vboxDesPhotos = new VBox(5);
         this.initBoutonAjoutPhotos();
         this.initDesPhotos();
-        vboxDesPhotos.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
-        vboxDesPhotos.getChildren().addAll(new HBox(5, this.titreDesSection("Ajoute jusqu'à 4 photos"), this.titreDesSection(this.listeDesPhotos.size()-1 + "/4")), this.boitePhotos());
+        vboxDesPhotos.setStyle(
+                "-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
+        vboxDesPhotos.getChildren().addAll(new HBox(5, this.titreDesSection("Ajoute jusqu'à 4 photos"),
+                this.titreDesSection(this.listeDesPhotos.size() - 1 + "/4")), this.boitePhotos());
         return vboxDesPhotos;
     }
 
     /**
-     * Méthode permettant de créer la boite contenant la zone de saisie du titre de la vente.
-     * @return VBox : une boite contenant le titre de la zone et le textField associé.
+     * Méthode permettant de créer la boite contenant la zone de saisie du titre de
+     * la vente.
+     * 
+     * @return VBox : une boite contenant le titre de la zone et le textField
+     *         associé.
      */
     private VBox sectionTitreVente() {
         VBox vboxTitreVente = new VBox(5);
         this.initTextFieldTitre();
-        vboxTitreVente.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
+        vboxTitreVente.setStyle(
+                "-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
         vboxTitreVente.getChildren().addAll(this.titreDesSection("Titre"), this.tfTitreVente);
         VBox.setMargin(this.tfTitreVente, new Insets(5, 50, 15, 50));
         return vboxTitreVente;
     }
 
     /**
-     * Méthode permettant de créer la boite contenant la zone de saisie de la description de la vente.
-     * @return VBox : une boite contenant le titre de la zone et le textArea associé.
+     * Méthode permettant de créer la boite contenant la zone de saisie de la
+     * description de la vente.
+     * 
+     * @return VBox : une boite contenant le titre de la zone et le textArea
+     *         associé.
      */
     private VBox sectionDescriptionVente() {
         VBox vboxDescVente = new VBox(5);
         this.initTextAreaDesc();
-        vboxDescVente.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
+        vboxDescVente.setStyle(
+                "-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
         vboxDescVente.getChildren().addAll(this.titreDesSection("Décris ton article"), this.descriptionVente);
         VBox.setMargin(this.descriptionVente, new Insets(5, 50, 15, 50));
         return vboxDescVente;
@@ -250,14 +300,17 @@ public class VueVente extends VBox {
 
     /**
      * Méthode permettant de créer la boite contenant le ComboBox de la catégorie.
+     * 
      * @param largeur int : la largeur de la boite à créer.
-     * @return VBox : la boite contenant le titre de la section et la ComboBox concernée.
+     * @return VBox : la boite contenant le titre de la section et la ComboBox
+     *         concernée.
      */
     private VBox sectionCategorie() {
         VBox vboxCategorie = new VBox(5);
         this.initComboBoxCategorie();
         VBox vboxChoixCat = new VBox(this.choixCategorie);
-        vboxCategorie.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
+        vboxCategorie.setStyle(
+                "-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
         vboxCategorie.getChildren().addAll(this.titreDesSection("Catégorie"), vboxChoixCat);
         VBox.setMargin(vboxChoixCat, new Insets(20, 20, 40, 20));
         vboxChoixCat.setAlignment(Pos.CENTER);
@@ -266,14 +319,17 @@ public class VueVente extends VBox {
 
     /**
      * Méthode permettant de créer la section contenant le ComboBox de la marque.
+     * 
      * @param largeur int : la largeur de la boite à créer.
-     * @return VBox : la boite contenant le titre de la section et la ComboBox concernée.
+     * @return VBox : la boite contenant le titre de la section et la ComboBox
+     *         concernée.
      */
     private VBox sectionMarque() {
         VBox vboxMarque = new VBox(5);
         this.initComboBoxMarque();
         VBox vboxChoixMarque = new VBox(this.choixMarque);
-        vboxMarque.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
+        vboxMarque.setStyle(
+                "-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
         vboxMarque.getChildren().addAll(this.titreDesSection("Marque"), vboxChoixMarque);
         VBox.setMargin(vboxChoixMarque, new Insets(20, 20, 40, 20));
         vboxChoixMarque.setAlignment(Pos.CENTER);
@@ -282,14 +338,17 @@ public class VueVente extends VBox {
 
     /**
      * Méthode permettant de créer la section contenant le ComboBox de l'état.
+     * 
      * @param largeur int : la largeur de la boite à créer.
-     * @return VBox : la boite contenant le titre de la section et la ComboBox concernée.
+     * @return VBox : la boite contenant le titre de la section et la ComboBox
+     *         concernée.
      */
     private VBox sectionEtat() {
         VBox vboxEtat = new VBox(5);
         this.initComboBoxEtat();
         VBox vboxChoixEtat = new VBox(this.choixEtat);
-        vboxEtat.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
+        vboxEtat.setStyle(
+                "-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
         vboxEtat.getChildren().addAll(this.titreDesSection("État"), vboxChoixEtat);
         VBox.setMargin(vboxChoixEtat, new Insets(20, 20, 40, 20));
         vboxChoixEtat.setAlignment(Pos.CENTER);
@@ -297,7 +356,9 @@ public class VueVente extends VBox {
     }
 
     /**
-     * Méthode permettant de regrouper dans une boite, les sections de la catégorie, de la marque et de l'état.
+     * Méthode permettant de regrouper dans une boite, les sections de la catégorie,
+     * de la marque et de l'état.
+     * 
      * @return GridPane : la boite contenant les autres boites concernées.
      */
     private GridPane regroupementSectionCategorieMarqueEtat() {
@@ -316,8 +377,10 @@ public class VueVente extends VBox {
     }
 
     /**
-     * Méthode permettant de créer une boite contenant les labels et les TextFields des prix.
+     * Méthode permettant de créer une boite contenant les labels et les TextFields
+     * des prix.
      * Cette boite est située dans la section des prix.
+     * 
      * @param largeur int : la largeur de la boite à créer.
      * @return HBox : la boite contenant les labels et les TextFields des prix.
      */
@@ -342,14 +405,17 @@ public class VueVente extends VBox {
 
     /**
      * Méthode permettant de créer la section des prix.
+     * 
      * @param largeur int : la largeur de la boite à créer.
-     * @return VBox : la boite contenant le titre de la section et les éléments concernés.
+     * @return VBox : la boite contenant le titre de la section et les éléments
+     *         concernés.
      */
     private VBox sectionDesPrix() {
         VBox vboxDesPrix = new VBox(5);
         this.initTfPrix();
-        HBox laBoiteDestfPrix = this.boiteTfPrix((int)vboxDesPrix.getWidth());
-        vboxDesPrix.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
+        HBox laBoiteDestfPrix = this.boiteTfPrix((int) vboxDesPrix.getWidth());
+        vboxDesPrix.setStyle(
+                "-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
         vboxDesPrix.getChildren().addAll(this.titreDesSection("Prix minimun & prix visé"), laBoiteDestfPrix);
         laBoiteDestfPrix.setAlignment(Pos.BASELINE_CENTER);
         VBox.setMargin(laBoiteDestfPrix, new Insets(20));
@@ -358,6 +424,7 @@ public class VueVente extends VBox {
 
     /**
      * Méthode permettant de créer une boite pour regrouper les champs des dates.
+     * 
      * @return VBox : une boite contenant les champs des dates.
      */
     private VBox boiteChampsDates() {
@@ -373,11 +440,14 @@ public class VueVente extends VBox {
 
     /**
      * Méthode permettant de créer la section des dates.
-     * @return VBox : la boite contenant le titre de la section avec les champs pour gérer les dates.
+     * 
+     * @return VBox : la boite contenant le titre de la section avec les champs pour
+     *         gérer les dates.
      */
     private VBox sectionDates() {
         VBox vboxPourLesDates = new VBox(5);
-        vboxPourLesDates.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
+        vboxPourLesDates.setStyle(
+                "-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
         VBox lesChampsDates = this.boiteChampsDates();
         vboxPourLesDates.getChildren().addAll(this.titreDesSection("Durée et date"), lesChampsDates);
         VBox.setMargin(lesChampsDates, new Insets(20, 20, 30, 20));
@@ -386,12 +456,14 @@ public class VueVente extends VBox {
     }
 
     /**
-     * Méthode permettant de regrouper les sections prix, durée, ainsi que le bouton de validation.
+     * Méthode permettant de regrouper les sections prix, durée, ainsi que le bouton
+     * de validation.
+     * 
      * @return GridPane : la boite contenant les autres boites concernées.
      */
     private GridPane regroupementPrixDureeAjout() {
         GridPane laBoite = new GridPane();
-        laBoite.setHgap(15); 
+        laBoite.setHgap(15);
         this.initBoutonValidation();
         VBox sectionPrix = this.sectionDesPrix();
         VBox sectionDates = this.sectionDates();
@@ -403,4 +475,5 @@ public class VueVente extends VBox {
         this.ajoutVente.setAlignment(Pos.CENTER);
         return laBoite;
     }
+
 }

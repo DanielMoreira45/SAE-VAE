@@ -33,6 +33,7 @@ public class ControleurConnexion implements EventHandler<ActionEvent>{
      */
 	@Override
 	public void handle(ActionEvent actionEvent) {
+        this.appli.modeMiseEnVente();
         System.out.println("avant");
         try{
             UtilisateurBD userBd = new UtilisateurBD(connexionMySQL);
@@ -55,7 +56,6 @@ public class ControleurConnexion implements EventHandler<ActionEvent>{
                     throw new Exception();
                 }
                 vue.popUpCompteConnecte((String) laMap.get("pseudout"));
-                this.appli.modeAccueil();
             } catch (Exception e) {
                 System.out.println("b");
                 this.vue.setMdpErreur();
