@@ -1,5 +1,7 @@
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 
 /**
@@ -29,5 +31,11 @@ public class EncherirBD {
         s.setDouble(3, e.getMontant());
         s.setTimestamp(4, new Timestamp(e.getDateHeure()));
         s.executeQuery();
+    }
+    public Enchere meilleurEnchere(int idve) throws SQLException{
+        Statement s = this.laConnexionMySQL.createStatement();
+        ResultSet rs = s.executeQuery("select * from Encherir natural join Vente where idve = "+idve+"and montant >= montant");
+        rs.next();
+        return new Enchere(null, null, null, null)
     }
 }
