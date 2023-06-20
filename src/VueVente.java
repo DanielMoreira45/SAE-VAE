@@ -552,8 +552,8 @@ public class VueVente extends VBox {
     }
     public void popUpCompteConnecte(String titre) {
         Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("L'objet à bien était mit en vente");
-        alert.setHeaderText("Bravo ! ");
+        alert.setTitle("Objet mit vente.");
+        alert.setHeaderText("L'objet " + titre +"à bien était mit en vente");
         alert.showAndWait();
     }
 
