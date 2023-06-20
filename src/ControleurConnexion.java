@@ -1,3 +1,6 @@
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,11 +18,13 @@ public class ControleurConnexion implements EventHandler<ActionEvent>{
      */
     private AppliVae appli;
     private ConnexionMySQL connexionMySQL;
+    private Map<String, Object> laMap;
 
     public ControleurConnexion(FenetreDeLogin vue, AppliVae appli, ConnexionMySQL connexionMySQL){
         this.vue = vue;
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
+        laMap = new HashMap<>();
     }
 
     /**
@@ -28,13 +33,28 @@ public class ControleurConnexion implements EventHandler<ActionEvent>{
      */
 	@Override
 	public void handle(ActionEvent actionEvent) {
+        System.out.println("avant");
+        try{
+            UtilisateurBD userBd = new UtilisateurBD(connexionMySQL);
+            String mail = vue.getEmail();
+            this.laMap = userBd.rechercherJoueurParMail(mail);
+        }
+        catch(SQLException e){
+                e.printStackTrace();
+        }
         try {
             if (this.vue.getEmail().equals("erreur")) throw new Exception();
             this.vue.setEmailErreur(false);
             this.vue.setMessageEmailErreur("");
+            if(laMap == null){
+                throw new Exception();
+            }
             try {
                 if (this.vue.getMdp().equals("erreur")) throw new Exception();
-                // Faire la suite pour créer un compte
+                if (!vue.getMdp().equals(laMap.get("mdput"))) {
+                    throw new Exception();
+                }
+                vue.popUpCompteConnecte((String) laMap.get("pseudout"));
                 this.appli.modeAccueil();
             } catch (Exception e) {
                 System.out.println("b");
@@ -49,3 +69,4 @@ public class ControleurConnexion implements EventHandler<ActionEvent>{
 	}
 
 }
+

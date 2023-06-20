@@ -1,8 +1,10 @@
 import javafx.util.Duration;
 import javafx.animation.ScaleTransition;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -16,10 +18,8 @@ public class FenetreDeLogin extends GridPane{
 
     private TextField email;
     private PasswordField mdp;
-
     private Text erreurMdpMsg;
     private Text erreurEmail;
-
     private AppliVae appli;
     private ConnexionMySQL connexionMySQL;
 
@@ -28,10 +28,8 @@ public class FenetreDeLogin extends GridPane{
         this.connexionMySQL = connexionMySQL;
         this.email = new TextField();
         this.mdp = new PasswordField();
-        
         this.erreurMdpMsg = new Text("");
         this.erreurEmail = new Text("");
-
         this.ajouteTextField();
     }
 
@@ -124,4 +122,19 @@ public class FenetreDeLogin extends GridPane{
     public void setMessageEmailErreur(String msg) {
         this.erreurEmail.setText(msg);
     }
+    public void popUpCompteConnecte(String nomCompte) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Confirmation de logging de compte");
+        alert.setHeaderText("Compte log avec succès");
+        alert.showAndWait();
+    }
+
+    // public void popUpCompteInexistant() {
+    //     Alert alert = new Alert(AlertType.INFORMATION);
+    //     alert.setTitle("Le compte n'existe pas.");
+    //     alert.setHeaderText("Vérifiez l'adresse mail.");
+    //     alert.setContentText("L'email n'est associé à aucun compte, veuillez créez un compte");
+    //     alert.showAndWait();
+    // }
+
 }

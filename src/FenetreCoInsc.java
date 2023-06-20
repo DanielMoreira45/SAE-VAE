@@ -33,7 +33,7 @@ public class FenetreCoInsc extends HBox {
         stage.setWidth(1920);
         stage.setFullScreen(false);
         stage.setFullScreenExitHint("");*/
-
+        this.connexionMySQL = connexionMySQL;
         this.ajouteConnexion();
         this.gridButton();
         this.modeLogin();
@@ -165,3 +165,4 @@ public class FenetreCoInsc extends HBox {
         launch(args);
     }*/
 }
+

@@ -78,7 +78,15 @@ public class AppliVae extends Application{
     @Override
     public void init() throws ClassNotFoundException{
         this.laScene();
-        this.connexionMySQL = new ConnexionMySQL();
+        try {
+            this.connexionMySQL = new ConnexionMySQL();
+            this.connexionMySQL.connecter();
+            if (connexionMySQL.isConnecte()){
+                System.out.println("fini les erreurs");
+            }
+        }catch (ClassNotFoundException ex){
+            System.out.println("Driver MySQL non trouvé!!!");
+        }
         this.laConnexionUtilisateur = new UtilisateurBD(this.connexionMySQL);
         this.laConnexionVente = new VenteBD(this.connexionMySQL);
         this.laConnexionObjet = new ObjetBD(this.connexionMySQL);
