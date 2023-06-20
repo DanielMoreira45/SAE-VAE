@@ -1,5 +1,4 @@
 import java.awt.image.BufferedImage;
-import java.beans.Statement;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.Blob;
@@ -7,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.imageio.ImageIO;
 
 import javafx.embed.swing.SwingFXUtils;
@@ -17,7 +18,6 @@ import javafx.scene.image.ImageView;
 
 public class PhotoBD {
     private ConnexionMySQL laConnexionMySQL;
-    Statement st;
     
     public PhotoBD(ConnexionMySQL laConnexionMySQL) {
         this.laConnexionMySQL = laConnexionMySQL;
@@ -56,8 +56,8 @@ public void insertPhoto(Photo photo, Objet o) throws SQLException {
     int maxIdPhoto() throws SQLException {
         boolean notZero = true;
         int nb = -1;
-        this.st = (Statement) laConnexionMySQL.createStatement();
-        ResultSet resultats = this.st.executeQuery("SELECT max(idph) FROM PHOTO;");
+        Statement st = laConnexionMySQL.createStatement();
+        ResultSet resultats = st.executeQuery("SELECT max(idph) FROM PHOTO;");
         if(resultats.next()){
             nb = resultats.getInt(1);
             notZero = false;
@@ -65,8 +65,8 @@ public void insertPhoto(Photo photo, Objet o) throws SQLException {
         if(notZero){
             return nb;
         }
-        return 1;
         resultats.close();
+        return 1;
     }
 
 }

@@ -55,6 +55,8 @@ public class ControleurConnexion implements EventHandler<ActionEvent>{
                 if (!vue.getMdp().equals(laMap.get("mdput"))) {
                     throw new Exception();
                 }
+                Utilisateur userCo = new Utilisateur((Integer) laMap.get("idut"),(String)laMap.get("pseudout"), (String) laMap.get("emailut"), (String) laMap.get("mdput"),true, (Integer) laMap.get("idrole"));
+                appli.setUtilisateurActuel(null);
                 vue.popUpCompteConnecte((String) laMap.get("pseudout"));
             } catch (Exception e) {
                 System.out.println("b");

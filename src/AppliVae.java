@@ -76,7 +76,7 @@ public class AppliVae extends Application{
 
     private BorderPane root;
 
-    private Utilisateur utilisateurActuel; ///////////////////////////////////////////////// A FAIRE
+    private Utilisateur utilisateurActuel;
 
 
 
@@ -98,7 +98,7 @@ public class AppliVae extends Application{
         this.laConnexionEncherir = new EncherirBD(this.connexionMySQL);
 
         this.pageCoInsc = new FenetreCoInsc(this, this.connexionMySQL);
-        this.pageVente = new VueVente(this, this.connexionMySQL);
+        this.pageVente = new VueVente(this, this.connexionMySQL, utilisateurActuel);
         //this.pageAccueil = new PageAccueil(this.laConnexionVente, this);
         //this.pageProfilUtilisateur = new PageProfilUtilisateur();
         this.navBar = new NavBar(this, this.connexionMySQL);

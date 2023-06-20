@@ -1,4 +1,5 @@
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,26 +23,38 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent>{
      */
 	@Override
 	public void handle(ActionEvent actionEvent) {
+        String cat = vue.getCategorie();
+        String marque = vue.getMarque();
+        Integer prixMin = vue.getPrixMin();
+        Integer prixMax = vue.getPrixMax();
+        LocalDate dateDeBut = vue.dateDebut();
+        LocalDate dateFin = vue.dateFin();
+
+
         ObjetBD objetBD = new ObjetBD(laConnexionMySQL);
         try {
             this.idLibre = objetBD.idLibre();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        Objet objetTempo = new Objet(idLibre, null, null, null, null, 0);
         Button bouton = (Button) actionEvent.getTarget();
         if (bouton.getText().equals("Ajoutez des photos")){
             PhotoBD photoBd = new PhotoBD(laConnexionMySQL);
             try {
-                Photo photo = new Photo(photoBd.maxIdPhoto()+1, vue.getTitre(), vue.getImageView());
-                photoBd.insertPhoto(photo, objetTempo);
-            } catch (SQLException e) {
+                vue.ajoutImage();
+                Photo photo = new Photo(photoBd.maxIdPhoto()+1, vue.getTitre(), vue.getImageView());  
+                vue.ajouteUnePhoto(photo);
+            } catch (SQLException e) 
+            {
                 e.printStackTrace();
             }
-            vue.ajoutImage();
+            if (bouton.getText().equals("Ajouter le produit > ")){
+                if(prixMin != null && prixMax != null && cat != null && dateFin != null && dateDeBut != null){
+                    Objet obj = new Objet(objetBD.idLibre(), cat, marque, null, null, 0)
+                }
+            }
         }
         if (bouton.getText().equals("Categorie")){
-            // vue.ajoutImage();
         }
 	}
 

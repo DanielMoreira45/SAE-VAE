@@ -1,4 +1,5 @@
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 public class VueVente extends VBox {
     Button ajoutPhotos;
     List<ImageView> listeDesPhotos;
+    List<Photo> lesPhotos;
     TextField tfTitreVente;
     TextArea descriptionVente;
     ComboBox<String> choixCategorie;
@@ -40,9 +42,9 @@ public class VueVente extends VBox {
     ConnexionMySQL connexionMySQL;
     String titre = null;
     ImageView imageActu = null;
+    private Utilisateur utilisateur;
 
-
-    public VueVente(AppliVae appli, ConnexionMySQL connexionMySQL) {
+    public VueVente(AppliVae appli, ConnexionMySQL connexionMySQL, Utilisateur utilisateur) {
         super(10);
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
@@ -62,6 +64,39 @@ public class VueVente extends VBox {
         VBox.setMargin(gpPrixDureeAjout, insetsParDefaut);
         ControleurMiseEnVente cme = new ControleurMiseEnVente(this, connexionMySQL);
         ajoutPhotos.setOnAction(cme);
+        this.utilisateur = utilisateur; // vendeur
+    }
+    public String getCategorie(){
+        return this.choixCategorie.getValue();
+    }
+
+    public String getMarque(){
+        return this.choixMarque.getValue();
+    }
+
+    public String getEtat(){
+        return this.choixEtat.getValue();
+    }
+
+    public Integer getPrixMin(){
+        return Integer.valueOf(prixMin.getText());
+    }
+
+    public LocalDate dateDebut(){
+        return dateDebut.getValue();
+    }
+
+    public LocalDate dateFin(){
+        return dateFin.getValue();
+    }
+
+    public Integer getPrixMax(){
+        return Integer.valueOf(prixMin.getText());
+    }
+
+
+    public void ajouteUnePhoto(Photo photo){
+        this.lesPhotos.add(photo);
     }
 
     /**
@@ -107,6 +142,14 @@ public class VueVente extends VBox {
             this.imageActu = new ImageView(image1);
             this.listeDesPhotos.add(imageActu);
         }
+    }
+
+    public DatePicker getDateDebut(){
+        return this.dateDebut;
+    }
+
+    public DatePicker getDateFin(){
+        return this.dateFin;
     }
 
     public String getTitre(){
