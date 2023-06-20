@@ -91,6 +91,7 @@ public class AppliVae extends Application{
         this.laConnexionVente = new VenteBD(this.connexionMySQL);
         this.laConnexionObjet = new ObjetBD(this.connexionMySQL);
         this.laConnexionEncherir = new EncherirBD(this.connexionMySQL);
+
         this.pageCoInsc = new FenetreCoInsc(this, this.connexionMySQL);
         //this.pageMiseEnVente = new PageMiseEnVente(this.user, this.laConnexionVente);
         //this.pageAccueil = new PageAccueil(this.laConnexionVente, this);
