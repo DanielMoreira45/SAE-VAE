@@ -33,9 +33,13 @@ public class VueVente extends VBox {
     DatePicker dateDebut;
     DatePicker dateFin;
     Button ajoutVente;
+    AppliVae appli;
+    ConnexionMySQL connexionMySQL;
 
-    public VueVente() {
+    public VueVente(AppliVae appli, ConnexionMySQL connexionMySQL) {
         super(10);
+        this.appli = appli;
+        this.connexionMySQL = connexionMySQL;
         Insets insetsParDefaut = new Insets(2, 70, 2, 70);
         this.setPadding(new Insets(20));
         VBox sectionPhotos = this.sectionDesPhotos();

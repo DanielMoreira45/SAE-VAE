@@ -43,8 +43,7 @@ public class Objet {
     /**
      * Constructeur
      */
-    public Objet(int idOb, String description, String nomOb, Image img, Vente vente, Utilisateur vendeur,
-            int categorie) {
+    public Objet(int idOb, String description, String nomOb, Image img, Vente vente, Utilisateur vendeur, int categorie) {
         this.idOb = idOb;
         this.description = description;
         this.nomOb = nomOb;
@@ -53,7 +52,15 @@ public class Objet {
         this.categorie = categorie;
         this.vendeur = vendeur;
     }
-
+    public Objet(int idOb, String description, String nomOb, Image img, Utilisateur vendeur, int categorie) {
+        this.idOb = idOb;
+        this.description = description;
+        this.nomOb = nomOb;
+        this.img = img;
+        this.vente = null;
+        this.categorie = categorie;
+        this.vendeur = vendeur;
+    }
     /**
      * Getter idOb
      * 

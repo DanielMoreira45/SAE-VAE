@@ -1,9 +1,11 @@
 import javafx.util.Duration;
 import javafx.animation.ScaleTransition;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -20,7 +22,6 @@ public class FenetreCreationCompte extends GridPane{
 
     private Text erreurMdpMsg;
     private Text erreurMdpConfirmationMsg;
-
     private AppliVae appli;
     private ConnexionMySQL connexionMySQL;
 
@@ -32,18 +33,17 @@ public class FenetreCreationCompte extends GridPane{
         this.mail = new TextField();
         this.mdp = new PasswordField();
         this.mdpConfirme = new PasswordField();
-
         this.erreurMdpMsg = new Text("");
         this.erreurMdpConfirmationMsg = new Text("");
-
         this.ajouteTextField();
     }
 
-    public void ajouteTextField(){
-        //espace entre les lignes et colonnes
+        
+        public void ajouteTextField(){
+            //espace entre les lignes et colonnes
         this.setHgap(10);
         this.setVgap(10);
-
+        
         this.pseudo.setPromptText("Nom d'utilisateur");
         this.mail.setPromptText("Entrez l'email");
         this.mdp.setPromptText("Entrez le mot de passe");
@@ -54,15 +54,15 @@ public class FenetreCreationCompte extends GridPane{
         this.erreurMdpConfirmationMsg.setFont(Font.font("Varela", FontWeight.THIN, 10));
         this.erreurMdpConfirmationMsg.setFill(Color.RED);
         
-        this.pseudo.setPrefWidth(400); // Largeur préférée de 350 pFenetreCreationCompteixels
+        this.pseudo.setPrefWidth(400); // Largeur préférée de 350 pixels
         this.pseudo.setPrefHeight(48); // Hauteur préférée de 40 pixels
-
+        
         this.mail.setPrefWidth(400); // Largeur préférée de 350 pixels
         this.mail.setPrefHeight(48); // Hauteur préférée de 40 pixels
 
         this.mdp.setPrefWidth(400); // Largeur préférée de 350 pixels
         this.mdp.setPrefHeight(48); // Hauteur préférée de 40 pixels
-
+        
         this.mdpConfirme.setPrefWidth(400); // Largeur préférée de 350 pixels
         this.mdpConfirme.setPrefHeight(48); // Hauteur préférée de 40 pixels
 
@@ -79,14 +79,14 @@ public class FenetreCreationCompte extends GridPane{
         this.mail.getStyleClass().add("text-field");
         this.mdp.getStyleClass().add("text-field");
         this.mdpConfirme.getStyleClass().add("text-field");
-
-
+        
+        
         // Création du bouton SE CONNECTER
         Button creerCompte = new Button("CRÉÉR UN COMPTE");
         creerCompte.setOnAction(new ControleurCreerCompte(this, this.appli, this.connexionMySQL));
         this.add(creerCompte,50,40);
         creerCompte.getStyleClass().add("button-connection");
-
+        
         creerCompte.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), creerCompte);
             scaleTransition.setToX(1.1); // Facteur d'agrandissement horizontal
@@ -100,7 +100,15 @@ public class FenetreCreationCompte extends GridPane{
             scaleTransitionReverse.play();
         });
     }
-
+    
+    public void setMessageErreur(String msg) {
+        this.erreurMdpMsg.setText("    * "+msg);
+    }
+    
+    public void setMessageMdpConfirmationErreur(String msg) {
+        this.erreurMdpConfirmationMsg.setText(msg);
+    }
+    
     public String getMdp() {
         return this.mdp.getText();
     }
@@ -108,6 +116,20 @@ public class FenetreCreationCompte extends GridPane{
     public String getMdpConfirmation() {
         return this.mdpConfirme.getText();
     }
+    
+    public String getPseudo(){
+        return this.pseudo.getText();
+    }
+
+    public String getMail(){
+        return this.mail.getText();
+    }
+
+    // public ConnexionMySQL getConnexionMySQL(){
+    //     System.out.println("vue "+ this.connexionMySQL);
+    //     return this.connexionMySQL;
+    // }
+
 
     public void setMdpErreur() {
         this.mdp.setStyle("-fx-border-color: red");
@@ -117,12 +139,26 @@ public class FenetreCreationCompte extends GridPane{
         if (hasErreur) this.mdpConfirme.setStyle("-fx-border-color: red");
         else this.mdpConfirme.setStyle("-fx-border-color: #a3a3a3aa");
     }
-
-    public void setMessageErreur(String msg) {
-        this.erreurMdpMsg.setText("    * "+msg);
-    }
-
-    public void setMessageMdpConfirmationErreur(String msg) {
-        this.erreurMdpConfirmationMsg.setText(msg);
-    }
+    
+    public void popUpErreurSQL(Exception e){
+    Alert alert = new Alert(AlertType.ERROR);
+    alert.setTitle("Erreur");
+    alert.setHeaderText("Une erreur s'est produite");
+    alert.setContentText("Description de l'erreur : " + e.getMessage());
+    alert.showAndWait();
+}
+public void popUpCompteValide(Exception e){
+    Alert alert = new Alert(AlertType.ERROR);
+    alert.setTitle("Erreur");
+    alert.setHeaderText("Une erreur s'est produite");
+    alert.setContentText("Description de l'erreur : " + e.getMessage());
+    alert.showAndWait();
+}
+public void popUpCompteValide(String nomCompte) {
+    Alert alert = new Alert(AlertType.INFORMATION);
+    alert.setTitle("Confirmation de création de compte");
+    alert.setHeaderText("Compte créé avec succès");
+    alert.setContentText("Le compte '" + nomCompte + "' a été créé avec succès.");
+    alert.showAndWait();
+}
 }
