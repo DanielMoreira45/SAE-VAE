@@ -58,7 +58,7 @@ public class UtilisateurBD {
         int nb = resultats.getInt(1);
         Integer maxId = maxIdUtilisateur();
         if (nb == maxId) {
-            return maxId;
+            return maxId+1;
         } else {
             ResultSet lesId = this.st.executeQuery("SELECT idUt FROM UTILISATEUR");
             while (lesId.next()) {

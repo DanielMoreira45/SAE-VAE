@@ -30,4 +30,5 @@ public class EncherirBD {
         s.setTimestamp(4, new Timestamp(e.getDateHeure()));
         s.executeQuery();
     }
+    
 }
