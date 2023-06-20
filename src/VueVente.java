@@ -5,12 +5,14 @@ import java.util.List;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -64,6 +66,7 @@ public class VueVente extends VBox {
         VBox.setMargin(gpPrixDureeAjout, insetsParDefaut);
         ControleurMiseEnVente cme = new ControleurMiseEnVente(this, connexionMySQL);
         ajoutPhotos.setOnAction(cme);
+        ajoutVente.setOnAction(cme);
         this.utilisateur = utilisateur; // vendeur
     }
     public String getCategorie(){
@@ -522,6 +525,7 @@ public class VueVente extends VBox {
         return vboxPourLesDates;
     }
 
+    
     /**
      * Méthode permettant de regrouper les sections prix, durée, ainsi que le bouton
      * de validation.
@@ -541,6 +545,12 @@ public class VueVente extends VBox {
         laBoite.add(this.ajoutVente, 2, 0);
         this.ajoutVente.setAlignment(Pos.CENTER);
         return laBoite;
+    }
+    public void popUpCompteConnecte(String titre) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("L'objet à bien était mit en vente");
+        alert.setHeaderText("Bravo ! ");
+        alert.showAndWait();
     }
 
 }

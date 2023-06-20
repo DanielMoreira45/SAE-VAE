@@ -1,7 +1,6 @@
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -34,6 +33,14 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
         String desc = vue.getDesc();
         List<Photo> lesPhotos = vue.getPhotos();
         String titre = vue.getTitre();
+        System.out.println(prixMin);
+        System.out.println(prixMax);
+        System.out.println(cat);
+        System.out.println(dateDeBut);
+        System.out.println(dateFin);
+
+
+
 
         ObjetBD objetBD = new ObjetBD(laConnexionMySQL);
         try {
@@ -42,6 +49,7 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
             e.printStackTrace();
         }
         Button bouton = (Button) actionEvent.getTarget();
+        System.out.println(bouton.getText());
         if (bouton.getText().equals("Ajoutez des photos")) {
             PhotoBD photoBd = new PhotoBD(laConnexionMySQL);
             try {
@@ -52,10 +60,15 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
                 e.printStackTrace();
             }
             if (bouton.getText().equals("Ajouter le produit > ")) {
+                System.out.println("rentre dans la condition");
                 if (prixMin != null && prixMax != null && cat != null && dateFin != null && dateDeBut != null) {
                     try {
                         Objet obj = new Objet(objetBD.idLibre(), desc, titre, lesPhotos, vue.getVendeur(), 1);
                         objetBD.insereObjet(obj);
+                        for(Photo photos : lesPhotos){
+                            photoBd.insertPhoto(photos, obj);
+                        }
+                        vue.popUpCompteConnecte(titre);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }

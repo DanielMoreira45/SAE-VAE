@@ -22,7 +22,6 @@ public class Photo {
             ImageView imageView = new ImageView(SwingFXUtils.toFXImage(bufferedImage, null));
             return imageView;
         }
-    }
 
     public Integer getIdph() {
         return idph;

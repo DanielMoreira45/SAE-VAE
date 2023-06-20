@@ -27,8 +27,8 @@ public class PhotoBD {
 public void insertPhoto(Photo photo, Objet o) throws SQLException {
     String sql = "INSERT INTO PHOTO (idph, titreph, imgph, idob) VALUES (?, ?, ?, ?)";
     try (PreparedStatement pstmt = laConnexionMySQL.preparedStatement(sql)) {
-        pstmt.setInt(1, photo.getIdph()); // Remplacez o.getIdph() par la valeur réelle de l'ID de la photo
-        pstmt.setString(2, photo.getTitreph()); // Remplacez o.getTitreph() par la valeur réelle du titre de la photo
+        pstmt.setInt(1, photo.getIdph());
+        pstmt.setString(2, photo.getTitreph());
         // convertir l'image de ImageView en BufferedImage
         Image image = photo.getImageView().getImage();
         BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
@@ -40,8 +40,7 @@ public void insertPhoto(Photo photo, Objet o) throws SQLException {
             e.printStackTrace();
         }
         byte[] imageBytes = baos.toByteArray();
-
-        // Crée un objet Blob à partir des données de l'image
+        // crée un objet Blob à partir des données de l'image
         Connection connection = (Connection) laConnexionMySQL;
         Blob imageBlob = connection.createBlob();
         imageBlob.setBytes(1, imageBytes);
