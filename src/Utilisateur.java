@@ -52,6 +52,15 @@ public class Utilisateur {
         this.role = role;
     }
 
+    public Utilisateur(int id, String pseudo, String email, String mdp,boolean active, int role) {
+        this.id = id;
+        this.pseudo = pseudo;
+        this.email = email;
+        this.mdp = mdp;
+        this.active = active;
+        this.role = role;
+    }
+
     /**
      * Getter id
      * 
