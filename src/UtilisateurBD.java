@@ -85,17 +85,14 @@ public class UtilisateurBD {
         System.out.println("preparedinsertinmail");
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
-            System.out.println("rentrer dans le next");
             resultat = new HashMap<String, Object>();
             int id = resultSet.getInt("idUt");
             String pseudo = resultSet.getString("pseudout");
             String email = resultSet.getString("emailut");
             String motDePasse = resultSet.getString("mdput");
             boolean estActif = resultSet.getString("activeut").equalsIgnoreCase("O");
-            System.out.println("pre put");
             int role = resultSet.getInt("idrole");
             resultat.put("idut", id);
-            System.out.println("ça put");
             resultat.put("pseudout", pseudo);
             resultat.put("emailut", email);
             resultat.put("mdput", motDePasse);
