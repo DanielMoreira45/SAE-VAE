@@ -149,8 +149,8 @@ public class AppliVae extends Application{
         //this.scene.setRoot(this.pageProfilUtilisateur)
     }
 
-    public void setUser(Utilisateur utilisateur){
-
+    public void setUtilisateurActuel(Utilisateur utilisateur){
+        this.utilisateurActuel = utilisateur;
     }
 
     public boolean isConnect(){
