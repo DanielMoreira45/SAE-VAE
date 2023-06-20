@@ -69,6 +69,15 @@ public class AppliVae extends Application{
      */
     private ConnexionMySQL connexionMySQL;
 
+    /**
+     * La barre de navigation
+     */
+    private NavBar navBar;
+
+    private BorderPane root;
+
+    private ToutLesUtilisateurs modeleToutLesUtilisateurs; ///////////////////////////////////////////////// A FAIRE
+
 
 
     /**
@@ -96,7 +105,9 @@ public class AppliVae extends Application{
         //this.pageMiseEnVente = new PageMiseEnVente(this.user, this.laConnexionVente);
         //this.pageAccueil = new PageAccueil(this.laConnexionVente, this);
         //this.pageProfilUtilisateur = new PageProfilUtilisateur();
+        this.navBar = new NavBar(this, this.connexionMySQL);
         scene.getStylesheets().add("file:src/css.css");
+        this.root = (BorderPane) this.scene.getRoot();
     }
 
     /**
@@ -112,7 +123,7 @@ public class AppliVae extends Application{
      * Permet de passer à l'affichage de la page d'inscription/connexion
      */
     public void modeCoInsc(){
-        this.scene.setRoot(this.pageCoInsc);
+        this.root.setCenter(this.pageCoInsc);
     }
 
     /**
@@ -126,7 +137,9 @@ public class AppliVae extends Application{
      * Permet de passer à l'affichage de la page d'accueil
      */
     public void modeAccueil(){
-        //this.scene.setRoot(this.pageAccueil)
+        scene.getStylesheets().add("styleAccueil.css");
+        //this.scene.setRoot(this.pageAccueil);modeleToutLesUtilisateurs
+        this.root.setTop(navBar);
         System.out.println("Page d'accueil");
     }
 
