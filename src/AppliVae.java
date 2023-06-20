@@ -57,7 +57,7 @@ public class AppliVae extends Application{
     /**
      * Page d'accueil
      */
-    //private PageAccueil pageAccueil;
+    private PageAccueil pageAccueil;
 
     /**
      * Page du profil utilisateur
@@ -76,7 +76,7 @@ public class AppliVae extends Application{
 
     private BorderPane root;
 
-    private Utilisateur utilisateurActuel; ///////////////////////////////////////////////// A FAIRE
+    private Utilisateur utilisateurActuel;
 
 
 
@@ -99,7 +99,7 @@ public class AppliVae extends Application{
 
         this.pageCoInsc = new FenetreCoInsc(this, this.connexionMySQL);
         this.pageVente = new VueVente(this, this.connexionMySQL);
-        //this.pageAccueil = new PageAccueil(this.laConnexionVente, this);
+        this.pageAccueil = new PageAccueil(this, this.connexionMySQL);
         //this.pageProfilUtilisateur = new PageProfilUtilisateur();
         this.navBar = new NavBar(this, this.connexionMySQL);
         this.root = (BorderPane) this.scene.getRoot();
@@ -135,11 +135,12 @@ public class AppliVae extends Application{
      * Permet de passer à l'affichage de la page d'accueil
      */
     public void modeAccueil(){
-        scene.getStylesheets().setAll("styleNavBar.css");
-        //scene.getStylesheets().add("styleAccueil.css");
-        //this.scene.setRoot(this.pageAccueil);modeleToutLesUtilisateurs
-        this.root.setTop(this.navBar);
         System.out.println("Page d'accueil");
+        scene.getStylesheets().setAll("styleNavBar.css");
+        scene.getStylesheets().add("styleCoInsc.css");
+        this.root.setTop(this.navBar);
+        this.root.setCenter(this.pageAccueil);
+        
     }
 
     /**
