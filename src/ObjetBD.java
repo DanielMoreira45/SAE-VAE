@@ -33,32 +33,11 @@ public class ObjetBD {
 
     int maxIdObjet() throws SQLException {
         this.st = laConnexionMySQL.createStatement();
-        ResultSet resultats = this.st.executeQuery("SELECT max(idut) FROM UTILISATEUR;");
+        ResultSet resultats = this.st.executeQuery("SELECT max(idob) FROM OBJET;");
         resultats.next();
         int nb = resultats.getInt(1);
         resultats.close();
-        return nb;
-    }
-
-    public int idLibre() throws SQLException {
-        this.st = laConnexionMySQL.createStatement();
-        ResultSet resultats = this.st.executeQuery("SELECT count(idOb) FROM UTILISATEUR");
-        resultats.next();
-        int nb = resultats.getInt(1);
-        Integer maxId = maxIdObjet();
-        if (nb == maxId) {
-            return maxId;
-        } else {
-            ResultSet lesId = this.st.executeQuery("SELECT i FROM UTILISATEUR");
-            while (lesId.next()) {
-                Integer actu = lesId.getInt(1);
-                ResultSet leProchain = this.st.executeQuery("SELECT idUt FROM UTILISATEUR WHERE idUt =" + (actu + 1));
-                if (!leProchain.next()) {
-                    this.idLibreOb = actu + 1;
-                }
-            }
-        }
-    return this.idLibreOb;
+        return nb+1;
     }
 
 }

@@ -68,6 +68,8 @@ public class VueVente extends VBox {
         ajoutPhotos.setOnAction(cme);
         ajoutVente.setOnAction(cme);
         this.utilisateur = utilisateur; // vendeur
+        this.lesPhotos = new ArrayList<>();
+        System.out.println("liste init photo");
     }
     public String getCategorie(){
         return this.choixCategorie.getValue();
@@ -86,7 +88,7 @@ public class VueVente extends VBox {
     }
 
     public Integer getPrixMin(){
-        return Integer.valueOf(prixMin.getText());
+        return 1;
     }
 
     public LocalDate dateDebut(){
@@ -98,7 +100,7 @@ public class VueVente extends VBox {
     }
 
     public Integer getPrixMax(){
-        return Integer.valueOf(prixMin.getText());
+        return 2;
     }
 
     public List<Photo> getPhotos(){

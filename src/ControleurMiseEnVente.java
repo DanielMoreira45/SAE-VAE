@@ -11,6 +11,7 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
     private VueVente vue;
     private ConnexionMySQL laConnexionMySQL;
     Integer idLibre = null;
+    PhotoBD photoBd;
 
     public ControleurMiseEnVente(VueVente vue, ConnexionMySQL laConnexionMySQL) {
         this.vue = vue;
@@ -38,40 +39,40 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
         System.out.println(cat);
         System.out.println(dateDeBut);
         System.out.println(dateFin);
-
-
-
-
         ObjetBD objetBD = new ObjetBD(laConnexionMySQL);
         try {
-            this.idLibre = objetBD.idLibre();
+            this.idLibre = objetBD.maxIdObjet()+1;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         Button bouton = (Button) actionEvent.getTarget();
         System.out.println(bouton.getText());
         if (bouton.getText().equals("Ajoutez des photos")) {
-            PhotoBD photoBd = new PhotoBD(laConnexionMySQL);
+            this.photoBd = new PhotoBD(laConnexionMySQL);
+            System.out.println("Connexion PhotoBD");
             try {
+                
                 vue.ajoutImage();
                 Photo photo = new Photo(photoBd.maxIdPhoto() + 1, vue.getTitre(), vue.getImageView());
+                System.out.println("Creation instance photo");
                 vue.ajouteUnePhoto(photo);
+                System.out.println("photo ajout");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            if (bouton.getText().equals("Ajouter le produit > ")) {
-                System.out.println("rentre dans la condition");
-                if (prixMin != null && prixMax != null && cat != null && dateFin != null && dateDeBut != null) {
-                    try {
-                        Objet obj = new Objet(objetBD.idLibre(), desc, titre, lesPhotos, vue.getVendeur(), 1);
-                        objetBD.insereObjet(obj);
-                        for(Photo photos : lesPhotos){
-                            photoBd.insertPhoto(photos, obj);
-                        }
-                        vue.popUpCompteConnecte(titre);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
+        }
+        if (bouton.getText().equals("Ajouter le produit > ")) {
+            System.out.println("rentre dans la condition");
+            if (prixMin != null && prixMax != null && cat != null && dateFin != null && dateDeBut != null) {
+                try {
+                    Objet obj = new Objet(objetBD.maxIdObjet()+1, desc, titre, lesPhotos, vue.getVendeur(), 1);
+                    objetBD.insereObjet(obj);
+                    for (Photo photos : lesPhotos) {
+                        photoBd.insertPhoto(photos, obj);
                     }
+                    vue.popUpCompteConnecte(titre);
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
         }
