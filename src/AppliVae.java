@@ -52,7 +52,7 @@ public class AppliVae extends Application{
     /**
      * Page de mise en vente
      */
-    //private PageMiseEnVente pageMiseEnVente;
+    private VueVente pageVente;
 
     /**
      * Page d'accueil
@@ -76,7 +76,7 @@ public class AppliVae extends Application{
 
     private BorderPane root;
 
-    private ToutLesUtilisateurs modeleToutLesUtilisateurs; ///////////////////////////////////////////////// A FAIRE
+    private Utilisateur utilisateurActuel; ///////////////////////////////////////////////// A FAIRE
 
 
 
@@ -102,7 +102,7 @@ public class AppliVae extends Application{
         this.laConnexionEncherir = new EncherirBD(this.connexionMySQL);
 
         this.pageCoInsc = new FenetreCoInsc(this, this.connexionMySQL);
-        //this.pageMiseEnVente = new PageMiseEnVente(this.user, this.laConnexionVente);
+        this.pageVente = new VueVente(this, this.connexionMySQL);
         //this.pageAccueil = new PageAccueil(this.laConnexionVente, this);
         //this.pageProfilUtilisateur = new PageProfilUtilisateur();
         this.navBar = new NavBar(this, this.connexionMySQL);
@@ -130,16 +130,19 @@ public class AppliVae extends Application{
      * Permet de passer à l'affichage de la page de mise en vente
      */
     public void modeMiseEnVente(){
-        //this.scene.setRoot(this.pageMiseEnVente);
+        scene.getStylesheets().setAll("styleAccueil.css");
+        this.root.setTop(this.navBar);
+        this.root.setCenter(this.pageVente);
     }
 
     /**
      * Permet de passer à l'affichage de la page d'accueil
      */
     public void modeAccueil(){
-        scene.getStylesheets().add("styleAccueil.css");
+        scene.getStylesheets().setAll("styleAccueil.css");
+        //scene.getStylesheets().add("styleAccueil.css");
         //this.scene.setRoot(this.pageAccueil);modeleToutLesUtilisateurs
-        this.root.setTop(navBar);
+        this.root.setTop(this.navBar);
         System.out.println("Page d'accueil");
     }
 
