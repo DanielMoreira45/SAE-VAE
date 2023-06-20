@@ -69,8 +69,7 @@ public class VueVente extends VBox {
         ajoutVente.setOnAction(cme);
         this.utilisateur = utilisateur; // vendeur
         this.lesPhotos = new ArrayList<>();
-        System.out.println("liste init photo");
-    }
+        }
     public String getCategorie(){
         return this.choixCategorie.getValue();
     }
@@ -98,6 +97,9 @@ public class VueVente extends VBox {
     public LocalDate dateFin(){
         return dateFin.getValue();
     }
+    public String titreVente(){
+        return this.tfTitreVente.getText();
+    }
 
     public Integer getPrixMax(){
         return 2;
@@ -108,8 +110,8 @@ public class VueVente extends VBox {
     }
 
     public Utilisateur getVendeur(){
-        return this.utilisateur;
-    }
+            return this.utilisateur;
+        }
 
 
     public void ajouteUnePhoto(Photo photo){

@@ -128,7 +128,8 @@ public class AppliVae extends Application{
     public void modeMiseEnVente(){
         scene.getStylesheets().setAll("file:src/styleNavBar.css");
         this.root.setTop(this.navBar);
-        this.root.setCenter(this.pageVente);
+         this.pageVente = new VueVente(this, this.connexionMySQL, utilisateurActuel);
+        this.root.setCenter(pageVente);
     }
 
     /**

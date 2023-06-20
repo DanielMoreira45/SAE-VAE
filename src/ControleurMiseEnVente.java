@@ -33,7 +33,8 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
         LocalDate dateFin = vue.dateFin();
         String desc = vue.getDesc();
         List<Photo> lesPhotos = vue.getPhotos();
-        String titre = vue.getTitre();
+        String titrePh = vue.getTitre();
+        String titreOb = vue.titreVente();
         System.out.println(prixMin);
         System.out.println(prixMax);
         System.out.println(cat);
@@ -65,12 +66,12 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
             System.out.println("rentre dans la condition");
             if (prixMin != null && prixMax != null && cat != null && dateFin != null && dateDeBut != null) {
                 try {
-                    Objet obj = new Objet(objetBD.maxIdObjet()+1, desc, titre, lesPhotos, vue.getVendeur(), 1);
+                    Objet obj = new Objet(objetBD.maxIdObjet()+1, desc, titreOb, lesPhotos, vue.getVendeur(), 1);
                     objetBD.insereObjet(obj);
                     for (Photo photos : lesPhotos) {
                         photoBd.insertPhoto(photos, obj);
                     }
-                    vue.popUpCompteConnecte(titre);
+                    vue.popUpCompteConnecte(titreOb);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
