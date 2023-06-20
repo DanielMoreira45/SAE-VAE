@@ -1,4 +1,6 @@
 import java.security.cert.CertPath;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.text.html.ImageView;
@@ -38,6 +40,7 @@ import javafx.stage.Stage;
 public class PageAccueil extends VBox {
     private AppliVae appli;
     private ConnexionMySQL connexionMySQL;
+    private TouteLesVentes lesVentes;
 
     /*
     @Override
@@ -66,6 +69,7 @@ public class PageAccueil extends VBox {
         super();
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
+        this.lesVentes = new TouteLesVentes(this.connexionMySQL);
 
         Text titre = new Text("Catégorie");
         titre.setFont(Font.font("Valera", FontWeight.NORMAL, 58));
@@ -77,7 +81,7 @@ public class PageAccueil extends VBox {
         HBox test = new HBox(ventes, this.setScrollBar(ventes));
 
         this.getChildren().addAll(titre, sousTitre, this.setBoutonTrier(), test);
-        this.setPadding(new Insets(20));
+        this.setPadding(new Insets(20, 20, 50, 20));
     }
         
 
@@ -91,7 +95,7 @@ public class PageAccueil extends VBox {
     }
 
     private Button setBoutonEnchereEnCours() {
-        Circle cercleVert = new Circle(10);
+        Circle cercleVert = new Circle(12);
         cercleVert.setFill(Color.web("#72FF91"));
         Text nbEnchereEnCours = new Text("3");
         nbEnchereEnCours.setFont(Font.font("Valera", FontWeight.BOLD, 12));
@@ -105,7 +109,7 @@ public class PageAccueil extends VBox {
     }
 
     private Button setBoutonNonEncherier() {
-        Circle cercleJaune = new Circle(10);
+        Circle cercleJaune = new Circle(12);
         cercleJaune.setFill(Color.web("#FFED4E"));
         Text nbNonEncherier = new Text("7");
         nbNonEncherier.setFont(Font.font("Valera", FontWeight.BOLD, 12));
@@ -119,7 +123,7 @@ public class PageAccueil extends VBox {
     }
 
     private Button setBoutonBientotFini() {
-        Circle cercleRouge = new Circle(10);
+        Circle cercleRouge = new Circle(12);
         cercleRouge.setFill(Color.web("#FF9292"));
         Text nbBientotFini = new Text("10");
         nbBientotFini.setFont(Font.font("Valera", FontWeight.BOLD, 12));
@@ -132,11 +136,26 @@ public class PageAccueil extends VBox {
         return enchereBientotFini;
     }
 
+    private Button setBoutonTrierValide() {
+        Circle cercleBleu = new Circle(12);
+        cercleBleu.setFill(Color.valueOf("blue"));
+        Text nbValide = new Text("10");
+        nbValide.setFont(Font.font("Valera", FontWeight.BOLD, 12));
+        StackPane stackBientotFini = new StackPane(cercleBleu, nbValide);
+        Button enchereValide = new Button("Enchères validés", stackBientotFini);
+        enchereValide.setPadding(new Insets(0, 2, 0, 2));
+        enchereValide.setFont(Font.font("Valera", 12));
+        enchereValide.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
+        enchereValide.setBorder(new Border(new BorderStroke(Color.TRANSPARENT, BorderStrokeStyle.NONE, CornerRadii.EMPTY, BorderWidths.EMPTY)));
+        return enchereValide;
+    }
+
     private ComboBox<Button> setPlusTrie() {
         ComboBox<Button> plus = new ComboBox<>();
-        plus.getItems().addAll(new Button("a"), new Button("b"));
+        plus.getItems().addAll(this.setBoutonTrierValide(), new Button("b"));
+        plus.getSelectionModel().selectFirst();
         plus.setPadding(new Insets(5));
-        plus.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
+        plus.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
         plus.setBorder(new Border(new BorderStroke(Color.valueOf("black"), BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(1))));
         return plus;
     }
@@ -152,12 +171,18 @@ public class PageAccueil extends VBox {
 
     private GridPane setGridVente() {
         GridPane gridVentes = new GridPane();
-        gridVentes.setPadding(new Insets(50, 100, 0, 100));
+        gridVentes.setPadding(new Insets(50, 50, 0, 50));
         gridVentes.setHgap(100);
-        gridVentes.setVgap(80);
-        for (int i = 0; i < 8; i++) {
-            gridVentes.add(new CaseVente(null), 0, i);
-            gridVentes.add(new CaseVente(null), 1, i);
+        gridVentes.setVgap(40);
+        try {
+            for (int i = 0; i < 10; i+=2) {
+                gridVentes.add(new CaseVente(this.lesVentes.toutVente().get(i)), 0, i);
+                gridVentes.add(new CaseVente(this.lesVentes.toutVente().get(i+1)), 1, i);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         return gridVentes;
     }
