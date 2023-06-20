@@ -1,6 +1,7 @@
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -12,15 +13,18 @@ public class VueAdminGestionUtilisateurs extends BorderPane {
     private Button boutonGestionUtil;
     private Button boutonGestionVentes;
     private Button boutonRecapitulatifs;
+    private ComboBox<String> derniereConnexion;
 
     public VueAdminGestionUtilisateurs() {
         super();
         Text titre = this.initTitrePage();
+        BorderPane partieCentrale = this.getPartieCentrale();
         this.setTop(titre);
         this.setLeft(this.getMenu());
-        this.setCenter(this.getPartieCentrale());
+        this.setCenter(partieCentrale);
         this.setStyle("-fx-background-color: white;");
         this.setMargin(titre, new Insets(20));
+        this.setMargin(partieCentrale, new Insets(30));
     }
 
     private Text initTitrePage() {
@@ -66,16 +70,51 @@ public class VueAdminGestionUtilisateurs extends BorderPane {
         return boiteBoutonRecap;
     }
 
+    private void initComboBox() {
+        this.derniereConnexion = new ComboBox<>();
+        this.derniereConnexion.getItems().addAll("< 5 mins", "> 10 mins");
+    }
+
     private VBox getMenu() {
-        VBox leMenu = new VBox();
+        VBox leMenu = new VBox(10);
         leMenu.setPadding(new Insets(20));
         leMenu.getChildren().addAll(this.initBoutonGestionUtil(), this.initBoutonGestionVentes(), this.initBoutonRecapitulatifs());
-        // leMenu.setSpacing(15);
         return leMenu;
     }
 
-    private VBox getPartieCentrale() {
-        return null;
+    private BorderPane getPartieCentrale() {
+        BorderPane leCentre = new BorderPane();
+        VBox lesProfils = new VBox(10);
+        lesProfils.setStyle("-fx-background-color: #fdfdfd; -fx-border-color: #dddddd; -fx-border-radius : 0.8em; -fx-background-radius: 0.8em;");
+        leCentre.setCenter(lesProfils);
+        return leCentre;
+    }
+
+    public HBox boiteRechercheCategorie() {
+        HBox boiteCatRecherche = new HBox(5);
+        boiteCatRecherche.setPadding(new Insets(10));
+        this.creerLesCategories();
+        boiteCatRecherche.getChildren().addAll(this.boiteBarreDeRecherche(), this.lesCategories);
+        return boiteCatRecherche;
+    }
+
+    public HBox boiteBarreDeRecherche() {
+        HBox boiteRecherche = new HBox(5);
+        boiteRecherche.setMaxHeight(40);
+        // boiteRecherche.setMaxWidth(100);
+        boiteRecherche.setPadding(new Insets(5));
+        ImageView imageRecherche = new ImageView(new Image("file:./img/recherche.png"));
+        imageRecherche.setFitWidth(18);
+        imageRecherche.setPreserveRatio(true);
+        this.boutonRecherche = new Button("", imageRecherche);
+        TextField barreDeRecherche = new TextField("Nom d'un produit");
+        boiteRecherche.getChildren().addAll(this.boutonRecherche, barreDeRecherche);
+        boiteRecherche.setStyle("-fx-background-color: #b5d6fd; -fx-background-radius: 0.8em; -fx-border-color : black; -fx-border-radius: 0.8em;");
+        this.boutonRecherche.setStyle("-fx-background-color: #b5d6fd;");
+        barreDeRecherche.setAlignment(Pos.CENTER_LEFT);
+        barreDeRecherche.setStyle("-fx-effect: dropshadow(gaussian, black, 8, 0, 1, 1); -fx-background-radius: 0.8em;");
+        this.boutonRecherche.setAlignment(Pos.CENTER_LEFT);
+        return boiteRecherche;
     }
 
     // public void ajouteMenu(BorderPane root){
