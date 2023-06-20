@@ -119,11 +119,14 @@ public void ajouteNavBar(BorderPane root){
     bouton.setSpacing(7);
     haut.getChildren().addAll(navBar2, bouton);
     haut.setPadding(new Insets(10,0,10,10));
-    HBox.setMargin(navBar2, new Insets(15, 770, 0, 15));
+    HBox.setMargin(navBar2, new Insets(15, 700, 0, 15));
     HBox.setMargin(rectangleB, new Insets(15, 0, 10, 200));
     HBox.setMargin(bouton, new Insets(15,0,0,0));
 
-    Image profileImage = new Image("morty.jpg");
+    Button boutonPhotoProfil = new Button();
+    
+    // Image de profile a modifier un fois les page relié entre elle
+    Image profileImage = new Image("pp.jpeg");
     // Créer un ImageView pour afficher l'image
     ImageView imagePP = new ImageView(profileImage);
     imagePP.setFitWidth(70); // Largeur de l'image
@@ -138,6 +141,11 @@ public void ajouteNavBar(BorderPane root){
     stack.setPadding(new Insets(0,0,0,0));
     stack.setStyle("-fx-background-color: transparent;");
     bouton.getChildren().add(stack);
+    boutonPhotoProfil.setGraphic(imagePP);
+    boutonPhotoProfil.setCursor(Cursor.HAND);
+    boutonPhotoProfil.setStyle("-fx-background-color: transparent;");
+    haut.getChildren().add(boutonPhotoProfil);
+
     root.setTop(haut);
 
 }
