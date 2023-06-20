@@ -12,7 +12,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -34,22 +36,31 @@ public class VueVente extends BorderPane {
 
     public VueVente() {
         super();
-        // this.setTop(new BarreDeNav());
+        // this.setTop(new NavBar());
         this.setCenter(this.partieCentrale());
     }
 
+    /**
+     * Méthode permettant d'initialiser l'image par défaut.
+     */
     private void initDesPhotos() {
         this.listeDesPhotos = new ArrayList<>();
         ImageView imageParDefaut = new ImageView(new Image("file:./img/defaultImage.png"));
         imageParDefaut.setFitWidth(200);
         imageParDefaut.setPreserveRatio(true);
-        imageParDefaut.setStyle("-fx-background-radius : 0.8em;");
         this.listeDesPhotos.add(imageParDefaut);
     }
 
+    /**
+     * Méthode permettant d'ajouter une nouvelle photo.
+     * @param lien String : le lien vers la photo.
+     */
     public void ajoutImage(String lien) {
         if (this.listeDesPhotos.size() < 4) {
-            ImageView nouvImg = new ImageView(new Image(lien));
+            if (this.listeDesPhotos.size() == 1) {
+                this.listeDesPhotos.remove(0);
+            }
+            ImageView nouvImg = new ImageView(new Image("file:./img/" + lien));
             nouvImg.setFitWidth(200);
             nouvImg.setPreserveRatio(true);
             this.listeDesPhotos.add(nouvImg);
@@ -71,19 +82,20 @@ public class VueVente extends BorderPane {
      * @return VBox : la boite contenant toutes les sections de la page.
      */
     private VBox partieCentrale() {
+        Insets insetsParDefaut = new Insets(2, 70, 2, 70);
         VBox laBoite = new VBox(10);
         laBoite.setPadding(new Insets(20));
         VBox sectionPhotos = this.sectionDesPhotos();
         VBox sectionTitre = this.sectionTitreVente();
         VBox sectionDesc = this.sectionDescriptionVente();
-        HBox hboxBoiteCatMarqueEtat = this.regroupementSectionCategorieMarqueEtat();
-        HBox hboxPrixDureeAjout = this.regroupementPrixDureeAjout();
-        laBoite.getChildren().addAll(this.titrePrincipal(), sectionPhotos, sectionTitre, sectionDesc, hboxBoiteCatMarqueEtat, hboxPrixDureeAjout);
-        VBox.setMargin(sectionPhotos, new Insets(0, 50, 0, 50));
-        VBox.setMargin(sectionTitre, new Insets(0, 50, 0, 50));
-        VBox.setMargin(sectionDesc, new Insets(0, 50, 0, 50));
-        VBox.setMargin(hboxBoiteCatMarqueEtat, new Insets(0, 50, 0, 50));
-        VBox.setMargin(hboxPrixDureeAjout, new Insets(0, 50, 0, 50));
+        GridPane gpBoiteCatMarqueEtat = this.regroupementSectionCategorieMarqueEtat();
+        GridPane gpPrixDureeAjout = this.regroupementPrixDureeAjout();
+        laBoite.getChildren().addAll(this.titrePrincipal(), sectionPhotos, sectionTitre, sectionDesc, gpBoiteCatMarqueEtat, gpPrixDureeAjout);
+        VBox.setMargin(sectionPhotos, insetsParDefaut);
+        VBox.setMargin(sectionTitre, insetsParDefaut);
+        VBox.setMargin(sectionDesc, insetsParDefaut);
+        VBox.setMargin(gpBoiteCatMarqueEtat, insetsParDefaut);
+        VBox.setMargin(gpPrixDureeAjout, insetsParDefaut);
         return laBoite;
     }
 
@@ -190,6 +202,10 @@ public class VueVente extends BorderPane {
 
     // Création des différentes boites.
 
+    /**
+     * Méthode permettant de créer la boite contenant toutes les photos importées.
+     * @return StackPane : la boite contenant les photos avec le bouton pour en ajouter.
+     */
     private StackPane boitePhotos() {
         HBox boiteDesPhotos = new HBox(5);
         StackPane boutonEtPhotos = new StackPane();
@@ -244,13 +260,14 @@ public class VueVente extends BorderPane {
      * @param largeur int : la largeur de la boite à créer.
      * @return VBox : la boite contenant le titre de la section et la ComboBox concernée.
      */
-    private VBox sectionCategorie(int largeur) {
+    private VBox sectionCategorie() {
         VBox vboxCategorie = new VBox(5);
-        vboxCategorie.setPrefWidth(largeur);
         this.initComboBoxCategorie();
+        VBox vboxChoixCat = new VBox(this.choixCategorie);
         vboxCategorie.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
-        vboxCategorie.getChildren().addAll(this.titreDesSection("Catégorie"), this.choixCategorie);
-        VBox.setMargin(this.choixCategorie, new Insets(5, 50, 15, 50));
+        vboxCategorie.getChildren().addAll(this.titreDesSection("Catégorie"), vboxChoixCat);
+        VBox.setMargin(vboxChoixCat, new Insets(20, 20, 40, 20));
+        vboxChoixCat.setAlignment(Pos.CENTER);
         return vboxCategorie;
     }
 
@@ -259,13 +276,14 @@ public class VueVente extends BorderPane {
      * @param largeur int : la largeur de la boite à créer.
      * @return VBox : la boite contenant le titre de la section et la ComboBox concernée.
      */
-    private VBox sectionMarque(int largeur) {
+    private VBox sectionMarque() {
         VBox vboxMarque = new VBox(5);
-        vboxMarque.setPrefWidth(largeur);
         this.initComboBoxMarque();
+        VBox vboxChoixMarque = new VBox(this.choixMarque);
         vboxMarque.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
-        vboxMarque.getChildren().addAll(this.titreDesSection("Marque"), this.choixMarque);
-        VBox.setMargin(this.choixMarque, new Insets(5, 0, 15, 70));
+        vboxMarque.getChildren().addAll(this.titreDesSection("Marque"), vboxChoixMarque);
+        VBox.setMargin(vboxChoixMarque, new Insets(20, 20, 40, 20));
+        vboxChoixMarque.setAlignment(Pos.CENTER);
         return vboxMarque;
     }
 
@@ -274,24 +292,33 @@ public class VueVente extends BorderPane {
      * @param largeur int : la largeur de la boite à créer.
      * @return VBox : la boite contenant le titre de la section et la ComboBox concernée.
      */
-    private VBox sectionEtat(int largeur) {
+    private VBox sectionEtat() {
         VBox vboxEtat = new VBox(5);
-        vboxEtat.setPrefWidth(largeur);
         this.initComboBoxEtat();
+        VBox vboxChoixEtat = new VBox(this.choixEtat);
         vboxEtat.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
-        vboxEtat.getChildren().addAll(this.titreDesSection("État"), this.choixEtat);
-        VBox.setMargin(this.choixEtat, new Insets(5, 0, 15, 68));
+        vboxEtat.getChildren().addAll(this.titreDesSection("État"), vboxChoixEtat);
+        VBox.setMargin(vboxChoixEtat, new Insets(20, 20, 40, 20));
+        vboxChoixEtat.setAlignment(Pos.CENTER);
         return vboxEtat;
     }
 
     /**
      * Méthode permettant de regrouper dans une boite, les sections de la catégorie, de la marque et de l'état.
-     * @return HBox : la boite contenant les autres boites concernées.
+     * @return GridPane : la boite contenant les autres boites concernées.
      */
-    private HBox regroupementSectionCategorieMarqueEtat() {
-        HBox laBoite = new HBox(30);
-        int largeur = 268;
-        laBoite.getChildren().addAll(this.sectionCategorie(largeur), this.sectionMarque(largeur), this.sectionEtat(largeur));
+    private GridPane regroupementSectionCategorieMarqueEtat() {
+        GridPane laBoite = new GridPane();
+        laBoite.setHgap(15);
+        VBox sectionCatVbox = this.sectionCategorie();
+        VBox sectionMarqueVbox = this.sectionMarque();
+        VBox sectionEtatVbox = this.sectionEtat();
+        laBoite.add(sectionCatVbox, 0, 0);
+        laBoite.add(sectionMarqueVbox, 1, 0);
+        laBoite.add(sectionEtatVbox, 2, 0);
+        GridPane.setHgrow(sectionCatVbox, Priority.ALWAYS);
+        GridPane.setHgrow(sectionMarqueVbox, Priority.ALWAYS);
+        GridPane.setHgrow(sectionEtatVbox, Priority.ALWAYS);
         return laBoite;
     }
 
@@ -303,7 +330,6 @@ public class VueVente extends BorderPane {
      */
     private HBox boiteTfPrix(int largeur) {
         HBox laBoite = new HBox(150);
-        laBoite.setPrefWidth((int)largeur);
         laBoite.setPadding(new Insets(25));
         Label euroMin = new Label("€");
         Label euroMax = new Label("€");
@@ -326,14 +352,14 @@ public class VueVente extends BorderPane {
      * @param largeur int : la largeur de la boite à créer.
      * @return VBox : la boite contenant le titre de la section et les éléments concernés.
      */
-    private VBox sectionDesPrix(int largeur) {
+    private VBox sectionDesPrix() {
         VBox vboxDesPrix = new VBox(5);
         this.initTfPrix();
         HBox laBoiteDestfPrix = this.boiteTfPrix((int)vboxDesPrix.getWidth());
-        vboxDesPrix.setPrefWidth(largeur);
         vboxDesPrix.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
         vboxDesPrix.getChildren().addAll(this.titreDesSection("Prix minimun & prix visé"), laBoiteDestfPrix);
         laBoiteDestfPrix.setAlignment(Pos.BASELINE_CENTER);
+        VBox.setMargin(laBoiteDestfPrix, new Insets(20));
         return vboxDesPrix;
     }
 
@@ -342,9 +368,13 @@ public class VueVente extends BorderPane {
      * @return VBox : une boite contenant les champs des dates.
      */
     private VBox boiteChampsDates() {
-        VBox vboxDesDates = new VBox(5);
         this.initDates();
-        vboxDesDates.getChildren().addAll(new VBox(5, new Label("début"), this.dateDebut), new VBox(5, new Label("fin"), this.dateFin));
+        VBox vboxDesDates = new VBox(5);
+        VBox boiteDebut = new VBox(5, new Label("début"), this.dateDebut);
+        VBox boiteFin = new VBox(5, new Label("fin"), this.dateFin);
+        boiteDebut.setAlignment(Pos.CENTER);
+        boiteFin.setAlignment(Pos.CENTER);
+        vboxDesDates.getChildren().addAll(boiteDebut, boiteFin);
         return vboxDesDates;
     }
 
@@ -357,24 +387,26 @@ public class VueVente extends BorderPane {
         vboxPourLesDates.setStyle("-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
         VBox lesChampsDates = this.boiteChampsDates();
         vboxPourLesDates.getChildren().addAll(this.titreDesSection("Durée et date"), lesChampsDates);
-        VBox.setMargin(lesChampsDates, new Insets(5, 50, 15, 50));
+        VBox.setMargin(lesChampsDates, new Insets(20, 20, 30, 20));
+        lesChampsDates.setAlignment(Pos.CENTER);
         return vboxPourLesDates;
     }
 
     /**
      * Méthode permettant de regrouper les sections prix, durée, ainsi que le bouton de validation.
-     * @return HBox : la boite contenant les autres boites concernées.
+     * @return GridPane : la boite contenant les autres boites concernées.
      */
-    private HBox regroupementPrixDureeAjout() {
-        HBox laBoite = new HBox(10);
-        int largeur = 350;
+    private GridPane regroupementPrixDureeAjout() {
+        GridPane laBoite = new GridPane();
+        laBoite.setHgap(15); 
         this.initBoutonValidation();
-        VBox sectionPrix = this.sectionDesPrix(largeur);
-        sectionPrix.setFillWidth(true);
-        VBox sectionDatesVbox = this.sectionDates();
-        sectionDatesVbox.setFillWidth(true);
-        laBoite.getChildren().addAll(sectionPrix, sectionDatesVbox, this.ajoutVente);
-        HBox.setMargin(this.ajoutVente, new Insets(60, 0, 0, 20));
+        VBox sectionPrix = this.sectionDesPrix();
+        VBox sectionDates = this.sectionDates();
+        laBoite.add(sectionPrix, 0, 0);
+        laBoite.add(sectionDates, 1, 0);
+        GridPane.setHgrow(sectionPrix, Priority.ALWAYS);
+        GridPane.setHgrow(sectionDates, Priority.ALWAYS);
+        laBoite.add(this.ajoutVente, 2, 0);
         this.ajoutVente.setAlignment(Pos.CENTER);
         return laBoite;
     }
