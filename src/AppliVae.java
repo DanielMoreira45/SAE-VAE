@@ -87,15 +87,11 @@ public class AppliVae extends Application{
     @Override
     public void init() throws ClassNotFoundException{
         this.laScene();
-        try {
+        try{
             this.connexionMySQL = new ConnexionMySQL();
             this.connexionMySQL.connecter();
-            if (connexionMySQL.isConnecte()){
-                System.out.println("fini les erreurs");
-            }
-        }catch (ClassNotFoundException ex){
-            System.out.println("Driver MySQL non trouvé!!!");
         }
+        catch(Exception e){System.out.println(e);}
         this.laConnexionUtilisateur = new UtilisateurBD(this.connexionMySQL);
         this.laConnexionVente = new VenteBD(this.connexionMySQL);
         this.laConnexionObjet = new ObjetBD(this.connexionMySQL);
@@ -106,7 +102,6 @@ public class AppliVae extends Application{
         //this.pageAccueil = new PageAccueil(this.laConnexionVente, this);
         //this.pageProfilUtilisateur = new PageProfilUtilisateur();
         this.navBar = new NavBar(this, this.connexionMySQL);
-        scene.getStylesheets().add("file:src/css.css");
         this.root = (BorderPane) this.scene.getRoot();
     }
 
@@ -123,6 +118,7 @@ public class AppliVae extends Application{
      * Permet de passer à l'affichage de la page d'inscription/connexion
      */
     public void modeCoInsc(){
+        scene.getStylesheets().setAll("styleCoInsc.css");
         this.root.setCenter(this.pageCoInsc);
     }
 
@@ -130,7 +126,7 @@ public class AppliVae extends Application{
      * Permet de passer à l'affichage de la page de mise en vente
      */
     public void modeMiseEnVente(){
-        scene.getStylesheets().setAll("styleAccueil.css");
+        scene.getStylesheets().setAll("styleNavBar.css");
         this.root.setTop(this.navBar);
         this.root.setCenter(this.pageVente);
     }
@@ -139,7 +135,7 @@ public class AppliVae extends Application{
      * Permet de passer à l'affichage de la page d'accueil
      */
     public void modeAccueil(){
-        scene.getStylesheets().setAll("styleAccueil.css");
+        scene.getStylesheets().setAll("styleNavBar.css");
         //scene.getStylesheets().add("styleAccueil.css");
         //this.scene.setRoot(this.pageAccueil);modeleToutLesUtilisateurs
         this.root.setTop(this.navBar);
