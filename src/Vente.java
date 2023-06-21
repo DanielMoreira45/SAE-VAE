@@ -51,11 +51,11 @@ public class Vente {
      * constructeur pour avoir un nouvelle vente
      * 
      * @throws ParseException Si la date n'est pas sous la bonne forme, la bonne
-     *                        forme est : dd/MM/yy:hh/mm/ss
+     *                        forme est : yyyy/MM/dd:hh/mm/ss
      */
     public Vente(int idVente, Double prixBase, Double prixMin, String debutVe, String finVe, int status,
             Objet objetVente) throws ParseException {
-        SimpleDateFormat lecteur = new SimpleDateFormat("dd/MM/yy:hh/mm/ss");
+        SimpleDateFormat lecteur = new SimpleDateFormat("yyyy/MM/dd:hh/mm/ss");
         this.idVente = idVente;
         this.prixBase = prixBase;
         this.prixMin = prixMin;
@@ -134,10 +134,10 @@ public class Vente {
      * 
      * @param nouveauDebutVente la nouvelle date de debut de la vente
      * @throws ParseException Si la date n'est pas sous la bonne forme, la bonne
-     *                        forme est : dd/MM/yy:hh/mm/ss
+     *                        forme est : yyyy/MM/dd:hh/mm/ss
      */
     public void setDebutVente(String nouveauDebutVente) throws ParseException {
-        SimpleDateFormat lecteur = new SimpleDateFormat("dd/MM/yy:hh/mm/ss");
+        SimpleDateFormat lecteur = new SimpleDateFormat("yyyy/MMM/dd:hh/mm/ss");
         this.debutVe = lecteur.parse(nouveauDebutVente);
     }
 
@@ -155,10 +155,10 @@ public class Vente {
      * 
      * @param nouveauFinVente la nouvelle date de fin de la vente
      * @throws ParseException Si la date n'est pas sous la bonne forme, la bonne
-     *                        forme est : dd/MM/yy:hh/mm/ss
+     *                        forme est : yyyy/MM/dd:hh/mm/ss
      */
     public void setFinVente(String nouveauFinVente) throws ParseException {
-        SimpleDateFormat lecteur = new SimpleDateFormat("dd/MM/yy:hh/mm/ss");
+        SimpleDateFormat lecteur = new SimpleDateFormat("yyyy/MM/dd:hh/mm/ss");
         this.finVe = lecteur.parse(nouveauFinVente);
     }
 
@@ -185,7 +185,7 @@ public class Vente {
      * 
      * @return (Double) le prix final de la vente
      * @throws ParseException Si la date n'est pas sous la bonne forme, la bonne
-     *                        forme est : dd/MM/yy:hh/mm/ss
+     *                        forme est : yyyy/MM/dd:hh/mm/ss
      */
     public Double prixFinal() throws ExceptionVentePasTerminee, ParseException {
         if (Calendar.getInstance().getTime().before(this.finVe)) {
@@ -216,6 +216,7 @@ public class Vente {
      * Ajoute une enchère sur la vente
      * 
      * @param nouvelleEnchere la nouvelle enchere
+     * @throws ExceptionPrixIncorrecte Si le prix est trop petit par rapport au prix de la meilleur enchere
      */
     public void ajouteEnchere(Enchere nouvelleEnchere) throws ExceptionPrixIncorrecte {
         if (nouvelleEnchere.getMontant() < this.prixMin
