@@ -58,6 +58,8 @@ public class Vente {
         this.idVente = idVente;
         this.prixBase = prixBase;
         this.prixMin = prixMin;
+        System.out.println(this.finVe);
+        System.out.println(this.debutVe);
         this.finVe = lecteur.parse(finVe);
         this.debutVe = lecteur.parse(debutVe);
         System.out.println(this.finVe);

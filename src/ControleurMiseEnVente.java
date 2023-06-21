@@ -5,6 +5,7 @@ import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import java.time.LocalTime;
 
 public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
 
@@ -16,10 +17,12 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
     Objet obj = null;
     String dateDeBut;
     String dateFin;
+    private AppliVae appli;
 
-    public ControleurMiseEnVente(VueVente vue, ConnexionMySQL laConnexionMySQL) {
+    public ControleurMiseEnVente(VueVente vue, ConnexionMySQL laConnexionMySQL, AppliVae appli) {
         this.vue = vue;
         this.laConnexionMySQL = laConnexionMySQL;
+        this.appli = appli;
     }
 
     /**
@@ -29,14 +32,14 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
      */
     @Override
     public void handle(ActionEvent actionEvent) {
+        LocalTime heureActuelle = LocalTime.now();
+        String heureActuelleAc = heureActuelle.toString().substring(0, 8).replace(":", "/");
         String cat = vue.getCategorie();
         String marque = vue.getMarque();
         Double prixMin = vue.getPrixMin();
         Double prixBase = vue.getprixBase();
-        this.dateDeBut = vue.dateDebutToString();
-        this.dateFin = vue.dateFinToString();
-        this.dateDeBut.replace("-", "/");
-        this.dateFin.replace("-", "/");
+        this.dateDeBut = vue.dateDebutToString().replace("-", "/");
+        this.dateFin = vue.dateFinToString().replace("-", "/");;
         String desc = vue.getDesc();
         List<Photo> lesPhotos = vue.getPhotos();
         String titrePh = vue.getTitre();
@@ -65,43 +68,50 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
         }
         if (bouton.getText().equals("Ajouter le produit > ")) {
             if (prixMin != null && prixBase != null && cat != null && dateFin != null && dateDeBut != null) {
-                if(!(vue.valideDate())){
+                if (!(vue.valideDate())) {
                     vue.getDateDebut().setStyle(
-                "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: red;");
-                vue.getDateFin().setStyle(
-                "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: red;");
+                            "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: red;");
+                    vue.getDateFin().setStyle(
+                            "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: red;");
+
+                    // vue.setMessageErreurDate();
+                    
                 }
-                if(prixMin >= prixBase){
+                if (prixMin >= prixBase) {
                     vue.getPrixMinTf().setStyle(
-                "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
+                            "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: red;");
                     vue.getprixBaseTf().setStyle(
-                "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
+                            "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: red;");
+                    // vue.setMessageErreurPrix();
                 }
-                if(vue.valideDate() && prixMin < prixBase){
-                try {
-                    this.obj = new Objet(objetBD.maxIdObjet() + 1, desc, titreOb, lesPhotos, vue.getVendeur(), 1);
-                    objetBD.insereObjet(obj);
-                    for (Photo photos : lesPhotos) {
-                        photoBd.insertPhoto(photos, obj);
+                if (vue.valideDate() && prixMin < prixBase) {
+                    try {
+                        this.obj = new Objet(objetBD.maxIdObjet() + 1, desc, titreOb, lesPhotos, vue.getVendeur(), 1);
+                        objetBD.insereObjet(obj);
+                        vue.popUpObjetCo(titreOb);
+                        for (Photo photos : lesPhotos) {
+                            photoBd.insertPhoto(photos, obj);
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
-                    vue.popUpObjetCo(titreOb);
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                    try {
+                        System.out.println("condition1");
+                        Vente vente = new Vente(venteDeOb.maxIdVente() + 1, prixBase, prixMin, dateDeBut + ":" +heureActuelleAc,
+                        dateFin +":00/00/00", 1, obj);
+
+                        vue.popUpVenteInserer(titreOb, prixBase);
+                        venteDeOb.insereVente(vente);
+                        appli.modeAccueil();
+                    } catch (SQLException e) {
+                        System.out.println("un blème");
+                                        } catch (ParseException e) {
+                        System.out.println("problème de parse");
+                    }
                 }
-            try {
-                System.out.println("condition1");
-                Vente vente = new Vente(venteDeOb.maxIdVente() + 1, prixBase, prixMin, dateDeBut+":00/00/00", dateFin+":00/00/00", 1, obj);
-                vue.popUpVenteInserer(titreOb, prixBase);
-                venteDeOb.insereVente(vente);
-            } catch (SQLException e) {
-                vue.popUpVenteInserer(titreOb, 10.0);
-            } catch (ParseException e) {
-                System.out.println("problème de parse");
-            }
-            else{
+            } else {
                 this.vue.popUpRemplirChamp();
             }
-        }
         }
     }
 }

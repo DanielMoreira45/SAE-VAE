@@ -48,6 +48,7 @@ public class VueVente extends VBox {
     String titre = null;
     ImageView imageActu = null;
     private Utilisateur utilisateur;
+    VBox vboxDescVentes;
 
     public VueVente(AppliVae appli, ConnexionMySQL connexionMySQL, Utilisateur utilisateur) {
         super(10);
@@ -67,7 +68,7 @@ public class VueVente extends VBox {
         VBox.setMargin(sectionDesc, insetsParDefaut);
         VBox.setMargin(gpBoiteCatMarqueEtat, insetsParDefaut);
         VBox.setMargin(gpPrixDureeAjout, insetsParDefaut);
-        ControleurMiseEnVente cme = new ControleurMiseEnVente(this, connexionMySQL);
+        ControleurMiseEnVente cme = new ControleurMiseEnVente(this, connexionMySQL, appli);
         ajoutPhotos.setOnAction(cme);
         ajoutVente.setOnAction(cme);
         this.utilisateur = utilisateur; // vendeur
@@ -392,13 +393,13 @@ public boolean valideDate() {
      *         associé.
      */
     private VBox sectionDescriptionVente() {
-        VBox vboxDescVente = new VBox(5);
+        this.vboxDescVentes = new VBox(5);
         this.initTextAreaDesc();
-        vboxDescVente.setStyle(
+        this.vboxDescVentes.setStyle(
                 "-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
-        vboxDescVente.getChildren().addAll(this.titreDesSection("Décris ton article"), this.descriptionVente);
+        vboxDescVentes.getChildren().addAll(this.titreDesSection("Décris ton article"), this.descriptionVente);
         VBox.setMargin(this.descriptionVente, new Insets(5, 50, 15, 50));
-        return vboxDescVente;
+        return vboxDescVentes;
     }
 
     /**
@@ -604,10 +605,13 @@ public boolean valideDate() {
         alert.showAndWait();
     }
 
-    public void dateInvalidePopUp() {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("ATTENTION A LA DATE");
-        alert.setContentText("La date de début de mise en enchère doit être inférieur à la date de fin des enchères");
-        alert.showAndWait();
-    }
+//     public void setMessageErreurDate() {
+//     Label lebErreur = new Label("La date de début doit être inférieure à celle de mise en vente");
+//     lebErreur.setStyle("-fx-text-fill: red;");
+//     VBox.setMargin(lebErreur, new Insets(10, 0, 10, 0));
+//     VBox.setVgrow(lebErreur, Priority.ALWAYS);
+//     lebErreur.setAlignment(Pos.BOTTOM_CENTER);
+//     vboxDescVentes.getChildren().add(lebErreur);
+// }
+
 }
