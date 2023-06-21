@@ -26,38 +26,25 @@ import javafx.scene.text.Text;
 
 public class VueEncheresUtilisateur extends BorderPane {
     private AppliVae appli;
-    // private ConnexionMySQL connexionMySQL; // !!!!!!!!!!!!!!!
+    private ConnexionMySQL connexionMySQL;
     private ScrollPane scrollPaneEncheres;
-    // private TouteLesVentes toutesLesVentes; // !!!!!!!!!!!!!
-    private List<HBox> lesVentes; // à supprimer à la fin !!!!!!!!!!!
+    private TouteLesVentes toutesLesVentes;
+    private List<HBox> lesVentes;
     
     /**
      * Constructeur permettant de créer une page listant les enchères d'un utilisateur.
      */
-    public VueEncheresUtilisateur() { // (AppliVae appli, ConnexionMySQL connexionMySQL)
+    public VueEncheresUtilisateur(AppliVae appli, ConnexionMySQL connexionMySQL) {
         super();
 
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // this.appli = appli;
-        // this.connexionMySQL = connexionMySQL;
-        // this.toutesLesVentes = new TouteLesVentes(this.connexionMySQL);
-        // try {
-        //     this.lesVentes = this.toutesLesVentes.toutVente();
-        // } catch (SQLException | ParseException e) {
-        //     e.printStackTrace();
-        // }
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-        // bloc à supprimer à la fin !!!!!!!!!!!!!!
-        this.lesVentes = new ArrayList<>();
-        while (this.lesVentes.size() < 20) {
-            HBox temp = new HBox(10);
-            temp.setStyle("-fx-background-color: lightgrey;");
-            temp.setPrefHeight(100);
-            temp.getChildren().add(new Text("venteTest"));
-            this.lesVentes.add(temp);
+        this.appli = appli;
+        this.connexionMySQL = connexionMySQL;
+        this.toutesLesVentes = new TouteLesVentes(this.connexionMySQL);
+        try {
+            this.lesVentes = this.toutesLesVentes.toutVente();
+        } catch (SQLException | ParseException e) {
+            e.printStackTrace();
         }
-        // !!!!!!!!!!!!!!!!!!!!
 
         Text titre = this.initTitrePrincipal();
         BorderPane partieCentrale = this.getPartieCentrale();
@@ -151,16 +138,24 @@ public class VueEncheresUtilisateur extends BorderPane {
         return boiteRecherche;
     }
 
+    /**
+     * Méthode permettant de créer le bouton permettant d'inverser l'ordre des enchères.
+     * @return Button : Le bouton d'inversement.
+     */
     private Button setBoutonInverse() {
         Button inverse = new Button("Inverse");
         inverse.setMaxHeight(40);
         inverse.setFont(Font.font("Valera", 12));
         inverse.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
         inverse.setBorder(new Border(new BorderStroke(Color.valueOf("black"), BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(1))));
-        // inverse.setOnAction(new ControleurTrier(this, this.toutesLesVentes)); // À décommenter à la fin !!!!!!
+        inverse.setOnAction(new ControleurTrier(this, this.toutesLesVentes));
         return inverse;
     }
 
+    /**
+     * Méthode permettant de génerer une boite contenant la barre de recherche avec le bouton d'inversement.
+     * @return HBox : la boite contenant les éléments concernés.
+     */
     private HBox getElemsRecherche() {
         HBox lesElems = new HBox(10);
         lesElems.setMaxWidth(465);
@@ -184,30 +179,33 @@ public class VueEncheresUtilisateur extends BorderPane {
         }
         else {
             for (int i = 0; i < this.lesVentes.size(); i++) {
-                // toutesLesVentes.getChildren().add(new CaseVente(this.lesVentes.get(i), this.appli, this.connexionMySQL));
-                toutesLesVentes.getChildren().add(this.lesVentes.get(i)); // à retirer à la fin !!!!!!!!!!!!
+                toutesLesVentes.getChildren().add(new CaseVente(this.lesVentes.get(i), this.appli, this.connexionMySQL));
             }
         }
         this.scrollPaneEncheres.setContent(toutesLesVentes);
     }
 
-    // /**
-    //  * Méthode permettant d'initialiser/modifier l'attribut "this.lesVentes"
-    //  * @param lesVentes
-    //  */
-    // public void setLesVentes(List<Vente> lesVentes) {
-    //     this.lesVentes = lesVentes;
-    // }
+    /**
+     * Méthode permettant d'initialiser/modifier l'attribut "this.lesVentes"
+     * @param lesVentes
+     */
+    public void setLesVentes(List<Vente> lesVentes) {
+        this.lesVentes = lesVentes;
+    }
 
-    // /**
-    //  * Méthode permettan d'obtenir toutes les ventes.
-    //  * @return
-    //  */
-    // public TouteLesVentes getToutesLesVentes() {
-    //     return this.toutesLesVentes;
-    // }
+    /**
+     * Méthode permettan d'obtenir toutes les ventes.
+     * @return TouteLesVentes : la classe TouteLesVentes.
+     */
+    public TouteLesVentes getToutesLesVentes() {
+        return this.toutesLesVentes;
+    }
 
-    // public List<Vente> getLesVentes() {
-    //     return this.lesVentes;
-    // }
+    /**
+     * Méthode permettant d'obtenir la liste des ventes.
+     * @return List : une liste contenant des objets de type Vente.
+     */
+    public List<Vente> getLesVentes() {
+        return this.lesVentes;
+    }
 }
