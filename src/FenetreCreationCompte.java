@@ -128,14 +128,11 @@ public class FenetreCreationCompte extends GridPane {
         return this.mail.getText();
     }
 
-<<<<<<< HEAD
-=======
     // public ConnexionMySQL getConnexionMySQL(){
     // System.out.println("vue "+ this.connexionMySQL);
     // return this.connexionMySQL;
     // }
 
->>>>>>> main
     public void setMdpErreur() {
         this.mdp.setStyle("-fx-border-color: red");
     }

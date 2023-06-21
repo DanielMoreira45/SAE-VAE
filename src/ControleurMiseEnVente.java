@@ -53,7 +53,7 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
         ObjetBD objetBD = new ObjetBD(laConnexionMySQL);
         VenteBD venteDeOb = new VenteBD(laConnexionMySQL);
         try {
-            this.idLibre = objetBD.maxIdObjet() + 1;
+            this.idLibre = objetBD.maxIdOb() + 1;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -91,7 +91,7 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
                 }
                 if (vue.valideDate() && prixMin < prixBase) {
                     try {
-                        this.obj = new Objet(objetBD.maxIdObjet() + 1, desc, titreOb, lesPhotos, vue.getVendeur(), Categorie.getIntCategorie(cat));
+                        this.obj = new Objet(objetBD.maxIdOb()+ 1, desc, titreOb, lesPhotos, vue.getVendeur(), Categorie.getIntCategorie(cat));
                         objetBD.insereObjet(obj);
                         vue.popUpObjetCo(titreOb);
                         // for (Photo photos : lesPhotos) {
@@ -102,7 +102,7 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
                     }
                     try {
                         System.out.println("condition1");
-                        Vente vente = new Vente(venteDeOb.maxIdVente() + 1, prixBase, prixMin, dateDeBut + ":" +heureActuelleAc,
+                        Vente vente = new Vente(venteDeOb.maxIdVe() + 1, prixBase, prixMin, dateDeBut + ":" +heureActuelleAc,
                         dateFin +":00/00/00", Status.calculStatutInsertion(date, vue.getDateDebut().getValue()), obj);
                         vue.popUpVenteInserer(titreOb, prixBase);
                         venteDeOb.insereVente(vente);
