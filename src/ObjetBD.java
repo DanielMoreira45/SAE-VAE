@@ -55,7 +55,9 @@ public class ObjetBD {
     public int maxIdOb() throws SQLException {
         Statement s = this.laConnexionMySQL.createStatement();
         ResultSet rs = s.executeQuery("SELECT MAX(idob) FROM OBJET");
-        rs.next();
-        return rs.getInt(1);
+        if (rs.next()){
+            return rs.getInt(1);
+        }
+        return 0;
     }
 }
