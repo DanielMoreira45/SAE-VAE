@@ -1,6 +1,6 @@
 
 /**
- * 
+ * Permet d'avoir les roles des Utilisateurs
  */
 public class Roles {
     private Roles(){}

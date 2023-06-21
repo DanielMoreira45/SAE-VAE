@@ -1,6 +1,6 @@
 
 /**
- * Permet d'avoir le Roles de chaque utilisateur
+ * Permet d'avoir le status de la vente
  */
 public class Status {
     private Status(){}
@@ -9,5 +9,4 @@ public class Status {
     public static int AVALIDER = 3;
     public static int VALIDEE = 4;
     public static int NONCONCLUE = 5;
-
 }
