@@ -77,10 +77,13 @@ public class AppliVae extends Application{
     private BorderPane root;
 
     private Utilisateur utilisateurActuel;
+<<<<<<< HEAD
+=======
 
     private PageProfilObjet pageProfilObjet;
 
     private VueAdminGestionUtilisateurs vueAdminGestionUtilisateurs;
+>>>>>>> main
 
 
 
@@ -102,9 +105,15 @@ public class AppliVae extends Application{
         this.laConnexionEncherir = new EncherirBD(this.connexionMySQL);
 
         this.pageCoInsc = new FenetreCoInsc(this, this.connexionMySQL);
+<<<<<<< HEAD
+        this.pageVente = new VueVente(this, this.connexionMySQL, this.utilisateurActuel);
+        //this.pageAccueil = new PageAccueil(this.laConnexionVente, this);
+        //this.pageProfilUtilisateur = new PageProfilUtilisateur();
+=======
         this.pageVente = new VueVente(this, this.connexionMySQL);
         this.pageAccueil = new PageAccueil(this, this.connexionMySQL);
         this.pageProfilUtilisateur = new PageProfilUtilisateur(this, this.connexionMySQL);
+>>>>>>> main
         this.navBar = new NavBar(this, this.connexionMySQL);
         this.pageProfilObjet = new PageProfilObjet(this, this.connexionMySQL);
         this.vueAdminGestionUtilisateurs = new VueAdminGestionUtilisateurs(this.connexionMySQL);
@@ -124,7 +133,7 @@ public class AppliVae extends Application{
      * Permet de passer à l'affichage de la page d'inscription/connexion
      */
     public void modeCoInsc(){
-        scene.getStylesheets().setAll("styleCoInsc.css");
+        scene.getStylesheets().setAll("file:src/styleCoInsc.css");
         this.root.setCenter(this.pageCoInsc);
     }
 
@@ -132,9 +141,10 @@ public class AppliVae extends Application{
      * Permet de passer à l'affichage de la page de mise en vente
      */
     public void modeMiseEnVente(){
-        scene.getStylesheets().setAll("styleNavBar.css");
+        scene.getStylesheets().setAll("file:src/styleNavBar.css");
         this.root.setTop(this.navBar);
-        this.root.setCenter(this.pageVente);
+        this.pageVente = new VueVente(this, this.connexionMySQL, this.utilisateurActuel);
+        this.root.setCenter(pageVente);
     }
 
     /**
@@ -157,6 +167,8 @@ public class AppliVae extends Application{
         this.root.setCenter(this.pageProfilUtilisateur);
     }
 
+<<<<<<< HEAD
+=======
     public void modeProfilObjet(){
         scene.getStylesheets().setAll("styleNavBar.css", "stylePageProfilObjet.css");
         this.root.setTop(this.navBar);
@@ -167,6 +179,7 @@ public class AppliVae extends Application{
         this.root.setCenter(this.vueAdminGestionUtilisateurs);
     }
 
+>>>>>>> main
     public void setUtilisateurActuel(Utilisateur utilisateur){
         this.utilisateurActuel = utilisateur;
     }

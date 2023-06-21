@@ -26,6 +26,7 @@ public class ConnexionMySQL {
         // si tout c'est bien passé la connexion n'est plus nulle
 		Connection c;
 		try {
+			// c = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+"vae","root","root"); alexandre log
             // jdbc:mysql://localhost:3306/nomBD
 			c = DriverManager.getConnection("jdbc:mysql://servinfo-mariadb:3306/"+"DBmoreira","moreira","moreira");
 			this.mysql=c;

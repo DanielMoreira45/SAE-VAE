@@ -45,6 +45,9 @@ public class EncherirBD {
         s.setTimestamp(4, new Timestamp(e.getDateHeure()));
         s.executeQuery();
     }
+<<<<<<< HEAD
+    
+=======
 
     public Enchere meilleurEnchere(int idve) throws SQLException, ParseException {
         UtilisateurBD utilBD = new UtilisateurBD(laConnexionMySQL);
@@ -100,4 +103,5 @@ public class EncherirBD {
         return 0;
     }
 
+>>>>>>> main
 }

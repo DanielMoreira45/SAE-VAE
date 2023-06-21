@@ -58,7 +58,7 @@ public class NavBar extends HBox {
         this.getStyleClass().add("bottom-border");
 
         Button boutonLogo = new Button();
-        ImageView imageView = new ImageView(new Image("logo.png"));
+        ImageView imageView = new ImageView(new Image("file:img/logo.png"));
         imageView.setFitHeight(70);
         imageView.setFitWidth(70);
         boutonLogo.setGraphic(imageView);
@@ -77,7 +77,7 @@ public class NavBar extends HBox {
         rectangleB.setMaxHeight(45);
         rectangleB.setPrefWidth(400);
 
-        ImageView imageRecherche = new ImageView("imageRecherche.png");
+        ImageView imageRecherche = new ImageView("file:img/imageRecherche.png");
         imageRecherche.setFitHeight(30);
         imageRecherche.setFitWidth(30);
         imageRecherche.setOnMouseClicked(new ControleurRechercheClick(this.appli, this));
@@ -109,19 +109,19 @@ public class NavBar extends HBox {
         // Bouton deconnexion
         HBox bouton = new HBox();
         Button boutonMessage = new Button();
-        boutonMessage.setGraphic(new ImageView(new Image("message.png")));
+        boutonMessage.setGraphic(new ImageView(new Image("file:img/message.png")));
         boutonMessage.setCursor(Cursor.HAND);
         boutonMessage.setAccessibleText("Messagerie");
         boutonMessage.setOnAction(new ControleurNavBar(this.appli, this.connexionMySQL));
 
         Button boutonCloche = new Button();
-        boutonCloche.setGraphic(new ImageView(new Image("cloche.png")));
+        boutonCloche.setGraphic(new ImageView(new Image("file:img/cloche.png")));
         boutonCloche.setCursor(Cursor.HAND);
         boutonCloche.setAccessibleText("Notifications");
         boutonCloche.setOnAction(new ControleurNavBar(this.appli, this.connexionMySQL));
 
         Button boutonPanier = new Button();
-        boutonPanier.setGraphic(new ImageView(new Image("panier.png")));
+        boutonPanier.setGraphic(new ImageView(new Image("file:img/panier.png")));
         boutonPanier.setCursor(Cursor.HAND);
         boutonPanier.setAccessibleText("Panier");
         boutonPanier.setOnAction(new ControleurNavBar(this.appli, this.connexionMySQL));
@@ -140,7 +140,7 @@ public class NavBar extends HBox {
         Button boutonPhotoProfil = new Button();
 
         // Image de profile a modifier un fois les page relié entre elle
-        Image profileImage = new Image("pp.jpeg");
+        Image profileImage = new Image("file:img/pp.jpeg");
         // Créer un ImageView pour afficher l'image
         ImageView imagePP = new ImageView(profileImage);
         imagePP.setFitWidth(70); // Largeur de l'image

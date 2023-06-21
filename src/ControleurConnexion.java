@@ -61,6 +61,9 @@ public class ControleurConnexion implements EventHandler<ActionEvent>{
                 Utilisateur userCo = new Utilisateur((Integer) laMap.get("idut"),(String)laMap.get("pseudout"), (String) laMap.get("emailut"), (String) laMap.get("mdput"),true, (Integer) laMap.get("idrole"));
                 appli.setUtilisateurActuel(userCo);
                 vue.popUpCompteConnecte((String) laMap.get("pseudout"));
+<<<<<<< HEAD
+                this.appli.modeMiseEnVente();
+=======
 
                 if (userCo.getRole() == (Roles.ADMINISTRATEUR)){
                     this.appli.modeAdministrateur();
@@ -69,6 +72,7 @@ public class ControleurConnexion implements EventHandler<ActionEvent>{
                     this.appli.modeAccueil();
                 }
                 
+>>>>>>> main
             } catch (Exception e) {
                 System.out.println("b");
                 this.vue.setMdpErreur();

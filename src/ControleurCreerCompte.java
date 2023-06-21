@@ -28,6 +28,16 @@ public class ControleurCreerCompte implements EventHandler<ActionEvent> {
      * @param actionEvent l'événement action
      */
 	@Override
+<<<<<<< HEAD
+public void handle(ActionEvent actionEvent) {
+    if (!VerificateurMDP.mdpConfirmationValide(this.vue.getMdp(), this.vue.getMdpConfirmation())) {
+        this.vue.setMessageMdpConfirmationErreur("  * Les mots de passe saisis ne correspondent pas");
+        this.vue.setMdpConfimationErreur(true);
+        return; // Abandonne la création du compte si les mots de passe sont différents
+    } else {
+        this.vue.setMessageMdpConfirmationErreur("");
+        this.vue.setMdpConfimationErreur(false);
+=======
 	public void handle(ActionEvent actionEvent) {
         this.vue.setEmailErreur("");
         this.vue.setEmailMessageErreur(false);
@@ -65,6 +75,28 @@ public class ControleurCreerCompte implements EventHandler<ActionEvent> {
             this.vue.setEmailErreur("   * Email invalide, vueillez renter un email valide.");
             this.vue.setEmailMessageErreur(true);
         }
+>>>>>>> main
     }
 
+    try {
+        VerificateurMDP.estValide(this.vue.getMdp());
+        try {
+            System.out.println("ControleurConnexion" + this.connexionMySQL);
+            System.out.println("avant");
+            UtilisateurBD userBd = new UtilisateurBD(this.connexionMySQL);
+            System.out.println("apres");
+            int idLibre = userBd.idLibre();
+            System.out.println(idLibre);
+            Utilisateur user = new Utilisateur(idLibre, vue.getPseudo(), vue.getMail(), vue.getMdp(), 2);
+            userBd.insererUtilisateur(user);
+            vue.popUpCompteValide(user.getPseudo());
+            System.out.println("apres1");
+        } catch (SQLException e) {
+            vue.popUpErreurSQL(e);
+        }
+    } catch (FormatMotDePasseException e) {
+        this.vue.setMdpErreur();
+        this.vue.setMessageErreur(e.getMessage());
+    }
+}
 }
