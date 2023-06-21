@@ -1,25 +1,15 @@
-import javafx.application.Application;
 import javafx.scene.Cursor;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.geometry.Insets;
 
-
-
-public class PageProfilUtilisateur extends BorderPane{
+public class PageProfilUtilisateur extends BorderPane {
 
     private ImageView profileImage;
 
@@ -41,15 +31,15 @@ public class PageProfilUtilisateur extends BorderPane{
 
     private Button textPaiement;
 
-    public PageProfilUtilisateur(AppliVae appli, ConnexionMySQL connexionMySQL){
+    public PageProfilUtilisateur(AppliVae appli, ConnexionMySQL connexionMySQL) {
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
 
         this.profileImage = new ImageView("pp.jpeg");
         this.nomUtilisateur = "Captain_Ayhos";
-        this.nom= "Rémi";
-        this.prenom= "Boulay";
-        this.dateNaissance= "08/08/2004"; // A MODIFIER (avec les truc au dessus) POUR RECUP LES INFOS DANS LE MODELE
+        this.nom = "Rémi";
+        this.prenom = "Boulay";
+        this.dateNaissance = "08/08/2004"; // A MODIFIER (avec les truc au dessus) POUR RECUP LES INFOS DANS LE MODELE
 
         this.textInfos = new Button("Informations Personnelles");
         this.textMDP = new Button("Changer de Mot de Passe   >");
@@ -62,64 +52,64 @@ public class PageProfilUtilisateur extends BorderPane{
         this.afficherInfoPerso();
     }
 
+    /*
+     * @Override
+     * public void init() {
+     * this.profileImage = new ImageView("pp.jpeg");
+     * this.nomUtilisateur = "Captain_Ayhos";
+     * this.nom= "Rémi";
+     * this.prenom= "Boulay";
+     * this.dateNaissance= "08/08/2004";
+     * }
+     * 
+     * public void start(Stage stage) throws Exception{
+     * // Construction du graphe de scène
+     * this.root = new BorderPane();
+     * Scene scene = new Scene(root);
+     * stage.setTitle("Fenetre Acceuil");
+     * stage.setFullScreen(true);
+     * this.ajouteMenu(root);
+     * this.ajouteMilieu(root);
+     * stage.setFullScreenExitHint("");
+     * 
+     * scene.getStylesheets().add("styleNavBar.css");
+     * scene.getStylesheets().add("stylePageUtilisateur.css");
+     * 
+     * stage.setScene(scene);
+     * stage.show();
+     * }
+     */
 
-        /*
-        @Override
-        public void init() {
-            this.profileImage = new ImageView("pp.jpeg");
-            this.nomUtilisateur = "Captain_Ayhos";
-            this.nom= "Rémi";
-            this.prenom= "Boulay";
-            this.dateNaissance= "08/08/2004";
-        }
+    public void afficherInfoPerso() {
+        this.ajouteMilieu();
+        this.textInfos.getStyleClass().add("buttonBleu");
+        this.textMDP.getStyleClass().remove("buttonBleu");
+        this.textPaiement.getStyleClass().remove("buttonBleu");
+    }
 
-        public void start(Stage stage) throws Exception{
-            // Construction du graphe de scène
-            this.root = new BorderPane();
-            Scene scene = new Scene(root);
-            stage.setTitle("Fenetre Acceuil");
-            stage.setFullScreen(true);
-            this.ajouteMenu(root);
-            this.ajouteMilieu(root);
-            stage.setFullScreenExitHint("");
+    public void afficherChangerMdp() {
+        GridPane fenetreChangerMdp = new FenetrePageChangerMdp(this.appli, this.connexionMySQL);
+        this.setCenter(fenetreChangerMdp);
+        this.textInfos.getStyleClass().remove("buttonBleu");
+        this.textMDP.getStyleClass().add("buttonBleu");
+        this.textPaiement.getStyleClass().remove("buttonBleu");
+    }
 
-            scene.getStylesheets().add("styleNavBar.css");
-            scene.getStylesheets().add("stylePageUtilisateur.css");
+    public void afficherPaiements() {
+        GridPane fenetrePaiements = new FenetrePagePaiements(this.appli, this.connexionMySQL);
+        this.setCenter(fenetrePaiements);
+        this.textInfos.getStyleClass().remove("buttonBleu");
+        this.textMDP.getStyleClass().remove("buttonBleu");
+        this.textPaiement.getStyleClass().add("buttonBleu");
+    }
 
-            stage.setScene(scene);
-            stage.show();
-        }*/
-
-        public void afficherInfoPerso(){
-            this.ajouteMilieu();
-            this.textInfos.getStyleClass().add("buttonBleu");
-            this.textMDP.getStyleClass().remove("buttonBleu");
-            this.textPaiement.getStyleClass().remove("buttonBleu");
-        }
-
-        public void afficherChangerMdp(){
-            GridPane fenetreChangerMdp = new FenetrePageChangerMdp(this.appli, this.connexionMySQL);
-            this.setCenter(fenetreChangerMdp);
-            this.textInfos.getStyleClass().remove("buttonBleu");
-            this.textMDP.getStyleClass().add("buttonBleu");
-            this.textPaiement.getStyleClass().remove("buttonBleu");
-        } 
-
-        public void afficherPaiements(){
-            GridPane fenetrePaiements = new FenetrePagePaiements(this.appli, this.connexionMySQL);
-            this.setCenter(fenetrePaiements);
-            this.textInfos.getStyleClass().remove("buttonBleu");
-            this.textMDP.getStyleClass().remove("buttonBleu");
-            this.textPaiement.getStyleClass().add("buttonBleu");
-        } 
-
-    public void ajouteMenu(){
+    public void ajouteMenu() {
         VBox menu = new VBox();
         Text pageUtilisateur = new Text("Page Utilisateur");
         pageUtilisateur.setStyle("-fx-font-size: 55px; -fx-fill: #000000; -fx-font-family: 'Verdana';");
         menu.getChildren().add(pageUtilisateur);
         this.setLeft(menu);
-        menu.setPadding(new Insets(20,20,20,20));
+        menu.setPadding(new Insets(20, 20, 20, 20));
         VBox sousMenu = new VBox();
 
         this.textInfos.setCursor(Cursor.HAND);
@@ -132,19 +122,21 @@ public class PageProfilUtilisateur extends BorderPane{
         this.textPaiement.setOnAction(new ControleurBoutonCompte(this, this.appli, this.connexionMySQL));
 
         /*
-        this.textInfos.getStyleClass().add("buttonBleu");
-        this.textMDP.getStyleClass().add("buttonBlanc");
-        this.textPaiement.getStyleClass().add("buttonBlanc");*/
+         * this.textInfos.getStyleClass().add("buttonBleu");
+         * this.textMDP.getStyleClass().add("buttonBlanc");
+         * this.textPaiement.getStyleClass().add("buttonBlanc");
+         */
         sousMenu.getChildren().addAll(this.textInfos, this.textMDP, this.textPaiement);
         sousMenu.setSpacing(15);
-        sousMenu.setPadding(new Insets(45,50,0,20));
+        sousMenu.setPadding(new Insets(45, 50, 0, 20));
         menu.getChildren().add(sousMenu);
     }
 
-    public void ajouteMilieu(){
+    public void ajouteMilieu() {
         GridPane gridPane = new GridPane();
-    gridPane.setPadding(new Insets(300, 0, 0, 30));
-        gridPane.setStyle("-fx-border-color: #D9D9D9; -fx-border-width: 3px; -fx-border-radius: 10; -fx-padding: 20px;");
+        gridPane.setPadding(new Insets(300, 0, 0, 30));
+        gridPane.setStyle(
+                "-fx-border-color: #D9D9D9; -fx-border-width: 3px; -fx-border-radius: 10; -fx-padding: 20px;");
         BorderPane.setMargin(gridPane, new Insets(130, 100, 100, 30));
         gridPane.setHgap(30);
         gridPane.setVgap(50);
@@ -196,6 +188,5 @@ public class PageProfilUtilisateur extends BorderPane{
 
         this.setCenter(gridPane);
     }
-
 
 }

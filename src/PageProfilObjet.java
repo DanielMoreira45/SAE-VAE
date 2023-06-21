@@ -1,8 +1,4 @@
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import javafx.animation.ScaleTransition;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -14,9 +10,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -33,11 +26,11 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
-public class PageProfilObjet extends BorderPane{
+public class PageProfilObjet extends BorderPane {
     private AppliVae appli;
     private ConnexionMySQL connexionMySQL;
 
-    public PageProfilObjet(AppliVae appli, ConnexionMySQL connexionMySQL){
+    public PageProfilObjet(AppliVae appli, ConnexionMySQL connexionMySQL) {
         super();
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
@@ -49,32 +42,36 @@ public class PageProfilObjet extends BorderPane{
         BorderPane.setMargin(center, new Insets(80, 80, 80, 80));
     }
 
-    private VBox left(){
+    private VBox left() {
         VBox vbox = new VBox();
         vbox.getChildren().add(image());
         vbox.getChildren().add(image());
         vbox.getChildren().add(image());
         vbox.getChildren().add(image());
-        
+
         vbox.setPadding(new Insets(30, 30, 30, 30));
 
         return vbox;
     }
 
-    private Rectangle image(){
+    private Rectangle image() {
         Rectangle rect = new Rectangle(380, 180);
         rect.setArcHeight(20);
         rect.setArcWidth(20);
-        ImagePattern pattern = new ImagePattern(new Image("file:img/image.png", 280, 180, false, false)); //A modifier pour afficher les images de la BD
+        ImagePattern pattern = new ImagePattern(new Image("file:img/image.png", 280, 180, false, false)); // A modifier
+                                                                                                          // pour
+                                                                                                          // afficher
+                                                                                                          // les images
+                                                                                                          // de la BD
         rect.setFill(pattern);
         VBox.setMargin(rect, new Insets(10, 10, 10, 10));
         return rect;
 
     }
 
-    private GridPane center(){
+    private GridPane center() {
         GridPane gridPane = new GridPane();
-        
+
         gridPane.add(titre(), 0, 0);
         gridPane.add(prix(), 0, 1);
         VBox description = description();
@@ -92,17 +89,16 @@ public class PageProfilObjet extends BorderPane{
         return gridPane;
     }
 
-    private GridPane titre(){
+    private GridPane titre() {
         GridPane gridPane = new GridPane();
         gridPane.setPrefSize(1350, 50);
-        
 
         Text nomObj = new Text("Nom de l'objet");
 
         ImageView imagePP = new ImageView(new Image("file:img/pp.jpeg")); // A modif pour mettre la pp du vedeur
         imagePP.setFitWidth(70);
         imagePP.setFitHeight(70);
-        //mettre l'image de profile un cercle
+        // mettre l'image de profile un cercle
         Circle clip = new Circle(30, 30, 30);
         imagePP.setClip(clip);
 
@@ -112,29 +108,31 @@ public class PageProfilObjet extends BorderPane{
         boutonContacter.setFont(new Font("Verdana", 20));
         boutonContacter.getStyleClass().add("button-without-background");
         boutonContacter.setCursor(Cursor.HAND);
-        boutonContacter.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> { // Animation du bouton qui grandit quand on passe la souris dessus
+        boutonContacter.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> { // Animation du bouton qui grandit quand on
+                                                                             // passe la souris dessus
             ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), boutonContacter);
             scaleTransition.setToX(1.1); // Facteur d'agrandissement horizontal
             scaleTransition.setToY(1.1); // Facteur d'agrandissement vertical
             scaleTransition.play();
         });
-        boutonContacter.addEventHandler(MouseEvent.MOUSE_EXITED, event -> { // Animation du bouton qui reprends sa taille normale quand on enlève la souris
-            ScaleTransition scaleTransitionReverse = new ScaleTransition(Duration.millis(200), boutonContacter); 
+        boutonContacter.addEventHandler(MouseEvent.MOUSE_EXITED, event -> { // Animation du bouton qui reprends sa
+                                                                            // taille normale quand on enlève la souris
+            ScaleTransition scaleTransitionReverse = new ScaleTransition(Duration.millis(200), boutonContacter);
             scaleTransitionReverse.setToX(1); // Retour à la taille d'origine pour l'axe X
             scaleTransitionReverse.setToY(1); // Retour à la taille d'origine pour l'axe Y
             scaleTransitionReverse.play();
         });
 
-        //gridPane.getChildren().addAll(nomObj, imagePP, pseudo, boutonContacter);
+        // gridPane.getChildren().addAll(nomObj, imagePP, pseudo, boutonContacter);
         gridPane.add(nomObj, 1, 1);
-        //pseudo.setAlignment(Pos.CENTER_LEFT);
+        // pseudo.setAlignment(Pos.CENTER_LEFT);
         nomObj.setFont(new Font("Verdana", 20));
         gridPane.add(pseudo, 2, 1);
-        //pseudo.setAlignment(Pos.CENTER_RIGHT);
+        // pseudo.setAlignment(Pos.CENTER_RIGHT);
         pseudo.setFont(new Font("Verdana", 20));
         gridPane.add(imagePP, 3, 1);
         gridPane.add(boutonContacter, 4, 1);
-        //boutonContacter.setAlignment(Pos.CENTER_RIGHT);
+        // boutonContacter.setAlignment(Pos.CENTER_RIGHT);
         boutonContacter.setFont(new Font("Verdana", 20));
 
         ColumnConstraints col0 = new ColumnConstraints();
@@ -150,16 +148,15 @@ public class PageProfilObjet extends BorderPane{
         ColumnConstraints col4 = new ColumnConstraints();
         col4.setPercentWidth(15);
         col4.setHgrow(Priority.ALWAYS);
-        gridPane.getColumnConstraints().addAll(col0,col1,col2,col3,col4);
+        gridPane.getColumnConstraints().addAll(col0, col1, col2, col3, col4);
         RowConstraints row0 = new RowConstraints(5);
         gridPane.getRowConstraints().add(row0);
         gridPane.getStyleClass().add("title");
-        
 
         return gridPane;
     }
 
-    private GridPane prix(){
+    private GridPane prix() {
         GridPane gridPane = new GridPane();
 
         HBox prixMin = new HBox();
@@ -193,7 +190,6 @@ public class PageProfilObjet extends BorderPane{
         gridPane.add(prixBase, 2, 1);
         gridPane.add(prixAct, 3, 1);
 
-
         ColumnConstraints c0 = new ColumnConstraints();
         c0.setPercentWidth(10);
         ColumnConstraints c1 = new ColumnConstraints();
@@ -205,22 +201,22 @@ public class PageProfilObjet extends BorderPane{
         ColumnConstraints c3 = new ColumnConstraints();
         c3.setPercentWidth(30);
         c3.setHalignment(HPos.CENTER);
-        gridPane.getColumnConstraints().addAll(c0,c1,c2,c3);
+        gridPane.getColumnConstraints().addAll(c0, c1, c2, c3);
 
         RowConstraints r0 = new RowConstraints(50);
         gridPane.getRowConstraints().add(r0);
 
-
         return gridPane;
     }
 
-    private VBox description(){
+    private VBox description() {
         VBox vbox = new VBox();
 
         Text titre = new Text("Description");
-        titre.setFont(new Font("Verdana", 20)); 
+        titre.setFont(new Font("Verdana", 20));
 
-        Text desc = new Text("IZEBFOIBEFoiUEBFOIUEBFIOUBZEFOIBIUFB IEUFIUEBIBiubfezifbuziebfi zebfibeifbziefbizebfizebfibefchnbduvbsz uioeqyyyvboiqrb IZEBFO IBEFoiU EBFOIUE BFIOUBZE FOIBIUFBIEUFIUE BIBiub fezifbuz iebfizebfibeifbziefbizeb fizebfibefchnbduvbszui oeqyyyvboiq rbIZEBFOIBEFoiUEBFOIUEBFIOUBZEFOIBI UFBIEUFIUEBIB iubfezifbuzi ebfiz ebfibeifbziefbizebfizebfibefchnbduvbszuioeq yyyvboiqrb");
+        Text desc = new Text(
+                "IZEBFOIBEFoiUEBFOIUEBFIOUBZEFOIBIUFB IEUFIUEBIBiubfezifbuziebfi zebfibeifbziefbizebfizebfibefchnbduvbsz uioeqyyyvboiqrb IZEBFO IBEFoiU EBFOIUE BFIOUBZE FOIBIUFBIEUFIUE BIBiub fezifbuz iebfizebfibeifbziefbizeb fizebfibefchnbduvbszui oeqyyyvboiq rbIZEBFOIBEFoiUEBFOIUEBFIOUBZEFOIBI UFBIEUFIUEBIB iubfezifbuzi ebfiz ebfibeifbziefbizebfizebfibefchnbduvbszuioeq yyyvboiqrb");
         desc.setFont(new Font("Verdana", 16));
         desc.setWrappingWidth(1000);
         desc.setTextAlignment(TextAlignment.JUSTIFY);
@@ -230,22 +226,23 @@ public class PageProfilObjet extends BorderPane{
         return vbox;
     }
 
-    private VBox encheres(){
+    private VBox encheres() {
         VBox vbox = new VBox();
         Text titre = new Text("Enchères effectuées");
-        titre.setFont(new Font("Verdana", 20)); 
+        titre.setFont(new Font("Verdana", 20));
         VBox.setMargin(titre, new Insets(0, 0, 20, 0));
 
         TilePane tilePane = new TilePane();
-        for (int i = 0; i < 8; i++){
+        for (int i = 0; i < 8; i++) {
             HBox laCase = new HBox();
-            laCase.setStyle("-fx-background-color: #DDDDDD; -fx-border-color:transparent; -fx-border-radius: 0.8em; -fx-background-radius: 0.8em;");
-            laCase.setPadding(new Insets(5,5,5,5));
-            
+            laCase.setStyle(
+                    "-fx-background-color: #DDDDDD; -fx-border-color:transparent; -fx-border-radius: 0.8em; -fx-background-radius: 0.8em;");
+            laCase.setPadding(new Insets(5, 5, 5, 5));
+
             ImageView imagePP = new ImageView(new Image("file:img/pp.jpeg")); // A modif pour mettre la pp du vedeur
             imagePP.setFitWidth(70);
             imagePP.setFitHeight(70);
-            //mettre l'image de profile un cercle
+            // mettre l'image de profile un cercle
             Circle clip = new Circle(15, 15, 15);
             imagePP.setClip(clip);
 
@@ -270,23 +267,25 @@ public class PageProfilObjet extends BorderPane{
         return vbox;
     }
 
-    private HBox encherir(){
+    private HBox encherir() {
         HBox hbox = new HBox();
-        TextField textField = new TextField(); 
+        TextField textField = new TextField();
         textField.setPromptText("Votre montant en €");
         textField.getStyleClass().add("text-field-montant");
 
         Button bouton = new Button("ENCHERIR >");
         bouton.setCursor(Cursor.HAND);
         bouton.getStyleClass().add("button-encherir");
-        bouton.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> { // Animation du bouton qui grandit quand on passe la souris dessus
+        bouton.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> { // Animation du bouton qui grandit quand on passe la
+                                                                    // souris dessus
             ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), bouton);
             scaleTransition.setToX(1.1); // Facteur d'agrandissement horizontal
             scaleTransition.setToY(1.1); // Facteur d'agrandissement vertical
             scaleTransition.play();
         });
-        bouton.addEventHandler(MouseEvent.MOUSE_EXITED, event -> { // Animation du bouton qui reprends sa taille normale quand on enlève la souris
-            ScaleTransition scaleTransitionReverse = new ScaleTransition(Duration.millis(200), bouton); 
+        bouton.addEventHandler(MouseEvent.MOUSE_EXITED, event -> { // Animation du bouton qui reprends sa taille normale
+                                                                   // quand on enlève la souris
+            ScaleTransition scaleTransitionReverse = new ScaleTransition(Duration.millis(200), bouton);
             scaleTransitionReverse.setToX(1); // Retour à la taille d'origine pour l'axe X
             scaleTransitionReverse.setToY(1); // Retour à la taille d'origine pour l'axe Y
             scaleTransitionReverse.play();
@@ -294,6 +293,5 @@ public class PageProfilObjet extends BorderPane{
 
         hbox.getChildren().addAll(textField, bouton);
         return hbox;
-    } 
+    }
 }
- 

@@ -80,6 +80,8 @@ public class AppliVae extends Application{
 
     private PageProfilObjet pageProfilObjet;
 
+    private VueAdminGestionUtilisateurs vueAdminGestionUtilisateurs;
+
 
 
     /**
@@ -105,6 +107,7 @@ public class AppliVae extends Application{
         this.pageProfilUtilisateur = new PageProfilUtilisateur(this, this.connexionMySQL);
         this.navBar = new NavBar(this, this.connexionMySQL);
         this.pageProfilObjet = new PageProfilObjet(this, this.connexionMySQL);
+        this.vueAdminGestionUtilisateurs = new VueAdminGestionUtilisateurs(this.connexionMySQL);
         this.root = (BorderPane) this.scene.getRoot();
     }
 
@@ -160,10 +163,8 @@ public class AppliVae extends Application{
         this.root.setCenter(this.pageProfilObjet);
     }
 
-    public void modeProfilObjet(){
-        scene.getStylesheets().setAll("styleNavBar.css", "stylePageProfilObjet.css");
-        this.root.setTop(this.navBar);
-        this.root.setCenter(this.pageProfilObjet);
+    public void modeAdministrateur(){
+        this.root.setCenter(this.vueAdminGestionUtilisateurs);
     }
 
     public void setUtilisateurActuel(Utilisateur utilisateur){
