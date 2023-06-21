@@ -270,13 +270,13 @@ public boolean valideDate() {
      */
     private void initComboBoxCategorie() {
         this.choixCategorie = new ComboBox<>();
-        this.choixCategorie.getItems().addAll(Categorie.ACCESSOIRE, Categorie.CHAUSSURE,
-                Categorie.ELECTROMENAGER, Categorie.INFORMATIQUE,
-                Categorie.JEUX, Categorie.LIVRE,
-                Categorie.MEUBLE, Categorie.MUSIQUE,
-                Categorie.OUTIL, Categorie.SPORT,
-                Categorie.USTENSILECUISINE, Categorie.VEHICULE,
-                Categorie.VETEMENT);
+        this.choixCategorie.getItems().addAll("Vêtement", "Chaussure",
+               "Electromenager", "Informatique",
+                "Jeux", "Livre",
+                "Meuble", "Musique",
+                "Outil", "Sport",
+                "Ustensile Cuisine", "Vehicule","Accessoire"
+                );
         this.choixCategorie.setStyle(
                 "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
     }

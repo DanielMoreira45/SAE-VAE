@@ -38,8 +38,9 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
         String marque = vue.getMarque();
         Double prixMin = vue.getPrixMin();
         Double prixBase = vue.getprixBase();
-        this.dateDeBut = vue.dateDebutToString().replace("-", "/");
-        this.dateFin = vue.dateFinToString().replace("-", "/");;
+            this.dateDeBut = vue.dateDebutToString().replace("-", "/");
+            this.dateFin = vue.dateFinToString().replace("-", "/");
+        System.out.println(cat);
         String desc = vue.getDesc();
         List<Photo> lesPhotos = vue.getPhotos();
         String titrePh = vue.getTitre();
@@ -86,7 +87,7 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
                 }
                 if (vue.valideDate() && prixMin < prixBase) {
                     try {
-                        this.obj = new Objet(objetBD.maxIdObjet() + 1, desc, titreOb, lesPhotos, vue.getVendeur(), 1);
+                        this.obj = new Objet(objetBD.maxIdObjet() + 1, desc, titreOb, lesPhotos, vue.getVendeur(), Categorie.getIntCategorie(cat));
                         objetBD.insereObjet(obj);
                         vue.popUpObjetCo(titreOb);
                         for (Photo photos : lesPhotos) {
