@@ -1,4 +1,5 @@
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,9 +24,10 @@ public class TouteLesVentes {
      * Permet d'avoir toute les Ventes de la base de donnée
      * 
      * @return Une liste de vente
-     * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
+     * @throws SQLException   Si il y a un probleme avec l'execution des lignes sql
+     * @throws ParseException Si il y a un probleme avec la date des ventes
      */
-    public List<Vente> toutVente() throws SQLException {
+    public List<Vente> toutVente() throws SQLException, ParseException {
         return venteBD.touteLesVentes();
     }
 
@@ -56,9 +58,10 @@ public class TouteLesVentes {
      * 
      * @param leStatus le status particulier
      * @return la liste de vente avec ce status
-     * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
+     * @throws SQLException   Si il y a un probleme avec l'execution des lignes sql
+     * @throws ParseException Si il y a un probleme avec la date des ventes
      */
-    public List<Vente> trieVenteParStatus(int leStatus) throws SQLException {
+    public List<Vente> trieVenteParStatus(int leStatus) throws SQLException, ParseException {
         return venteBD.venteParStatus(leStatus);
     }
 
@@ -67,9 +70,10 @@ public class TouteLesVentes {
      * 
      * @param categorie la categorie particuliere
      * @return la liste de vente dans cette categorie
-     * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
+     * @throws SQLException   Si il y a un probleme avec l'execution des lignes sql
+     * @throws ParseException Si il y a un probleme avec la date des ventes
      */
-    public List<Vente> trieVenteParCategorie(int categorie) throws SQLException {
+    public List<Vente> trieVenteParCategorie(int categorie) throws SQLException, ParseException {
         return venteBD.venteParCategorie(categorie);
     }
 
@@ -77,9 +81,10 @@ public class TouteLesVentes {
      * Permet de faire la liste des ventes trier par le nom des objets
      * 
      * @return la liste de vente trier par le nom de l'objet
-     * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
+     * @throws SQLException   Si il y a un probleme avec l'execution des lignes sql
+     * @throws ParseException Si il y a un probleme avec la date des ventes
      */
-    public List<Vente> trieVenteParNomObjet() throws SQLException {
+    public List<Vente> trieVenteParNomObjet() throws SQLException, ParseException {
         List<Vente> liste = venteBD.touteLesVentes();
         Collections.sort(liste, new ComparatorVenteNom());
         return liste;
@@ -89,9 +94,10 @@ public class TouteLesVentes {
      * Permet de faire la liste des ventes trier par la date de fin
      * 
      * @return la liste de vente trier par la date de fin la plus proche
-     * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
+     * @throws SQLException   Si il y a un probleme avec l'execution des lignes sql
+     * @throws ParseException Si il y a un probleme avec la date des ventes
      */
-    public List<Vente> trieVenteParDate() throws SQLException {
+    public List<Vente> trieVenteParDate() throws SQLException, ParseException {
         List<Vente> liste = venteBD.touteLesVentes();
         Collections.sort(liste, new ComparatorVenteDateFin());
         return liste;
