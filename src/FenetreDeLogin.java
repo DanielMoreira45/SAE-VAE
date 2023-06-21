@@ -44,7 +44,7 @@ public class FenetreDeLogin extends GridPane{
         this.setHgap(10);
         this.setVgap(10);
         //création de textField
-        this.email.setPromptText("Entrez l'email");
+        this.email.setPromptText("Entrez l'email ou le pseudo");
         this.mdp.setPromptText("Entrer le mot de passe");
         //on les place dans le gridPane
         this.add(this.email,50,30);
