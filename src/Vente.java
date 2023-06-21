@@ -54,12 +54,14 @@ public class Vente {
      *                        forme est : dd/MM/yy:hh/mm/ss
      */
     public Vente(int idVente, Double prixBase, Double prixMin, String debutVe, String finVe, int status, Objet objetVente) throws ParseException {
-        SimpleDateFormat lecteur = new SimpleDateFormat("dd/MM/yy:HH/mm/ss");
+        SimpleDateFormat lecteur = new SimpleDateFormat("yyyy/MM/dd:hh/mm/ss");
         this.idVente = idVente;
         this.prixBase = prixBase;
         this.prixMin = prixMin;
-        this.debutVe = lecteur.parse(debutVe);
         this.finVe = lecteur.parse(finVe);
+        this.debutVe = lecteur.parse(debutVe);
+        System.out.println(this.finVe);
+        System.out.println(this.debutVe);
         this.status = status;
         this.objetVente = objetVente;
         this.encheres = new ArrayList<>();
@@ -91,6 +93,8 @@ public class Vente {
     public Double getPrixBase() {
         return this.prixBase;
     }
+
+
 
     /**
      * Setter prixBase
@@ -224,4 +228,5 @@ public class Vente {
         this.encheres.add(nouvelleEnchere);
     }
 }
+
  
