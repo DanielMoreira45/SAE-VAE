@@ -1,9 +1,6 @@
 import java.sql.SQLException;
 import java.text.ParseException;
-<<<<<<< src/TouteLesVentes.java
-=======
 import java.util.ArrayList;
->>>>>>> src/TouteLesVentes.java
 import java.util.Collections;
 import java.util.List;
 
@@ -118,6 +115,7 @@ public class TouteLesVentes {
      */
     public List<Vente> venteSansEnchere() throws SQLException, ParseException {
         return venteBD.venteSansEnchere();
+    }
 
     /**
      *Permet de trouve une liste de vente via le nom de l'objet
