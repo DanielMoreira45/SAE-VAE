@@ -108,10 +108,10 @@ public class FenetreDeLogin extends GridPane{
         ToggleButton voirMdp = new ToggleButton();
         voirMdp.setCursor(Cursor.HAND);
         voirMdp.setStyle("-fx-background-color: transparent;");
-        ImageView oeil = new ImageView("oeil.png");
+        ImageView oeil = new ImageView("file:img/oeil.png");
         oeil.setFitWidth(20);
         oeil.setFitHeight(20);
-        ImageView oeilBarre = new ImageView("oeilBarre.png");
+        ImageView oeilBarre = new ImageView("file:img/oeilBarre.png");
         oeilBarre.setFitWidth(20);
         oeilBarre.setFitHeight(20);
         voirMdp.setGraphic(oeil);
