@@ -139,7 +139,8 @@ public class AppliVae extends Application{
         scene.getStylesheets().setAll("styleNavBar.css");
         scene.getStylesheets().add("styleCoInsc.css");
         this.root.setTop(this.navBar);
-        this.root.setCenter(this.pageAccueil);
+        // this.root.setCenter(this.pageAccueil);
+        this.root.setCenter(new VueAdminGestionUtilisateurs(this.connexionMySQL));
         
     }
 
