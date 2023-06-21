@@ -1,5 +1,6 @@
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -52,6 +53,8 @@ public class CaseProfil extends BorderPane{
     private VBox getLesBoutonsProfil() {
         Button supprimer = new Button("Supprimer");
         Button desactiver = this.utilisateur.estActive() ? new Button("Désactiver") : new Button("Activer");
+        desactiver.setCursor(Cursor.HAND);
+        supprimer.setCursor(Cursor.HAND);
         supprimer.setStyle("-fx-background-color : #ff9292; -fx-border-radius: 0.8em; -fx-background-radius : 0.8em; -fx-effect: dropshadow(gaussian, grey, 8, 0, 1, 1);");
         desactiver.setStyle("-fx-background-color : #6a6a6a; -fx-border-radius: 0.8em; -fx-background-radius : 0.8em; -fx-effect: dropshadow(gaussian, grey, 8, 0, 1, 1);");
         VBox boiteBoutonsGestion = new VBox(10, supprimer, desactiver);
