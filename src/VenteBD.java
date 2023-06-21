@@ -14,12 +14,16 @@ import java.util.List;
  */
 public class VenteBD {
     private ConnexionMySQL laConnexionMySQL;
+    private DateTimeFormatter inputFormatter;
+    private DateTimeFormatter outputFormatter;
 
     /**
      * Default constructor
      */
     public VenteBD(ConnexionMySQL laConnexionMySQL) {
         this.laConnexionMySQL = laConnexionMySQL;
+        this.inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+        this.outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yy:HH/mm/ss");
     }
 
     public void insereVente(Vente v) throws SQLException {
@@ -50,8 +54,7 @@ public class VenteBD {
                 "SELECT idob,idve,idut,idst,prixbase,prixmin,debutve,finve,nomob,descriptionob FROM VENTE NATURAL JOIN OBJET WHERE idcat = ? order by idob, idve,idut, idst");
         s.setInt(1, categorie);
         ResultSet rs = s.executeQuery();
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yy:HH/mm/ss");
+
         List<Vente> ventes = new ArrayList<Vente>();
         while (rs.next()) {
             int idob = rs.getInt(1);
@@ -59,17 +62,17 @@ public class VenteBD {
             int idst = rs.getInt(4);
             Double prixbase = rs.getDouble(5);
             Double prixmin = rs.getDouble(6);
-            
+
             Timestamp debutVe = new Timestamp(rs.getDate(7).getTime());
-            LocalDateTime dateTimeDebut = LocalDateTime.parse(debutVe.toString(), inputFormatter);
-            String debutVeString = dateTimeDebut.format(outputFormatter);
+            LocalDateTime dateTimeDebut = LocalDateTime.parse(debutVe.toString(), this.inputFormatter);
+            String debutVeString = dateTimeDebut.format(this.outputFormatter);
             Timestamp finVe = new Timestamp(rs.getDate(8).getTime());
-            LocalDateTime dateTimeFin = LocalDateTime.parse(finVe.toString(), inputFormatter);
-            String finVeString = dateTimeFin.format(outputFormatter);
-            
+            LocalDateTime dateTimeFin = LocalDateTime.parse(finVe.toString(), this.inputFormatter);
+            String finVeString = dateTimeFin.format(this.outputFormatter);
+
             Objet ob = obBD.objetParId(idob);
             Vente newVente = new Vente(idve, prixbase, prixmin, debutVeString, finVeString, idst,
-            ob);
+                    ob);
             ob.setVente(newVente);
             ventes.add(newVente);
         }
@@ -83,24 +86,22 @@ public class VenteBD {
         ResultSet rs = s.executeQuery(
                 "SELECT idcat,idob,idve,idut,idst,prixbase,prixmin,debutve,finve,nomob,descriptionob FROM VENTE NATURAL JOIN OBJET order by idcat, idob, idve, idut, idst;");
         List<Vente> ventes = new ArrayList<Vente>();
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yy:HH/mm/ss");
         while (rs.next()) {
             int idob = rs.getInt(2);
             int idve = rs.getInt(3);
             int idst = rs.getInt(5);
             Double prixbase = rs.getDouble(6);
             Double prixmin = rs.getDouble(7);
-            
+
             Timestamp debutVe = new Timestamp(rs.getDate(8).getTime());
-            LocalDateTime dateTimeDebut = LocalDateTime.parse(debutVe.toString(), inputFormatter);
-            String debutVeString = dateTimeDebut.format(outputFormatter);
+            LocalDateTime dateTimeDebut = LocalDateTime.parse(debutVe.toString(), this.inputFormatter);
+            String debutVeString = dateTimeDebut.format(this.outputFormatter);
             Timestamp finVe = new Timestamp(rs.getDate(9).getTime());
-            LocalDateTime dateTimeFin = LocalDateTime.parse(finVe.toString(), inputFormatter);
-            String finVeString = dateTimeFin.format(outputFormatter);
+            LocalDateTime dateTimeFin = LocalDateTime.parse(finVe.toString(), this.inputFormatter);
+            String finVeString = dateTimeFin.format(this.outputFormatter);
 
             Objet ob = obBD.objetParId(idob);
-            Vente newVente = new Vente(idve, prixbase, prixmin, debutVeString, finVeString, idst,ob);
+            Vente newVente = new Vente(idve, prixbase, prixmin, debutVeString, finVeString, idst, ob);
             ob.setVente(newVente);
             ventes.add(newVente);
         }
@@ -114,8 +115,6 @@ public class VenteBD {
                 "SELECT idve, prixbase, prixmin, debutve, finve, idob FROM VENTE WHERE idst = ? order by idve");
         s.setInt(1, status);
         ResultSet rs = s.executeQuery();
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yy:HH/mm/ss");
         List<Vente> ventes = new ArrayList<Vente>();
         while (rs.next()) {
             int idve = rs.getInt(1);
@@ -123,11 +122,11 @@ public class VenteBD {
             Double prixmin = rs.getDouble(3);
 
             Timestamp debutVe = new Timestamp(rs.getDate(4).getTime());
-            LocalDateTime dateTimeDebut = LocalDateTime.parse(debutVe.toString(), inputFormatter);
-            String debutVeString = dateTimeDebut.format(outputFormatter);
+            LocalDateTime dateTimeDebut = LocalDateTime.parse(debutVe.toString(), this.inputFormatter);
+            String debutVeString = dateTimeDebut.format(this.outputFormatter);
             Timestamp finVe = new Timestamp(rs.getDate(5).getTime());
-            LocalDateTime dateTimeFin = LocalDateTime.parse(finVe.toString(), inputFormatter);
-            String finVeString = dateTimeFin.format(outputFormatter);
+            LocalDateTime dateTimeFin = LocalDateTime.parse(finVe.toString(), this.inputFormatter);
+            String finVeString = dateTimeFin.format(this.outputFormatter);
             int idob = rs.getInt(6);
 
             Objet ob = obBD.objetParId(idob);
@@ -143,7 +142,7 @@ public class VenteBD {
                 "SELECT count(idst) FROM VENTE WHERE idst = ? group by idst");
         s.setInt(1, status);
         ResultSet rs = s.executeQuery();
-        if (rs.next()){
+        if (rs.next()) {
             return rs.getInt(1);
         }
         return 0;
@@ -154,10 +153,32 @@ public class VenteBD {
                 "SELECT count(idcat) FROM VENTE NATURAL JOIN OBJET WHERE idcat = ? group by idcat");
         s.setInt(1, categorie);
         ResultSet rs = s.executeQuery();
-        if (rs.next()){
+        if (rs.next()) {
             return rs.getInt(1);
         }
         return 0;
     }
 
+    public Vente venteParId(int idve) throws SQLException, ParseException {
+        ObjetBD obBD = new ObjetBD(laConnexionMySQL);
+        Statement s = this.laConnexionMySQL.createStatement();
+        ResultSet rs = s
+                .executeQuery("SELECT prixbase, prixmin, debutve, finve, idob, idst FROM VENTE WHERE idve = " + idve);
+        rs.next();
+        Double prixbase = rs.getDouble(1);
+        Double prixmin = rs.getDouble(2);
+
+        Timestamp debutVe = new Timestamp(rs.getDate(3).getTime());
+        LocalDateTime dateTimeDebut = LocalDateTime.parse(debutVe.toString(), this.inputFormatter);
+        String debutVeString = dateTimeDebut.format(this.outputFormatter);
+        Timestamp finVe = new Timestamp(rs.getDate(4).getTime());
+        LocalDateTime dateTimeFin = LocalDateTime.parse(finVe.toString(), this.inputFormatter);
+        String finVeString = dateTimeFin.format(this.outputFormatter);
+        int idob = rs.getInt(5);
+        int idst = rs.getInt(6);
+        Objet ob = obBD.objetParId(idob);
+        Vente ven = new Vente(idve, prixbase, prixmin, debutVeString, finVeString, idst, ob);
+        ob.setVente(ven);
+        return ven;
+    }
 }
