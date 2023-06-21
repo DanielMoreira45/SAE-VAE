@@ -1,4 +1,5 @@
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,8 +24,12 @@ import javafx.scene.text.TextAlignment;
 
 public class CaseVente extends HBox {
     private Vente vente;
+    private AppliVae appli;
+    private ConnexionMySQL connexionMySQL;
     
-    public CaseVente(Vente vente) {
+    public CaseVente(Vente vente, AppliVae appli, ConnexionMySQL connexionMySQL) {
+        this.appli = appli;
+        this.connexionMySQL = connexionMySQL;
         this.vente = vente;
         this.setStyle();
         this.setImage();
@@ -77,7 +82,7 @@ public class CaseVente extends HBox {
     }
 
     private HBox setBas() {
-        HBox bouton = new HBox(this.setBoutonVoirAnnonce(), this.setBoutonEncherir());
+        HBox bouton = new HBox(this.setBoutonEncherir());
         bouton.setSpacing(20);
 
         HBox cercleBox = new HBox(this.setCercle());
@@ -88,19 +93,13 @@ public class CaseVente extends HBox {
         return bas;
     }
 
-    private Button setBoutonVoirAnnonce() {
-        Button voirAnnonce = new Button("Voir l'annonce");
-        voirAnnonce.setPadding(new Insets(10));
-        voirAnnonce.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, null, null)));
-        voirAnnonce.setBorder(new Border(new BorderStroke(Color.web("#D9D9D9"), BorderStrokeStyle.SOLID, new CornerRadii(16), new BorderWidths(2))));
-        return voirAnnonce;
-    }
-
     private Button setBoutonEncherir() {
         Button encherir = new Button("Enchérir");
         encherir.setPadding(new Insets(10));
         encherir.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, null, null)));
         encherir.setBorder(new Border(new BorderStroke(Color.web("#D9D9D9"), BorderStrokeStyle.SOLID, new CornerRadii(16), new BorderWidths(2))));
+        encherir.setOnAction(new ControleurCaseVente(this.appli, this.connexionMySQL));
+        encherir.setCursor(Cursor.HAND);
         return encherir;
     }
 
