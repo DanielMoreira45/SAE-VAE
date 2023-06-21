@@ -6,18 +6,24 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
  */
 public class EncherirBD {
     private ConnexionMySQL laConnexionMySQL;
+    private DateTimeFormatter inputFormatter;
+    private DateTimeFormatter outputFormatter;
 
     /**
      * Default constructor
      */
     public EncherirBD(ConnexionMySQL laConnexionMySQL) {
         this.laConnexionMySQL = laConnexionMySQL;
+        inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+        DateTimeFormatter.ofPattern("yyyy/MM/dd:hh/mm/ss");
     }
 
     public void insereEnchere(Enchere e) throws SQLException {
@@ -41,11 +47,8 @@ public class EncherirBD {
     }
 
     public Enchere meilleurEnchere(int idve) throws SQLException, ParseException {
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd:hh/mm/ss");
         UtilisateurBD utilBD = new UtilisateurBD(laConnexionMySQL);
         VenteBD venBD = new VenteBD(laConnexionMySQL);
-
         Statement s = this.laConnexionMySQL.createStatement();
         ResultSet rs = s.executeQuery(
                 "select idve, idut, dateheure, montant, prixbase, prixmin, debutve, finve, idob, idst  from ENCHERIR natural join VENTE where idve = "
@@ -61,4 +64,31 @@ public class EncherirBD {
         Vente ve = venBD.venteParId(idve);
         return new Enchere(newUtiliAcheteur, ve, montant, dateHeureString);
     }
+
+    public List<Enchere> EnchereParIdVeUt(int idve, int idut) throws SQLException, ExceptionEnchereExistePas, ParseException{
+        UtilisateurBD utilBD = new UtilisateurBD(laConnexionMySQL);
+        VenteBD venteBD = new VenteBD(laConnexionMySQL);
+        PreparedStatement s = this.laConnexionMySQL.preparedStatement("select dateheure, montant from ENCHERIR natural join VENTE where idve = ? and idut = ?");
+        s.setInt(1, idve);
+        s.setInt(2, idut);
+        ResultSet rs = s.executeQuery();
+        List<Enchere> liste = new ArrayList<Enchere>();
+
+        while (rs.next()){
+            Timestamp dateHeure = new Timestamp(rs.getDate(1).getTime());
+            LocalDateTime dateTimeDateHeure = LocalDateTime.parse(dateHeure.toString(), inputFormatter);
+            String dateHeureString = dateTimeDateHeure.format(outputFormatter);
+            Double montant = rs.getDouble(2);
+
+            Utilisateur util = utilBD.utilisateurParId(idut);
+            Vente ven = venteBD.venteParId(idve);
+            Enchere enchere = new Enchere(util, ven, montant, dateHeureString);
+            liste.add(enchere);
+        }
+        if(liste.isEmpty()){
+            throw new ExceptionEnchereExistePas();
+        }
+        return liste;
+    }
+
 }
