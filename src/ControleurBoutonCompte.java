@@ -7,12 +7,12 @@ import javafx.scene.control.Button;
  */
 public class ControleurBoutonCompte implements EventHandler<ActionEvent> {
 
-    private FenetrePageUtilisateur p;
+    private PageProfilUtilisateur vue;
     /**
      * @param p vue du jeu
      */
-    public ControleurBoutonCompte(FenetrePageUtilisateur p) {
-        this.p = p;
+    public ControleurBoutonCompte(PageProfilUtilisateur vue, AppliVae appliVae, ConnexionMySQL connexionMySQL) {
+        this.vue = vue;
     }
 
     /**
@@ -25,14 +25,14 @@ public class ControleurBoutonCompte implements EventHandler<ActionEvent> {
         Button bouton = (Button) (actionEvent.getSource());
 
         if(bouton.getText().contains("Informations Personnelles")){
-            this.p.afficherInfoPerso();
+            this.vue.afficherInfoPerso();
         }
 
-        if(bouton.getText().contains("Changer de mot de passe")){
-            this.p.afficherChangerMdp();
+        if(bouton.getText().contains("Changer de Mot de Passe")){
+            this.vue.afficherChangerMdp();
         }
-        if(bouton.getText().contains("Paiment")){
-            this.p.afficherPaiments();
+        if(bouton.getText().contains("Paiements")){
+            this.vue.afficherPaiements();
         }
     }
 }
