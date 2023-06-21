@@ -1,3 +1,6 @@
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.geometry.Insets;
@@ -7,19 +10,55 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class VueEncheresUtilisateur extends BorderPane {
+    private AppliVae appli;
+    // private ConnexionMySQL connexionMySQL; // !!!!!!!!!!!!!!!
     private ScrollPane scrollPaneEncheres;
-    // private List<> lesEncheresUtilisateur;
+    // private TouteLesVentes toutesLesVentes; // !!!!!!!!!!!!!
+    private List<HBox> lesVentes; // à supprimer à la fin !!!!!!!!!!!
     
     /**
      * Constructeur permettant de créer une page listant les enchères d'un utilisateur.
      */
-    public VueEncheresUtilisateur() {
+    public VueEncheresUtilisateur() { // (AppliVae appli, ConnexionMySQL connexionMySQL)
+        super();
+
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // this.appli = appli;
+        // this.connexionMySQL = connexionMySQL;
+        // this.toutesLesVentes = new TouteLesVentes(this.connexionMySQL);
+        // try {
+        //     this.lesVentes = this.toutesLesVentes.toutVente();
+        // } catch (SQLException | ParseException e) {
+        //     e.printStackTrace();
+        // }
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        // bloc à supprimer à la fin !!!!!!!!!!!!!!
+        this.lesVentes = new ArrayList<>();
+        while (this.lesVentes.size() < 20) {
+            HBox temp = new HBox(10);
+            temp.setStyle("-fx-background-color: lightgrey;");
+            temp.setPrefHeight(100);
+            temp.getChildren().add(new Text("venteTest"));
+            this.lesVentes.add(temp);
+        }
+        // !!!!!!!!!!!!!!!!!!!!
+
         Text titre = this.initTitrePrincipal();
         BorderPane partieCentrale = this.getPartieCentrale();
         this.setTop(titre);
@@ -28,6 +67,7 @@ public class VueEncheresUtilisateur extends BorderPane {
         BorderPane.setMargin(titre, new Insets(20));
         BorderPane.setMargin(partieCentrale, new Insets(0, 18, 0, 18));
         BorderPane.setAlignment(partieCentrale, Pos.TOP_CENTER);
+        this.majLesArticles();
     }
 
     /**
@@ -48,7 +88,7 @@ public class VueEncheresUtilisateur extends BorderPane {
         this.scrollPaneEncheres = new ScrollPane();
         this.scrollPaneEncheres.setStyle("-fx-background: #fdfdfd; -fx-border-color: #dddddd; -fx-border-radius : 0.8em; -fx-background-radius: 0.8em;");
         this.scrollPaneEncheres.setFitToWidth(true);
-        this.scrollPaneEncheres.setPadding(new Insets(0, 20, 0, 20));
+        this.scrollPaneEncheres.setPadding(new Insets(5, 20, 5, 20));
     }
 
     /**
@@ -57,9 +97,9 @@ public class VueEncheresUtilisateur extends BorderPane {
      */
     private BorderPane getPartieCentrale() {
         BorderPane leCentre = new BorderPane();
-        leCentre.setPadding(new Insets(10));
+        leCentre.setPadding(new Insets(5, 60, 30, 60));
         this.initScrollPaneEncheres();
-        HBox boiteRecherche = this.getBoiteBarreDeRecherche();
+        HBox boiteRecherche = this.getElemsRecherche();
         BorderPane.setAlignment(boiteRecherche, Pos.CENTER);
         BorderPane.setAlignment(this.scrollPaneEncheres, Pos.TOP_CENTER);
         leCentre.setTop(boiteRecherche);
@@ -110,4 +150,64 @@ public class VueEncheresUtilisateur extends BorderPane {
         boiteRecherche.setStyle("-fx-background-color: #b5d6fd; -fx-background-radius: 0.8em; -fx-border-color : black; -fx-border-radius: 0.8em;");
         return boiteRecherche;
     }
+
+    private Button setBoutonInverse() {
+        Button inverse = new Button("Inverse");
+        inverse.setMaxHeight(40);
+        inverse.setFont(Font.font("Valera", 12));
+        inverse.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
+        inverse.setBorder(new Border(new BorderStroke(Color.valueOf("black"), BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(1))));
+        // inverse.setOnAction(new ControleurTrier(this, this.toutesLesVentes)); // À décommenter à la fin !!!!!!
+        return inverse;
+    }
+
+    private HBox getElemsRecherche() {
+        HBox lesElems = new HBox(10);
+        lesElems.setMaxWidth(465);
+        lesElems.setPadding(new Insets(10));
+        lesElems.getChildren().addAll(this.getBoiteBarreDeRecherche(), this.setBoutonInverse());
+        return lesElems;
+    }
+
+    /**
+     * Méthode permettant de mettre à jour le ScrollPane contenant les ventes.
+     */
+    public void majLesArticles() {
+        VBox toutesLesVentes = new VBox(10);
+        toutesLesVentes.setPadding(new Insets(10, 0, 10, 0));
+        toutesLesVentes.setStyle("-fx-background-color: transparent;");
+        if (this.lesVentes.isEmpty()) {
+            Text texteListeVide = new Text("Vous avez participé à aucune enchère.");
+            texteListeVide.setFont(Font.font("Arial", 18));
+            toutesLesVentes.setPadding(new Insets(15, 0, 0, 0));
+            toutesLesVentes.getChildren().add(texteListeVide);
+        }
+        else {
+            for (int i = 0; i < this.lesVentes.size(); i++) {
+                // toutesLesVentes.getChildren().add(new CaseVente(this.lesVentes.get(i), this.appli, this.connexionMySQL));
+                toutesLesVentes.getChildren().add(this.lesVentes.get(i)); // à retirer à la fin !!!!!!!!!!!!
+            }
+        }
+        this.scrollPaneEncheres.setContent(toutesLesVentes);
+    }
+
+    // /**
+    //  * Méthode permettant d'initialiser/modifier l'attribut "this.lesVentes"
+    //  * @param lesVentes
+    //  */
+    // public void setLesVentes(List<Vente> lesVentes) {
+    //     this.lesVentes = lesVentes;
+    // }
+
+    // /**
+    //  * Méthode permettan d'obtenir toutes les ventes.
+    //  * @return
+    //  */
+    // public TouteLesVentes getToutesLesVentes() {
+    //     return this.toutesLesVentes;
+    // }
+
+    // public List<Vente> getLesVentes() {
+    //     return this.lesVentes;
+    // }
 }
