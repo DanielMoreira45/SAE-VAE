@@ -106,6 +106,7 @@ public class VueAdminGestionUtilisateurs extends BorderPane {
         this.boutonGestionUtil = new Button("Gestion des utilisateurs   >");
         this.boutonGestionUtil.setPadding(new Insets(10));
         this.boutonGestionUtil.getStyleClass().add("buttonBleu");
+        this.boutonGestionUtil.setCursor(Cursor.HAND);
     }
 
     /**
@@ -115,6 +116,7 @@ public class VueAdminGestionUtilisateurs extends BorderPane {
         this.boutonGestionVentes = new Button("Gestion des ventes          >");
         this.boutonGestionVentes.setPadding(new Insets(10));
         this.boutonGestionVentes.getStyleClass().add("buttonBlanc");
+        this.boutonGestionVentes.setCursor(Cursor.HAND);
     }
 
     /**
@@ -124,6 +126,7 @@ public class VueAdminGestionUtilisateurs extends BorderPane {
         this.boutonRecapitulatifs = new Button("Récapitulatifs                   >");
         this.boutonRecapitulatifs.setPadding(new Insets(10));
         this.boutonRecapitulatifs.getStyleClass().add("buttonBlanc");
+        this.boutonRecapitulatifs.setCursor(Cursor.HAND);
     }
 
     /**
