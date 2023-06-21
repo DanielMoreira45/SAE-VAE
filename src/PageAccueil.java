@@ -33,6 +33,7 @@ public class PageAccueil extends VBox {
     private TouteLesVentes toutesLesVentes;
     private List<Vente> lesVentes;
     private Text titreCat;
+    private String cat;
 
     /*
      * @Override
@@ -60,6 +61,7 @@ public class PageAccueil extends VBox {
 
     public PageAccueil(AppliVae appli, ConnexionMySQL connexionMySQL) {
         super();
+        this.cat = "Tout type de produit";
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
         this.toutesLesVentes = new TouteLesVentes(this.connexionMySQL);
@@ -73,12 +75,12 @@ public class PageAccueil extends VBox {
         this.setPadding(new Insets(20, 20, 50, 20));
     }
 
-    public void majAffichage(String cat) {
-        this.getChildren().setAll(this.setTitre(cat), this.setSousTitre(), this.setBoutonTrier(), this.setVentes());
+    public void setCategorie(String cat){
+        this.cat = cat;
     }
 
     public void majAffichage() {
-        this.getChildren().setAll(this.setTitre(), this.setSousTitre(), this.setBoutonTrier(), this.setVentes());
+        this.getChildren().setAll(this.setTitre(this.cat), this.setSousTitre(), this.setBoutonTrier(), this.setVentes());
     }
 
     private Text setTitre() {

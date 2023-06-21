@@ -59,7 +59,8 @@ public class ControleurCategorie implements EventHandler<ActionEvent> {
                     this.appli.getPageAccueil().setLesVentes(this.appli.getPageAccueil().getTouteLesVentes().toutVente());
                     break;
             }
-            this.appli.getPageAccueil().majAffichage((String) comboBox.getSelectionModel().getSelectedItem());
+            this.appli.getPageAccueil().setCategorie((String) comboBox.getSelectionModel().getSelectedItem());
+            this.appli.getPageAccueil().majAffichage();
         } catch (SQLException | ParseException e) {
             e.printStackTrace();
         }
