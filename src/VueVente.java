@@ -21,7 +21,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -36,11 +38,12 @@ public class VueVente extends VBox {
     ComboBox<String> choixMarque;
     ComboBox<String> choixEtat;
     TextField prixMin;
-    TextField prixMax;
+    TextField prixBase;
     DatePicker dateDebut;
     DatePicker dateFin;
     Button ajoutVente;
     AppliVae appli;
+    TextField tfErreur;
     ConnexionMySQL connexionMySQL;
     String titre = null;
     ImageView imageActu = null;
@@ -69,52 +72,66 @@ public class VueVente extends VBox {
         ajoutVente.setOnAction(cme);
         this.utilisateur = utilisateur; // vendeur
         this.lesPhotos = new ArrayList<>();
-        }
-    public String getCategorie(){
+        this.tfErreur = new TextField();
+    }
+
+    public String getCategorie() {
         return this.choixCategorie.getValue();
     }
 
-    public String getMarque(){
+    public String getMarque() {
         return this.choixMarque.getValue();
     }
 
-    public String getEtat(){
+    public String getEtat() {
         return this.choixEtat.getValue();
     }
 
-    public String getDesc(){
+    public String getDesc() {
         return this.descriptionVente.getText();
     }
 
-    public Double getPrixMin(){
-        return Double.valueOf(prixMin.getText());
-    }
-    
-    public Double getPrixMax(){
-        return Double.valueOf(prixMax.getText());
-    }
-    public LocalDate dateDebut(){
-        return dateDebut.getValue();
+    public Double getPrixMin() {
+        if (prixMin != null && !prixMin.getText().isEmpty()) {
+            return Double.valueOf(prixMin.getText());
+        }
+        return null;
     }
 
-    public LocalDate dateFin(){
-        return dateFin.getValue();
+    public Double getprixBase() {
+        if (prixBase != null && !prixBase.getText().isEmpty()) {
+            return Double.valueOf(prixBase.getText());
+        }
+        return null;
     }
-    public String titreVente(){
+public String dateDebutToString() {
+    LocalDate date = dateDebut.getValue();
+    if (date != null) {
+        return date.toString();
+    }
+    return null;
+}
+
+public String dateFinToString() {
+    LocalDate date = dateFin.getValue();
+    if (date != null) {
+        return date.toString();
+    }
+    return null;
+}
+    public String titreVente() {
         return this.tfTitreVente.getText();
     }
 
-
-    public List<Photo> getPhotos(){
+    public List<Photo> getPhotos() {
         return this.lesPhotos;
     }
 
-    public Utilisateur getVendeur(){
-            return this.utilisateur;
-        }
+    public Utilisateur getVendeur() {
+        return this.utilisateur;
+    }
 
-
-    public void ajouteUnePhoto(Photo photo){
+    public void ajouteUnePhoto(Photo photo) {
         this.lesPhotos.add(photo);
     }
 
@@ -153,7 +170,7 @@ public class VueVente extends VBox {
         FileChooser imageChoisi = new FileChooser();
         imageChoisi.setTitle("Ajoutez une image");
         imageChoisi.getExtensionFilters().addAll(new ExtensionFilter("Text Files", "*.png"));
-        
+
         File fichierImage = imageChoisi.showOpenDialog(null);
         if (fichierImage != null) {
             this.titre = fichierImage.getName();
@@ -163,20 +180,19 @@ public class VueVente extends VBox {
         }
     }
 
-    public DatePicker getDateDebut(){
+    public DatePicker getDateDebut() {
         return this.dateDebut;
     }
 
-    public DatePicker getDateFin(){
+    public DatePicker getDateFin() {
         return this.dateFin;
     }
 
-    public String getTitre(){
+    public String getTitre() {
         return this.titre;
     }
 
-
-    public ImageView getImageView(){
+    public ImageView getImageView() {
         return this.imageActu;
     }
 
@@ -278,12 +294,12 @@ public class VueVente extends VBox {
      */
     private void initTfPrix() {
         this.prixMin = new TextField();
-        this.prixMax = new TextField();
+        this.prixBase = new TextField();
         this.prixMin.setMaxWidth(70);
-        this.prixMax.setMaxWidth(70);
+        this.prixBase.setMaxWidth(70);
         this.prixMin.setStyle(
                 "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
-        this.prixMax.setStyle(
+        this.prixBase.setStyle(
                 "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
     }
 
@@ -464,16 +480,16 @@ public class VueVente extends VBox {
         Label euroMin = new Label("€");
         Label euroMax = new Label("€");
         StackPane champMin = new StackPane(this.prixMin, euroMin);
-        StackPane champVise = new StackPane(this.prixMax, euroMax);
+        StackPane champVise = new StackPane(this.prixBase, euroMax);
         StackPane.setAlignment(euroMin, Pos.CENTER_RIGHT);
         StackPane.setAlignment(euroMax, Pos.CENTER_RIGHT);
         StackPane.setMargin(euroMax, new Insets(10));
         StackPane.setMargin(euroMin, new Insets(10));
-        VBox boitePrixMin = new VBox(new Label("minimum"), champMin);
-        VBox boitePrixVise = new VBox(new Label("visé"), champVise);
+        VBox boitePrixMin = new VBox(new Label("Minimum"), champMin);
+        VBox boiteprixBase = new VBox(new Label("Prix de Base"), champVise);
         boitePrixMin.setAlignment(Pos.CENTER);
-        boitePrixVise.setAlignment(Pos.CENTER);
-        laBoite.getChildren().addAll(boitePrixMin, boitePrixVise);
+        boiteprixBase.setAlignment(Pos.CENTER);
+        laBoite.getChildren().addAll(boitePrixMin, boiteprixBase);
         return laBoite;
     }
 
@@ -512,6 +528,8 @@ public class VueVente extends VBox {
         return vboxDesDates;
     }
 
+
+
     /**
      * Méthode permettant de créer la section des dates.
      * 
@@ -529,7 +547,6 @@ public class VueVente extends VBox {
         return vboxPourLesDates;
     }
 
-    
     /**
      * Méthode permettant de regrouper les sections prix, durée, ainsi que le bouton
      * de validation.
@@ -550,11 +567,27 @@ public class VueVente extends VBox {
         this.ajoutVente.setAlignment(Pos.CENTER);
         return laBoite;
     }
-    public void popUpCompteConnecte(String titre) {
+
+    public void popUpObjetCo(String titre) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Objet mit vente.");
-        alert.setHeaderText("L'objet " + titre +"' à bien était mit en vente");
+        alert.setHeaderText("L'objet " + titre + "' à bien était mit en vente");
         alert.showAndWait();
     }
 
+     public void popUpRemplirChamp() {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText(null);
+        alert.setContentText("Veuillez spécifiez tout les champs (hormis marque et etat)");
+        alert.showAndWait();
+    }
+
+    public void popUpVenteInserer(String nomOb, Double prixBase) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Mise aux enchères de l'objet");
+        alert.setHeaderText("Mise aux enchères effectué !");
+        alert.setContentText("Votre objet "+ nomOb + "au prix de "+prixBase + " est maintenant visible.");
+        alert.showAndWait();
+    }
 }

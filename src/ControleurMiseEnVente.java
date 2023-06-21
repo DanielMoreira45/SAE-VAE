@@ -14,6 +14,8 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
     Integer idLibre = null;
     PhotoBD photoBd;
     Objet obj = null;
+    String dateDeBut;
+    String dateFin;
 
     public ControleurMiseEnVente(VueVente vue, ConnexionMySQL laConnexionMySQL) {
         this.vue = vue;
@@ -30,23 +32,23 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
         String cat = vue.getCategorie();
         String marque = vue.getMarque();
         Double prixMin = vue.getPrixMin();
-        Double prixMax = vue.getPrixMax();
-        String dateDeBut = vue.dateDebut().toString() + " 00:00:00"; // pour correspondre au String du modèle Vente
-        String dateFin = vue.dateFin().toString()+ " 00:00:00"; // + pour correspondre au String du modèle Vente
+        Double prixBase = vue.getprixBase();
+        this.dateDeBut = vue.dateDebutToString().replace("-", "/");
+        this.dateFin = vue.dateFinToString().replace("-", "/"); // + pour correspondre au String du modèle Vente
         String desc = vue.getDesc();
         List<Photo> lesPhotos = vue.getPhotos();
         String titrePh = vue.getTitre();
         String titreOb = vue.titreVente();
         System.out.println(prixMin);
-        System.out.println(prixMax);
+        
+        System.out.println(prixBase);
         System.out.println(cat);
         System.out.println(dateDeBut);
         System.out.println(dateFin);
         ObjetBD objetBD = new ObjetBD(laConnexionMySQL);
-        VenteBD venteDeOb= new VenteBD(laConnexionMySQL);
-
+        VenteBD venteDeOb = new VenteBD(laConnexionMySQL);
         try {
-            this.idLibre = objetBD.maxIdObjet()+1;
+            this.idLibre = objetBD.maxIdObjet() + 1;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -66,26 +68,35 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
             }
         }
         if (bouton.getText().equals("Ajouter le produit > ")) {
-            if (prixMin != null && prixMax != null && cat != null && dateFin != null && dateDeBut != null) {
+            if (prixMin != null && prixBase != null && cat != null && dateFin != null && dateDeBut != null) {
+
                 try {
-                    this.obj = new Objet(objetBD.maxIdObjet()+1, desc, titreOb, lesPhotos, vue.getVendeur(), 1);
+                    this.obj = new Objet(objetBD.maxIdObjet() + 1, desc, titreOb, lesPhotos, vue.getVendeur(), 1);
                     objetBD.insereObjet(obj);
                     for (Photo photos : lesPhotos) {
                         photoBd.insertPhoto(photos, obj);
                     }
-                    vue.popUpCompteConnecte(titreOb);
+                    vue.popUpObjetCo(titreOb);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                try{
-                    Vente vente = new Vente(venteDeOb.maxIdVente()+1, prixMin, prixMax, dateDeBut, dateFin, 1, this.obj);
-                    venteDeOb.insereVente(vente);
-                }
-                catch(SQLException e){
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+            try {
+                System.out.println("condition1");
+                Vente vente = new Vente(venteDeOb.maxIdVente() + 1, prixBase, prixMin, dateDeBut+":00/00/00", dateFin+":00/00/00", 1, obj);
+                vue.popUpVenteInserer(titreOb, prixBase);
+                System.out.println(dateDeBut);
+                System.out.println(dateFin);
+
+                venteDeOb.insereVente(vente);
+            } catch (SQLException e) {
+                vue.popUpVenteInserer(titreOb, 10.0);
+            } catch (ParseException e) {
+                System.out.println("problème de parse");
+            }
+
+        }
+            else{
+                this.vue.popUpRemplirChamp();
             }
         }
     }

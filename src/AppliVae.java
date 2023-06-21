@@ -98,7 +98,7 @@ public class AppliVae extends Application{
         this.laConnexionEncherir = new EncherirBD(this.connexionMySQL);
 
         this.pageCoInsc = new FenetreCoInsc(this, this.connexionMySQL);
-        this.pageVente = new VueVente(this, this.connexionMySQL, utilisateurActuel);
+        this.pageVente = new VueVente(this, this.connexionMySQL, this.utilisateurActuel);
         //this.pageAccueil = new PageAccueil(this.laConnexionVente, this);
         //this.pageProfilUtilisateur = new PageProfilUtilisateur();
         this.navBar = new NavBar(this, this.connexionMySQL);
@@ -128,7 +128,7 @@ public class AppliVae extends Application{
     public void modeMiseEnVente(){
         scene.getStylesheets().setAll("file:src/styleNavBar.css");
         this.root.setTop(this.navBar);
-         this.pageVente = new VueVente(this, this.connexionMySQL, utilisateurActuel);
+        this.pageVente = new VueVente(this, this.connexionMySQL, this.utilisateurActuel);
         this.root.setCenter(pageVente);
     }
 
