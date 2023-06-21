@@ -2,7 +2,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
 
-public class ToutLesUtilisateurs{
+public class ToutLesUtilisateurs {
   private ConnexionMySQL laConnexionMySQL;
   private UtilisateurBD utilisateurBD;
 
@@ -20,15 +20,14 @@ public class ToutLesUtilisateurs{
   }
 
   // public List<Utilisateur> trieUtilisateursConnexion(){
-  //   return this.lesUtilisateurs;
+  // return this.lesUtilisateurs;
   // }
-
 
   // public List<Utilisateur> trieUtilisateursConnexionDecroissant(){
-  //   return this.lesUtilisateurs;
+  // return this.lesUtilisateurs;
   // }
 
-  public void supprimeUnUtilisateur(int num) throws SQLException{
+  public void supprimeUnUtilisateur(int num) throws SQLException {
     this.utilisateurBD.supprimerUtilisateur(num);
   }
 
@@ -36,14 +35,11 @@ public class ToutLesUtilisateurs{
     this.utilisateurBD.setActif(user);
   }
 
-
   // public void desactiverUtilisateur(String pseudo){
   // }
 
-
   // public List<Utilisateur> getListeUtilisateurs(){
-  //   return this.lesUtilisateurs;
+  // return this.lesUtilisateurs;
   // }
 
 }
-

@@ -36,7 +36,9 @@ public class ObjetBD {
         s.executeQuery();
     }
 
-    public Objet recupObjet(int idob) throws SQLException {
+    public Objet objetParId(int idob) throws SQLException {
+        UtilisateurBD utilBD = new UtilisateurBD(laConnexionMySQL);
+
         Statement s = this.laConnexionMySQL.createStatement();
         ResultSet rs = s.executeQuery("SELECT idob,nomob,descriptionob,idut,idcat FROM OBJET WHERE idob =" + idob);
         rs.next();
@@ -45,30 +47,17 @@ public class ObjetBD {
         String nomOb = rs.getString(2);
         int idcat = rs.getInt(5);
         rs.close();
-
-        Statement s2 = this.laConnexionMySQL.createStatement();
-        ResultSet rs2 = s2
-                .executeQuery("SELECT pseudout,emailut,mdput,activeut,idrole FROM UTILISATEUR where idut =" + idut);
-        ;
-        rs2.next();
-        String pseudo = rs2.getString(1);
-        String email = rs2.getString(2);
-        String mdp = rs2.getString(3);
-        String active = rs2.getString(4);
-        boolean actif = false;
-        if (active.equals("O")) {
-            actif = true;
-        }
-        int idRole = rs2.getInt(5);
-        rs2.close();
-        Utilisateur util = new Utilisateur(idut, pseudo, email, mdp, actif, idRole);
+        
+        Utilisateur util = utilBD.utilisateurParId(idut);
         return new Objet(idob, desc, nomOb, null, util, idcat);
     }
 
     public int maxIdOb() throws SQLException {
         Statement s = this.laConnexionMySQL.createStatement();
         ResultSet rs = s.executeQuery("SELECT MAX(idob) FROM OBJET");
-        rs.next();
-        return rs.getInt(1);
+        if (rs.next()){
+            return rs.getInt(1);
+        }
+        return 0;
     }
 }

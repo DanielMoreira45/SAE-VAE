@@ -1,4 +1,8 @@
-import java.sql.*;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +21,7 @@ public class UtilisateurBD {
      */
     public UtilisateurBD(ConnexionMySQL laConnexionMySQL) {
         this.laConnexionMySQL = laConnexionMySQL;
-        System.out.println("connecteur "+this.laConnexionMySQL);
+        System.out.println("connecteur " + this.laConnexionMySQL);
     }
 
     int maxIdUtilisateur() throws SQLException {
@@ -30,7 +34,7 @@ public class UtilisateurBD {
     }
 
     public void insererUtilisateur(Utilisateur j) throws SQLException {
-        System.out.println("Utilisateur BD"+this.laConnexionMySQL);
+        System.out.println("Utilisateur BD" + this.laConnexionMySQL);
         PreparedStatement ps = laConnexionMySQL.preparedStatement("INSERT INTO UTILISATEUR VALUES(?, ?, ?, ?, ?, ?)");
         System.out.println(idLibre());
         ps.setInt((1), idLibre());
@@ -65,14 +69,14 @@ public class UtilisateurBD {
                 Integer actu = lesId.getInt(1);
                 ResultSet leProchain = this.st.executeQuery("SELECT idUt FROM UTILISATEUR WHERE idUt =" + (actu + 1));
                 if (!leProchain.next()) {
-                    this.idLibre= actu + 1;
+                    this.idLibre = actu + 1;
                 }
             }
         }
-    return this.idLibre;
+        return this.idLibre;
     }
 
-    public Integer getIDlibre(){
+    public Integer getIDlibre() {
         return this.idLibre;
     }
 
@@ -101,7 +105,7 @@ public class UtilisateurBD {
         }
         resultSet.close();
         statement.close();
-    
+
         return resultat;
     }
 
@@ -111,7 +115,6 @@ public class UtilisateurBD {
         ps.setInt(2, user.getId());
         ps.executeUpdate();
     }
-
 
     public void majUtilisateur(Utilisateur j) throws SQLException {
         PreparedStatement ps = laConnexionMySQL.preparedStatement("INSERT INTO UTILISATEUR VALUES(?, ?, ?, ?, ?, ?)");
@@ -125,20 +128,45 @@ public class UtilisateurBD {
         ps.executeUpdate();
     }
 
+    public Utilisateur utilisateurParId(int idut) throws SQLException {
+        Statement s = this.laConnexionMySQL.createStatement();
+        ResultSet rs = s
+                .executeQuery("SELECT pseudout,emailut,mdput,activeut,idrole FROM UTILISATEUR where idut =" + idut);
+        rs.next();
+        String pseudoV = rs.getString(1);
+        String emailV = rs.getString(2);
+        String mdpV = rs.getString(3);
+        String activeV = rs.getString(4);
+        boolean actifV = false;
+        if (activeV.equals("O")) {
+            actifV = true;
+        }
+        int idRoleV = rs.getInt(5);
+        Utilisateur util = new Utilisateur(idut, pseudoV, emailV, mdpV, actifV, idRoleV);
+        s.close();
+        rs.close();
+        return util;
+    }
+
     public List<Utilisateur> toutUtilisateurs() throws SQLException {
-        ResultSet rs = this.laConnexionMySQL.createStatement().executeQuery("SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR;");
+        ResultSet rs = this.laConnexionMySQL.createStatement()
+                .executeQuery("SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR;");
         List<Utilisateur> listeUtilisateurs = new ArrayList<>();
         while (rs.next()) {
-            listeUtilisateurs.add(new Utilisateur(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getBoolean(5), rs.getInt(6)));
+            listeUtilisateurs.add(new Utilisateur(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                    rs.getBoolean(5), rs.getInt(6)));
         }
         return listeUtilisateurs;
     }
 
     public List<Utilisateur> recherche(String text) throws SQLException {
-        ResultSet rs = this.laConnexionMySQL.createStatement().executeQuery("SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR WHERE pseudout LIKE '%"+text+"%' or emailut LIKE '%"+text+"%';");
+        ResultSet rs = this.laConnexionMySQL.createStatement().executeQuery(
+                "SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR WHERE pseudout LIKE '%" + text
+                        + "%' or emailut LIKE '%" + text + "%';");
         List<Utilisateur> listeUtilisateurs = new ArrayList<>();
         while (rs.next()) {
-            listeUtilisateurs.add(new Utilisateur(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getBoolean(5), rs.getInt(6)));
+            listeUtilisateurs.add(new Utilisateur(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                    rs.getBoolean(5), rs.getInt(6)));
         }
         return listeUtilisateurs;
     }

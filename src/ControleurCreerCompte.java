@@ -2,13 +2,12 @@ import java.sql.SQLException;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
 
-public class ControleurCreerCompte implements EventHandler<ActionEvent>{
-    
+public class ControleurCreerCompte implements EventHandler<ActionEvent> {
+
     /**
      * La vue FenetreCoInsc
-     */ 
+     */
     private FenetreCreationCompte vue;
 
     /**
@@ -17,15 +16,15 @@ public class ControleurCreerCompte implements EventHandler<ActionEvent>{
     private AppliVae appli;
     private ConnexionMySQL connexionMySQL;
 
-    public ControleurCreerCompte(FenetreCreationCompte vue, AppliVae appli, ConnexionMySQL connexionMySQL){
+    public ControleurCreerCompte(FenetreCreationCompte vue, AppliVae appli, ConnexionMySQL connexionMySQL) {
         this.vue = vue;
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
     }
 
-
     /**
      * L'action consiste à changer de fenêtre pour aller à la page de connexion
+     * 
      * @param actionEvent l'événement action
      */
 	@Override
@@ -66,6 +65,6 @@ public class ControleurCreerCompte implements EventHandler<ActionEvent>{
             this.vue.setEmailErreur("   * Email invalide, vueillez renter un email valide.");
             this.vue.setEmailMessageErreur(true);
         }
-	}
+    }
 
 }
