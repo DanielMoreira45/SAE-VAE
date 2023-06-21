@@ -181,4 +181,12 @@ public class VenteBD {
         ob.setVente(ven);
         return ven;
     }
+    public int maxIdVe() throws SQLException {
+        Statement s = this.laConnexionMySQL.createStatement();
+        ResultSet rs = s.executeQuery("SELECT MAX(idve) FROM VENTE");
+        if (rs.next()){
+            return rs.getInt(1);
+        }
+        return 0;
+    }
 }
