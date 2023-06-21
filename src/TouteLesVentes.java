@@ -1,6 +1,9 @@
 import java.sql.SQLException;
 import java.text.ParseException;
+<<<<<<< src/TouteLesVentes.java
+=======
 import java.util.ArrayList;
+>>>>>>> src/TouteLesVentes.java
 import java.util.Collections;
 import java.util.List;
 
@@ -8,13 +11,15 @@ import java.util.List;
  * Classe qui permet de travailler avec tout les ventes de la base
  */
 public class TouteLesVentes {
+    /** La connextion SQL */
     private ConnexionMySQL laConnexionMySQL;
+    /** Une instance de venteBD */
     private VenteBD venteBD;
 
     /**
-     * Constructeur de base
+     * Constructeur de toute les ventes
      * 
-     * @param laConnexionMySQL
+     * @param laConnexionMySQL la connextion a la baase SQL
      */
     public TouteLesVentes(ConnexionMySQL laConnexionMySQL) {
         this.laConnexionMySQL = laConnexionMySQL;
@@ -25,8 +30,8 @@ public class TouteLesVentes {
      * Permet d'avoir toute les Ventes de la base de donnée
      * 
      * @return Une liste de vente
-     * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
-     * @throws ParseException
+     * @throws SQLException   Si il y a un probleme avec l'execution des lignes sql
+     * @throws ParseException Si il y a un probleme avec la date des ventes
      */
     public List<Vente> toutVente() throws SQLException, ParseException {
         return venteBD.touteLesVentes();
@@ -59,8 +64,8 @@ public class TouteLesVentes {
      * 
      * @param leStatus le status particulier
      * @return la liste de vente avec ce status
-     * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
-     * @throws ParseException
+     * @throws SQLException   Si il y a un probleme avec l'execution des lignes sql
+     * @throws ParseException Si il y a un probleme avec la date des ventes
      */
     public List<Vente> trieVenteParStatus(int leStatus) throws SQLException, ParseException {
         return venteBD.venteParStatus(leStatus);
@@ -71,8 +76,8 @@ public class TouteLesVentes {
      * 
      * @param categorie la categorie particuliere
      * @return la liste de vente dans cette categorie
-     * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
-     * @throws ParseException
+     * @throws SQLException   Si il y a un probleme avec l'execution des lignes sql
+     * @throws ParseException Si il y a un probleme avec la date des ventes
      */
     public List<Vente> trieVenteParCategorie(int categorie) throws SQLException, ParseException {
         return venteBD.venteParCategorie(categorie);
@@ -83,7 +88,7 @@ public class TouteLesVentes {
      * 
      * @return la liste de vente trier par le nom de l'objet
      * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
-     * @throws ParseException
+     * @throws ParseException Si il y a un probleme avec la date des ventes
      */
     public List<Vente> trieVenteParNomObjet(List<Vente> lesVentes) throws SQLException, ParseException {
         List<Vente> liste = new ArrayList<>(lesVentes);
@@ -96,7 +101,7 @@ public class TouteLesVentes {
      * 
      * @return la liste de vente trier par la date de fin la plus proche
      * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
-     * @throws ParseException
+     * @throws ParseException Si il y a un probleme avec la date des ventes
      */
     public List<Vente> trieVenteParDate(List<Vente> lesVentes) throws SQLException, ParseException {
         List<Vente> liste = new ArrayList<>(lesVentes);
@@ -104,7 +109,26 @@ public class TouteLesVentes {
         return liste;
     }
 
+    /**
+     * Permet de faire une liste de ventes qui n'ont pas encore d'enchere
+     * 
+     * @return la liste de vente qui n'a pas d'enchere
+     * @throws SQLException   Si il y a un probleme avec l'execution des lignes sql
+     * @throws ParseException Si il y a un probleme avec la date des ventes
+     */
+    public List<Vente> venteSansEnchere() throws SQLException, ParseException {
+        return venteBD.venteSansEnchere();
+
+    /**
+     *Permet de trouve une liste de vente via le nom de l'objet
+     * 
+     * @param un texte
+     * @return la liste de vente qui dans le nom de l'objet contient le texte
+     * @throws SQLException   Si il y a un probleme avec l'execution des lignes sql
+     * @throws ParseException Si il y a un probleme avec la date des ventes
+     */
     public List<Vente> recherche(String text) throws SQLException, ParseException {
         return venteBD.recherche(text);
+
     }
 }
