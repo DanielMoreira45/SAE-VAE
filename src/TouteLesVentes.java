@@ -7,13 +7,15 @@ import java.util.List;
  * Classe qui permet de travailler avec tout les ventes de la base
  */
 public class TouteLesVentes {
+    /** La connextion SQL */
     private ConnexionMySQL laConnexionMySQL;
+    /** Une instance de venteBD */
     private VenteBD venteBD;
 
     /**
-     * Constructeur de base
+     * Constructeur de toute les ventes
      * 
-     * @param laConnexionMySQL
+     * @param laConnexionMySQL la connextion a la baase SQL
      */
     public TouteLesVentes(ConnexionMySQL laConnexionMySQL) {
         this.laConnexionMySQL = laConnexionMySQL;
@@ -103,7 +105,14 @@ public class TouteLesVentes {
         return liste;
     }
 
-    public List<Vente> venteSansEnchere() throws SQLException, ParseException{
+    /**
+     * Permet de faire une liste de ventes qui n'ont pas encore d'enchere
+     * 
+     * @return la liste de vente qui n'a pas d'enchere
+     * @throws SQLException   Si il y a un probleme avec l'execution des lignes sql
+     * @throws ParseException Si il y a un probleme avec la date des ventes
+     */
+    public List<Vente> venteSansEnchere() throws SQLException, ParseException {
         return venteBD.venteSansEnchere();
     }
 }

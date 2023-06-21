@@ -10,15 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
+ * La classe Vente qui est en lien avec la base de données
  */
 public class VenteBD {
+    /** La connextion a la base de données */
     private ConnexionMySQL laConnexionMySQL;
+    /** Un Formateur avec la forme "yyyy-MM-dd HH:mm:ss.S" */
     private DateTimeFormatter inputFormatter;
+    /** Un formateur avec la forme "dd/MM/yy:HH/mm/ss" */
     private DateTimeFormatter outputFormatter;
 
     /**
-     * Default constructor
+     * Constructeur de la classe
+     * 
+     * @param laConnexionMySQL La connexion a la base de donnes
      */
     public VenteBD(ConnexionMySQL laConnexionMySQL) {
         this.laConnexionMySQL = laConnexionMySQL;
@@ -26,6 +31,12 @@ public class VenteBD {
         this.outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yy:HH/mm/ss");
     }
 
+    /**
+     * Permet d'ajoute une vente a la base de données
+     * 
+     * @param v La vente a ajouté
+     * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
+     */
     public void insereVente(Vente v) throws SQLException {
         PreparedStatement s = this.laConnexionMySQL.preparedStatement("INSERT INTO VENTE VALUES (?,?,?,?,?,?,?)");
         s.setInt(1, v.getIDVente());
@@ -38,6 +49,12 @@ public class VenteBD {
         s.executeQuery();
     }
 
+    /**
+     * Permet de supprimer une vente de la base de données
+     * 
+     * @param v La vente a supprimer
+     * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
+     */
     public void supprimeVente(Vente v) throws SQLException {
         PreparedStatement s = this.laConnexionMySQL
                 .preparedStatement("DELETE FROM VENTE WHERE idve = ?, idob = ?, idst = ?");
@@ -47,6 +64,14 @@ public class VenteBD {
         s.executeQuery();
     }
 
+    /**
+     * Permet de crée une liste de vente par rapport a une categorie
+     * 
+     * @param categorie la categorie
+     * @return La liste de vente
+     * @throws SQLException   Si il y a un probleme avec l'execution des lignes sql
+     * @throws ParseException Si il y a un probleme avec la date des ventes
+     */
     public List<Vente> venteParCategorie(int categorie) throws SQLException, ParseException {
         ObjetBD obBD = new ObjetBD(laConnexionMySQL);
 
@@ -79,6 +104,13 @@ public class VenteBD {
         return ventes;
     }
 
+    /**
+     * Permet d'avoir toutes les ventes de la base de données
+     * 
+     * @return La liste de vente avec toutes les ventes de la base de données
+     * @throws SQLException   Si il y a un probleme avec l'execution des lignes sql
+     * @throws ParseException Si il y a un probleme avec la date des ventes
+     */
     public List<Vente> touteLesVentes() throws SQLException, ParseException {
         ObjetBD obBD = new ObjetBD(laConnexionMySQL);
 
@@ -108,6 +140,14 @@ public class VenteBD {
         return ventes;
     }
 
+    /**
+     * Permet d'avoir la liste de vente avec un certain Status
+     * 
+     * @param status le status
+     * @return la liste de vente
+     * @throws SQLException   Si il y a un probleme avec l'execution des lignes sql
+     * @throws ParseException Si il y a un probleme avec la date des ventes
+     */
     public List<Vente> venteParStatus(int status) throws SQLException, ParseException {
         ObjetBD obBD = new ObjetBD(laConnexionMySQL);
 
@@ -137,6 +177,13 @@ public class VenteBD {
         return ventes;
     }
 
+    /**
+     * Permet d'avoir le nombre de vente dans un certain status
+     * 
+     * @param status le status
+     * @return le nombre de vente avec ce status
+     * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
+     */
     public int nombreVenteParStatus(int status) throws SQLException {
         PreparedStatement s = this.laConnexionMySQL.preparedStatement(
                 "SELECT count(idst) FROM VENTE WHERE idst = ? group by idst");
@@ -148,6 +195,13 @@ public class VenteBD {
         return 0;
     }
 
+    /**
+     * Permet d'avoir le nombre de vente dans une certaine categorie
+     * 
+     * @param categorie la categorie
+     * @return le nombre de vente
+     * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
+     */
     public int nombreVentreParCategorie(int categorie) throws SQLException {
         PreparedStatement s = this.laConnexionMySQL.preparedStatement(
                 "SELECT count(idcat) FROM VENTE NATURAL JOIN OBJET WHERE idcat = ? group by idcat");
@@ -159,6 +213,14 @@ public class VenteBD {
         return 0;
     }
 
+    /**
+     * Permet d'avoir la vente qui a un certain idve
+     * 
+     * @param idve l'idve
+     * @return La vente avec cette idve
+     * @throws SQLException   Si il y a un probleme avec l'execution des lignes sql
+     * @throws ParseException Si il y a un probleme avec la date des ventes
+     */
     public Vente venteParId(int idve) throws SQLException, ParseException {
         ObjetBD obBD = new ObjetBD(laConnexionMySQL);
         Statement s = this.laConnexionMySQL.createStatement();
@@ -182,12 +244,25 @@ public class VenteBD {
         return ven;
     }
 
+    /**
+     * Permet d'avoir le idve le plus grand dans la base de données
+     * 
+     * @return l'idve le plus grand
+     * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
+     */
     public int maxIdVe() throws SQLException {
         Statement s = this.laConnexionMySQL.createStatement();
         ResultSet rs = s.executeQuery("SELECT MAX(idve) FROM VENTE");
         return rs.getInt(1);
     }
 
+    /**
+     * Permet d'avoir les ventes qui n'ont pas d'enchere
+     * 
+     * @return la liste de vente
+     * @throws SQLException   Si il y a un probleme avec l'execution des lignes sql
+     * @throws ParseException Si il y a un probleme avec la date des ventes
+     */
     public List<Vente> venteSansEnchere() throws SQLException, ParseException {
         Statement s = this.laConnexionMySQL.createStatement();
         ObjetBD obBD = new ObjetBD(laConnexionMySQL);
