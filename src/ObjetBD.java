@@ -1,5 +1,7 @@
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * 
@@ -29,5 +31,17 @@ public class ObjetBD {
         s.setInt(4, o.getCategorie());
         s.executeQuery();
     }
-
+    public Objet recupObjet(int idob) throws SQLException{
+        Statement s = this.laConnexionMySQL.createStatement();
+        ResultSet rs = s.executeQuery("SELECT * FROM OBJET WHERE idob ="+idob);
+        rs.next();
+        System.out.println("A verifier");
+        return new Objet(idob, rs.getString(2), rs.getString(3), null, null, rs.getInt(4));
+    }
+    public int maxIdOb() throws SQLException{
+        Statement s = this.laConnexionMySQL.createStatement();
+        ResultSet rs = s.executeQuery("SELECT MAX(idob)");
+        rs.next();
+        return rs.getInt(1);
+    }
 }
