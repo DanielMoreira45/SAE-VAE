@@ -63,7 +63,6 @@ public class Categorie {
             intCategorie = 6;
             break;
         default:
-            // Cas où la catégorie n'est pas trouvée
             break;
     }
     return intCategorie;

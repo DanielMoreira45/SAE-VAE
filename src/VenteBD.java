@@ -250,6 +250,7 @@ public class VenteBD {
     public int maxIdVe() throws SQLException {
         Statement s = this.laConnexionMySQL.createStatement();
         ResultSet rs = s.executeQuery("SELECT MAX(idve) FROM VENTE");
+        rs.next();
         return rs.getInt(1);
     }
 

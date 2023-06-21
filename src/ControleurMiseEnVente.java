@@ -41,8 +41,8 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
         Double prixBase = vue.getprixBase();
         this.dateDeBut = vue.dateDebutToString();
         this.dateFin = vue.dateFinToString();
-        if(this.dateDeBut != null & this.dateFin != null){
-            this.dateFin  = this.dateFin.replace("-", "/");
+        if (this.dateDeBut != null & this.dateFin != null) {
+            this.dateFin = this.dateFin.replace("-", "/");
             this.dateDeBut = this.dateDeBut.replace("-", "/");
         }
         System.out.println(cat);
@@ -81,7 +81,7 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
                             "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: red;");
 
                     vue.setMessageErreurDate();
-                    
+
                 }
                 if (prixMin >= prixBase) {
                     vue.getPrixMinTf().setStyle(
@@ -91,25 +91,33 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
                 }
                 if (vue.valideDate() && prixMin < prixBase) {
                     try {
-                        this.obj = new Objet(objetBD.maxIdOb()+ 1, desc, titreOb, lesPhotos, vue.getVendeur(), Categorie.getIntCategorie(cat));
+                        this.obj = new Objet(objetBD.maxIdOb() + 1, desc, titreOb, lesPhotos, vue.getVendeur(),
+                                Categorie.getIntCategorie(cat));
                         objetBD.insereObjet(obj);
                         vue.popUpObjetCo(titreOb);
                         // for (Photo photos : lesPhotos) {
-                        //     photoBd.insertPhoto(photos, obj);
+                        // photoBd.insertPhoto(photos, obj);
                         // }
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
                     try {
                         System.out.println("condition1");
-                        Vente vente = new Vente(venteDeOb.maxIdVe() + 1, prixBase, prixMin, dateDeBut + ":" +heureActuelleAc,
-                        dateFin +":00/00/00", Status.calculStatutInsertion(date, vue.getDateDebut().getValue()), obj);
+                        System.out.println(Status.calculStatutInsertion(date, vue.getDateDebut().getValue()));
+                        System.out.println(venteDeOb.maxIdVe());
+                        System.out.println("condition2");
+                        Vente vente = new Vente(venteDeOb.maxIdVe() + 1, prixBase, prixMin,
+                                dateDeBut + ":00/00/00", dateFin + ":00/00/00",
+                                Status.calculStatutInsertion(date, vue.getDateDebut().getValue()), this.obj);
+                        System.out.println("condition2");
+
                         vue.popUpVenteInserer(titreOb, prixBase);
+                        System.out.println("condition3");
                         venteDeOb.insereVente(vente);
                         appli.modeAccueil();
                     } catch (SQLException e) {
                         System.out.println("un blème");
-                                        } catch (ParseException e) {
+                    } catch (ParseException e) {
                         System.out.println("problème de parse");
                     }
                 }
