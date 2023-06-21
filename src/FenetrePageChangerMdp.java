@@ -1,24 +1,12 @@
-import javafx.application.Application;
-import javafx.scene.Cursor;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.geometry.Insets;
 
-
-
-public class FenetrePageChangerMdp extends GridPane{
+public class FenetrePageChangerMdp extends GridPane {
 
     private ImageView profileImage;
 
@@ -32,16 +20,14 @@ public class FenetrePageChangerMdp extends GridPane{
 
     private ConnexionMySQL connexionMySQL;
 
-
-    public FenetrePageChangerMdp(AppliVae appli, ConnexionMySQL connexionMySQL){
+    public FenetrePageChangerMdp(AppliVae appli, ConnexionMySQL connexionMySQL) {
         this.profileImage = new ImageView("pp.jpeg");
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
-        this.creerPageChangerMdp(); 
+        this.creerPageChangerMdp();
     }
 
-
-    public void creerPageChangerMdp(){
+    public void creerPageChangerMdp() {
         this.setStyle("-fx-border-color: #D9D9D9; -fx-border-width: 3px; -fx-border-radius: 10; -fx-padding: 20px;");
         BorderPane.setMargin(this, new Insets(130, 100, 100, 30));
         this.setHgap(30);

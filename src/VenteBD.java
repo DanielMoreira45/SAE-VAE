@@ -252,12 +252,16 @@ public class VenteBD {
 
     public List<Vente> recherche(String text) throws SQLException, ParseException {
         // PreparedStatement s = this.laConnexionMySQL.preparedStatement(
-        //     "SELECT idcat,idob,idve,idut,idst,prixbase,prixmin,debutve,finve,nomob,descriptionob FROM VENTE NATURAL JOIN OBJET WHERE nomob LIKE '%"+text+"%' order by idcat, idob, idve, idut, idst;");
+        // "SELECT
+        // idcat,idob,idve,idut,idst,prixbase,prixmin,debutve,finve,nomob,descriptionob
+        // FROM VENTE NATURAL JOIN OBJET WHERE nomob LIKE '%"+text+"%' order by idcat,
+        // idob, idve, idut, idst;");
         // s.setInt(1, text);
         // ResultSet rs = s.executeQuery();
         Statement s = this.laConnexionMySQL.createStatement();
         ResultSet rs = s.executeQuery(
-                "SELECT idcat,idob,idve,idut,idst,prixbase,prixmin,debutve,finve,nomob,descriptionob FROM VENTE NATURAL JOIN OBJET WHERE nomob LIKE '%"+text+"%' order by idcat, idob, idve, idut, idst;");
+                "SELECT idcat,idob,idve,idut,idst,prixbase,prixmin,debutve,finve,nomob,descriptionob FROM VENTE NATURAL JOIN OBJET WHERE nomob LIKE '%"
+                        + text + "%' order by idcat, idob, idve, idut, idst;");
         List<Vente> ventes = new ArrayList<Vente>();
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yy:HH/mm/ss");
@@ -269,7 +273,7 @@ public class VenteBD {
             int idst = rs.getInt(5);
             Double prixbase = rs.getDouble(6);
             Double prixmin = rs.getDouble(7);
-            
+
             Timestamp debutVe = new Timestamp(rs.getDate(8).getTime());
             LocalDateTime dateTimeDebut = LocalDateTime.parse(debutVe.toString(), inputFormatter);
             String debutVeString = dateTimeDebut.format(outputFormatter);
@@ -295,7 +299,7 @@ public class VenteBD {
             int idRole = rs2.getInt(5);
             Utilisateur newUtili = new Utilisateur(idut, pseudo, email, mdp, actif, idRole);
             Objet newObj = new Objet(idob, descob, nomob, null, newUtili, idcat);
-            Vente newVente = new Vente(idve, prixbase, prixmin, debutVeString, finVeString, idst,newObj);
+            Vente newVente = new Vente(idve, prixbase, prixmin, debutVeString, finVeString, idst, newObj);
             newObj.setVente(newVente);
             ventes.add(newVente);
         }
