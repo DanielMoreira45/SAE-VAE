@@ -160,12 +160,6 @@ public class AppliVae extends Application{
         this.root.setCenter(this.pageProfilObjet);
     }
 
-    public void modeProfilObjet(){
-        scene.getStylesheets().setAll("styleNavBar.css", "stylePageProfilObjet.css");
-        this.root.setTop(this.navBar);
-        this.root.setCenter(this.pageProfilObjet);
-    }
-
     public void setUtilisateurActuel(Utilisateur utilisateur){
         this.utilisateurActuel = utilisateur;
     }
