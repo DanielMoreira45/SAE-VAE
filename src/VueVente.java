@@ -104,6 +104,16 @@ public class VueVente extends VBox {
         }
         return null;
     }
+
+    public TextField getPrixMinTf() {
+        return this.prixMin;
+    }
+
+    public TextField getprixBaseTf() {
+        return this.prixBase;
+    }
+
+
 public String dateDebutToString() {
     LocalDate date = dateDebut.getValue();
     if (date != null) {

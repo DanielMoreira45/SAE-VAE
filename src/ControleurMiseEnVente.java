@@ -33,18 +33,14 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
         String marque = vue.getMarque();
         Double prixMin = vue.getPrixMin();
         Double prixBase = vue.getprixBase();
-        this.dateDeBut = vue.dateDebutToString().replace("-", "/");
-        this.dateFin = vue.dateFinToString().replace("-", "/"); // + pour correspondre au String du modèle Vente
+        this.dateDeBut = vue.dateDebutToString();
+        this.dateFin = vue.dateFinToString();
+        this.dateDeBut.replace("-", "/");
+        this.dateFin.replace("-", "/");
         String desc = vue.getDesc();
         List<Photo> lesPhotos = vue.getPhotos();
         String titrePh = vue.getTitre();
         String titreOb = vue.titreVente();
-        System.out.println(prixMin);
-        
-        System.out.println(prixBase);
-        System.out.println(cat);
-        System.out.println(dateDeBut);
-        System.out.println(dateFin);
         ObjetBD objetBD = new ObjetBD(laConnexionMySQL);
         VenteBD venteDeOb = new VenteBD(laConnexionMySQL);
         try {
@@ -72,13 +68,16 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
                 if(!(vue.valideDate())){
                     vue.getDateDebut().setStyle(
                 "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: red;");
-                }
                 vue.getDateFin().setStyle(
                 "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: red;");
                 }
                 if(prixMin >= prixBase){
-                    prixMin.setSt
+                    vue.getPrixMinTf().setStyle(
+                "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
+                    vue.getprixBaseTf().setStyle(
+                "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
                 }
+                if(vue.valideDate() && prixMin < prixBase){
                 try {
                     this.obj = new Objet(objetBD.maxIdObjet() + 1, desc, titreOb, lesPhotos, vue.getVendeur(), 1);
                     objetBD.insereObjet(obj);
@@ -93,17 +92,16 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
                 System.out.println("condition1");
                 Vente vente = new Vente(venteDeOb.maxIdVente() + 1, prixBase, prixMin, dateDeBut+":00/00/00", dateFin+":00/00/00", 1, obj);
                 vue.popUpVenteInserer(titreOb, prixBase);
-                System.out.println(dateDeBut);
-                System.out.println(dateFin);
                 venteDeOb.insereVente(vente);
             } catch (SQLException e) {
                 vue.popUpVenteInserer(titreOb, 10.0);
             } catch (ParseException e) {
                 System.out.println("problème de parse");
             }
-        }
             else{
                 this.vue.popUpRemplirChamp();
             }
         }
+        }
     }
+}
