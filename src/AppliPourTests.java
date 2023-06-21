@@ -23,7 +23,7 @@ public class AppliPourTests extends Application {
     
     @Override
     public void start(Stage stage) {
-        Pane root = new VueVente();
+        Pane root = new VueAdminGestionUtilisateurs();
         this.scene = new Scene(root, 1000, 1000);
         stage.setScene(scene);
         stage.setTitle("Test page Vente");
