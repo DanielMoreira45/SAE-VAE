@@ -33,6 +33,7 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
     @Override
     public void handle(ActionEvent actionEvent) {
         LocalTime heureActuelle = LocalTime.now();
+        LocalDate date = LocalDate.now();
         String heureActuelleAc = heureActuelle.toString().substring(0, 8).replace(":", "/");
         String cat = vue.getCategorie();
         String marque = vue.getMarque();
@@ -99,8 +100,7 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
                     try {
                         System.out.println("condition1");
                         Vente vente = new Vente(venteDeOb.maxIdVente() + 1, prixBase, prixMin, dateDeBut + ":" +heureActuelleAc,
-                        dateFin +":00/00/00", 1, obj);
-
+                        dateFin +":00/00/00", Status.calculStatutInsertion(date, vue.getDateDebut().getValue()), obj);
                         vue.popUpVenteInserer(titreOb, prixBase);
                         venteDeOb.insereVente(vente);
                         appli.modeAccueil();
