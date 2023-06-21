@@ -45,7 +45,7 @@ public class UtilisateurBD {
         ps.executeUpdate();
     }
 
-    public void effacerJoueur(int num) throws SQLException {
+    public void supprimerUtilisateur(int num) throws SQLException {
         this.st = laConnexionMySQL.createStatement();
         String query;
         query = "DELETE FROM UTILISATEUR WHERE idUt =" + num + ";";
@@ -107,6 +107,13 @@ public class UtilisateurBD {
         return resultat;
     }
 
+    public void setActif(Utilisateur user) throws SQLException {
+        PreparedStatement ps = laConnexionMySQL.preparedStatement("UPDATE UTILISATEUR SET activeut = ? WHERE idut = ?");
+        ps.setString(1, user.estActive() ? "O" : "N");
+        ps.setInt(2, user.getId());
+        ps.executeUpdate();
+    }
+
 
     public void majUtilisateur(Utilisateur j) throws SQLException {
         PreparedStatement ps = laConnexionMySQL.preparedStatement("INSERT INTO UTILISATEUR VALUES(?, ?, ?, ?, ?, ?)");
@@ -139,4 +146,21 @@ public class UtilisateurBD {
         return util;
     }
 
+    public List<Utilisateur> toutUtilisateurs() throws SQLException {
+        ResultSet rs = this.laConnexionMySQL.createStatement().executeQuery("SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR;");
+        List<Utilisateur> listeUtilisateurs = new ArrayList<>();
+        while (rs.next()) {
+            listeUtilisateurs.add(new Utilisateur(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getBoolean(5), rs.getInt(6)));
+        }
+        return listeUtilisateurs;
+    }
+
+    public List<Utilisateur> recherche(String text) throws SQLException {
+        ResultSet rs = this.laConnexionMySQL.createStatement().executeQuery("SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR WHERE pseudout LIKE '%"+text+"%' or emailut LIKE '%"+text+"%';");
+        List<Utilisateur> listeUtilisateurs = new ArrayList<>();
+        while (rs.next()) {
+            listeUtilisateurs.add(new Utilisateur(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getBoolean(5), rs.getInt(6)));
+        }
+        return listeUtilisateurs;
+    }
 }

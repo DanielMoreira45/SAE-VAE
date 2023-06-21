@@ -1,0 +1,41 @@
+.title {
+    -fx-background-color: #b2d6ff;
+    -fx-border-color: transparent;
+    -fx-background-radius: 15px;
+}
+
+.button-without-background {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+}
+
+.center-gridPane{
+    -fx-background-color: #f1eeee;
+    -fx-border-color: #818181;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+}
+
+.text-field-montant {
+    -fx-font-family: 'Verdana';
+    -fx-font-size: 16px; /* Taille de la police de 16 pixels */
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 1px;
+    -fx-text-fill: #000000;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2);
+}
+
+.button-encherir {
+    -fx-background-radius: 10px; /* Rayon de l'arrondi des coins */
+    -fx-border-radius: 10px; /* Rayon de l'arrondi des coins pour la bordure */
+    -fx-pref-width: 200px; /* Largeur préférée du bouton */
+    -fx-pref-height: 32px; /* Hauteur préférée du bouton */
+    -fx-background-color: #4FA0FF; /* Couleur de fond bleue */
+    -fx-text-fill: white; /* Couleur du texte en blanc */
+    -fx-font-size: 16px; /* Taille de la police de 16 pixels */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 2);
+}
