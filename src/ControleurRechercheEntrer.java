@@ -2,7 +2,6 @@ import java.sql.SQLException;
 import java.text.ParseException;
 
 import javafx.event.EventHandler;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 public class ControleurRechercheEntrer implements EventHandler<KeyEvent> {
@@ -17,7 +16,8 @@ public class ControleurRechercheEntrer implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent event) {
         try {
-            this.appliVae.getPageAccueil().setLesVentes(this.appliVae.getPageAccueil().getTouteLesVentes().recherche(this.navBar.getTextFieldRecherche().getText()));
+            this.appliVae.getPageAccueil().setLesVentes(this.appliVae.getPageAccueil().getTouteLesVentes()
+                    .recherche(this.navBar.getTextFieldRecherche().getText()));
             this.appliVae.getPageAccueil().majAffichage();
         } catch (SQLException | ParseException e) {
             e.printStackTrace();

@@ -1,9 +1,6 @@
 import java.sql.SQLException;
 import java.text.ParseException;
-<<<<<<< src/TouteLesVentes.java
-=======
 import java.util.ArrayList;
->>>>>>> src/TouteLesVentes.java
 import java.util.Collections;
 import java.util.List;
 
@@ -87,7 +84,7 @@ public class TouteLesVentes {
      * Permet de faire la liste des ventes trier par le nom des objets
      * 
      * @return la liste de vente trier par le nom de l'objet
-     * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
+     * @throws SQLException   Si il y a un probleme avec l'execution des lignes sql
      * @throws ParseException Si il y a un probleme avec la date des ventes
      */
     public List<Vente> trieVenteParNomObjet(List<Vente> lesVentes) throws SQLException, ParseException {
@@ -100,7 +97,7 @@ public class TouteLesVentes {
      * Permet de faire la liste des ventes trier par la date de fin
      * 
      * @return la liste de vente trier par la date de fin la plus proche
-     * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
+     * @throws SQLException   Si il y a un probleme avec l'execution des lignes sql
      * @throws ParseException Si il y a un probleme avec la date des ventes
      */
     public List<Vente> trieVenteParDate(List<Vente> lesVentes) throws SQLException, ParseException {
@@ -118,9 +115,10 @@ public class TouteLesVentes {
      */
     public List<Vente> venteSansEnchere() throws SQLException, ParseException {
         return venteBD.venteSansEnchere();
+    }
 
     /**
-     *Permet de trouve une liste de vente via le nom de l'objet
+     * Permet de trouve une liste de vente via le nom de l'objet
      * 
      * @param un texte
      * @return la liste de vente qui dans le nom de l'objet contient le texte

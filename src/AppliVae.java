@@ -1,14 +1,11 @@
-import java.sql.Statement;
-import java.sql.PreparedStatement;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class AppliVae extends Application{
-    
+public class AppliVae extends Application {
+
     /**
      * Le panel central de la vue
      */
@@ -24,7 +21,7 @@ public class AppliVae extends Application{
      */
     private Utilisateur user;
 
-    /** 
+    /**
      * La connexion à la BD pour Utilisateur
      */
     private UtilisateurBD laConnexionUtilisateur;
@@ -80,20 +77,20 @@ public class AppliVae extends Application{
 
     private PageProfilObjet pageProfilObjet;
 
-
-
     /**
      * Initialise tous les attributs
+     * 
      * @throws ClassNotFoundException
      */
     @Override
-    public void init() throws ClassNotFoundException{
+    public void init() throws ClassNotFoundException {
         this.laScene();
-        try{
+        try {
             this.connexionMySQL = new ConnexionMySQL();
             this.connexionMySQL.connecter();
+        } catch (Exception e) {
+            System.out.println(e);
         }
-        catch(Exception e){System.out.println(e);}
         this.laConnexionUtilisateur = new UtilisateurBD(this.connexionMySQL);
         this.laConnexionVente = new VenteBD(this.connexionMySQL);
         this.laConnexionObjet = new ObjetBD(this.connexionMySQL);
@@ -111,7 +108,7 @@ public class AppliVae extends Application{
     /**
      * Crée la scène
      */
-    private void laScene(){
+    private void laScene() {
         BorderPane fenetre = new BorderPane();
         fenetre.setCenter(this.panelCentral);
         this.scene = new Scene(fenetre, 1080, 1920);
@@ -120,7 +117,7 @@ public class AppliVae extends Application{
     /**
      * Permet de passer à l'affichage de la page d'inscription/connexion
      */
-    public void modeCoInsc(){
+    public void modeCoInsc() {
         scene.getStylesheets().setAll("styleCoInsc.css");
         this.root.setCenter(this.pageCoInsc);
     }
@@ -128,7 +125,7 @@ public class AppliVae extends Application{
     /**
      * Permet de passer à l'affichage de la page de mise en vente
      */
-    public void modeMiseEnVente(){
+    public void modeMiseEnVente() {
         scene.getStylesheets().setAll("styleNavBar.css");
         this.root.setTop(this.navBar);
         this.root.setCenter(this.pageVente);
@@ -137,51 +134,39 @@ public class AppliVae extends Application{
     /**
      * Permet de passer à l'affichage de la page d'accueil
      */
-    public void modeAccueil(){
+    public void modeAccueil() {
         scene.getStylesheets().setAll("styleNavBar.css", "styleCoInsc.css");
         this.root.setTop(this.navBar);
         // this.root.setCenter(this.pageAccueil);
         this.root.setCenter(new VueAdminGestionUtilisateurs(this.connexionMySQL));
-        
+
     }
 
     /**
      * Permet de passer à l'affichage de la page profil de l'utilisateur
      */
-    public void modeProfilUtilisateur(){
+    public void modeProfilUtilisateur() {
         scene.getStylesheets().setAll("styleNavBar.css", "stylePageUtilisateur.css");
         this.root.setTop(this.navBar);
         this.root.setCenter(this.pageProfilUtilisateur);
     }
 
-    public void modeProfilObjet(){
+    public void modeProfilObjet() {
         scene.getStylesheets().setAll("styleNavBar.css", "stylePageProfilObjet.css");
         this.root.setTop(this.navBar);
         this.root.setCenter(this.pageProfilObjet);
     }
 
-    public void modeProfilObjet(){
-        scene.getStylesheets().setAll("styleNavBar.css", "stylePageProfilObjet.css");
-        this.root.setTop(this.navBar);
-        this.root.setCenter(this.pageProfilObjet);
-    }
-
-    public void setUtilisateurActuel(Utilisateur utilisateur){
+    public void setUtilisateurActuel(Utilisateur utilisateur) {
         this.utilisateurActuel = utilisateur;
     }
 
-    public boolean isConnect(){
-        return false;
+    public PageAccueil getPageAccueil() {
+        return this.pageAccueil;
     }
-    
-    public PreparedStatement preparedStatement(String requete){
-        return null;
-    }
-
-    public PageAccueil getPageAccueil() { return this.pageAccueil; }
 
     @Override
-    public void start(Stage stage){
+    public void start(Stage stage) {
         stage.setTitle("Appli VAE");
         stage.setHeight(1080);
         stage.setWidth(1920);
@@ -194,9 +179,10 @@ public class AppliVae extends Application{
 
     /**
      * Programme principal
+     * 
      * @param args
      */
-    public static void main(String[] args){
+    public static void main(String[] args) {
         launch(args);
     }
 }
