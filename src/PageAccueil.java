@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -31,6 +32,7 @@ public class PageAccueil extends VBox {
     private ConnexionMySQL connexionMySQL;
     private TouteLesVentes toutesLesVentes;
     private List<Vente> lesVentes;
+    private Text titreCat;
 
     /*
      * @Override
@@ -71,14 +73,24 @@ public class PageAccueil extends VBox {
         this.setPadding(new Insets(20, 20, 50, 20));
     }
 
+    public void majAffichage(String cat) {
+        this.getChildren().setAll(this.setTitre(cat), this.setSousTitre(), this.setBoutonTrier(), this.setVentes());
+    }
+
     public void majAffichage() {
         this.getChildren().setAll(this.setTitre(), this.setSousTitre(), this.setBoutonTrier(), this.setVentes());
     }
 
     private Text setTitre() {
-        Text titre = new Text("Catégorie");
-        titre.setFont(Font.font("Valera", FontWeight.NORMAL, 58));
-        return titre;
+        this.titreCat = new Text("Catégorie");
+        titreCat.setFont(Font.font("Valera", FontWeight.NORMAL, 58));
+        return titreCat;
+    }
+
+    private Text setTitre(String cat) {
+        this.titreCat = new Text(cat);
+        titreCat.setFont(Font.font("Valera", FontWeight.NORMAL, 58));
+        return titreCat;
     }
 
     private Text setSousTitre() {

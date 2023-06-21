@@ -24,8 +24,7 @@ public class ControleurCategorie implements EventHandler<ActionEvent> {
                     this.appli.getPageAccueil().setLesVentes(this.appli.getPageAccueil().getTouteLesVentes().trieVenteParCategorie(Categorie.CHAUSSURE));
                     break;
                 case "Accessoire":
-                    this.appli.getPageAccueil().setLesVentes(this.appli.getPageAccueil().getTouteLesVentes().trieVenteParCategorie(Categorie.ACCESSOIRE));
-                    break;
+                    this.appli.getPageAccueil().setLesVentes(this.appli.getPageAccueil().getTouteLesVentes().trieVenteParCategorie(Categorie.ACCESSOIRE));                    break;
                 case "Electromenager":
                     this.appli.getPageAccueil().setLesVentes(this.appli.getPageAccueil().getTouteLesVentes().trieVenteParCategorie(Categorie.ELECTROMENAGER));
                     break;
@@ -60,7 +59,7 @@ public class ControleurCategorie implements EventHandler<ActionEvent> {
                     this.appli.getPageAccueil().setLesVentes(this.appli.getPageAccueil().getTouteLesVentes().toutVente());
                     break;
             }
-            this.appli.getPageAccueil().majAffichage();
+            this.appli.getPageAccueil().majAffichage((String) comboBox.getSelectionModel().getSelectedItem());
         } catch (SQLException | ParseException e) {
             e.printStackTrace();
         }
