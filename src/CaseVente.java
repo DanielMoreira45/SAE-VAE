@@ -1,4 +1,8 @@
+import java.sql.Timestamp;
+
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,6 +15,7 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -23,8 +28,12 @@ import javafx.scene.text.TextAlignment;
 
 public class CaseVente extends HBox {
     private Vente vente;
+    private AppliVae appli;
+    private ConnexionMySQL connexionMySQL;
     
-    public CaseVente(Vente vente) {
+    public CaseVente(Vente vente, AppliVae appli, ConnexionMySQL connexionMySQL) {
+        this.appli = appli;
+        this.connexionMySQL = connexionMySQL;
         this.vente = vente;
         this.setStyle();
         this.setImage();
@@ -52,48 +61,50 @@ public class CaseVente extends HBox {
     }
 
     private HBox setHaut() {
-        // Text nomArticle = new Text(this.vente.getObjet().getNomObjet());
-        // Text prix = new Text(this.vente.getEncheres().get(this.vente.getEncheres().size()-1).getMontant() + "€");
-        // Text dateFin = new Text(this.vente.getFinVente());
-        Text nomArticle = new Text(this.getTxtMinLongueur("Text", 12));
-        Text prix = new Text("8.99 €");
-        Text dateFin = new Text("20/06/2023");
+        Text nomArticle = new Text(this.getTxtMinLongueur(this.vente.getObjet().getNomObjet(), 20));
+        HBox nomArtBox = new HBox(nomArticle);
+        nomArtBox.setAlignment(Pos.BASELINE_LEFT);
+        Text dateFin = new Text("Fin : " + new Timestamp(this.vente.getFinVente()).toString().replace('-', '/').split(" ")[0]);
+        HBox dateFinBox = new HBox(dateFin);
+        dateFinBox.setAlignment(Pos.BASELINE_RIGHT);
+        // Text nomArticle = new Text(this.getTxtMinLongueur("Text", 12));
+        // Text prix = new Text("8.99 €");
+        // Text dateFin = new Text("20/06/2023");
         nomArticle.setFont(Font.font("Valera", FontWeight.MEDIUM, 20));
         nomArticle.setTextAlignment(TextAlignment.LEFT);
-        prix.setFont(Font.font("Valera", FontWeight.MEDIUM, 20));
-        prix.setTextAlignment(TextAlignment.CENTER);
         dateFin.setFont(Font.font("Valera", FontWeight.MEDIUM, 20));
         dateFin.setTextAlignment(TextAlignment.RIGHT);
-        HBox haut = new HBox(nomArticle, prix, dateFin);
-        haut.setSpacing((780-280-30-nomArticle.getText().length()*10-prix.getText().length()*10-dateFin.getText().length()*10)/3);
+        HBox haut = new HBox(nomArtBox, dateFinBox);
+        haut.setSpacing((780-280-30-nomArticle.getText().length()*10-dateFin.getText().length()*10));
+        haut.setPrefWidth(780-280-30);
         return haut;
     }
 
     private Text setDescription() {
-        // Text description = new Text(this.vente.getObjet().getDescription());
-        Text description = new Text(this.setDescription(this.getTxtMinLongueur("ezfoie zjfezoij fezofj oe zfjoe zfjo ezjf ezfoie zjfezoij fezofj oe zfjoe zfjo ezjf ezfoie zjfezoij fezofj oe zfjoe zfjo ezjf ezfoie zjfezoij fezofj oe zfjoe zfjo ezjf ezfoie zjfezoij fezofj oe zfjoe zfjo ezjf ", 200)));
+        Text description = new Text(this.setDescription(this.getTxtMinLongueur(this.vente.getObjet().getDescription(), 200)));
         description.setTextAlignment(TextAlignment.LEFT);
         return description;
     }
 
     private HBox setBas() {
-        HBox bouton = new HBox(this.setBoutonVoirAnnonce(), this.setBoutonEncherir());
+        HBox bouton = new HBox(this.setBoutonEncherir());
+        Text prix = new Text("Prix : " + (this.vente.getPrixBase()) + "€");
+        prix.setFont(Font.font("Valera", FontWeight.MEDIUM, 16));
+        prix.setTextAlignment(TextAlignment.CENTER);
+        HBox prixPane = new HBox(prix);
+        prixPane.setPadding(new Insets(8, 0, 0, 0));
+
+        //HBox bouton = new HBox(this.setBoutonVoirAnnonce(), this.setBoutonEncherir(), prixPane);
         bouton.setSpacing(20);
 
         HBox cercleBox = new HBox(this.setCercle());
         cercleBox.setPadding(new Insets(5, 0, 0, 0));
 
-        HBox bas = new HBox(bouton, cercleBox);
-        bas.setSpacing(200);
-        return bas;
-    }
+        
 
-    private Button setBoutonVoirAnnonce() {
-        Button voirAnnonce = new Button("Voir l'annonce");
-        voirAnnonce.setPadding(new Insets(10));
-        voirAnnonce.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, null, null)));
-        voirAnnonce.setBorder(new Border(new BorderStroke(Color.web("#D9D9D9"), BorderStrokeStyle.SOLID, new CornerRadii(16), new BorderWidths(2))));
-        return voirAnnonce;
+        HBox bas = new HBox(bouton, cercleBox);
+        bas.setSpacing(140);
+        return bas;
     }
 
     private Button setBoutonEncherir() {
@@ -101,6 +112,8 @@ public class CaseVente extends HBox {
         encherir.setPadding(new Insets(10));
         encherir.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, null, null)));
         encherir.setBorder(new Border(new BorderStroke(Color.web("#D9D9D9"), BorderStrokeStyle.SOLID, new CornerRadii(16), new BorderWidths(2))));
+        encherir.setOnAction(new ControleurCaseVente(this.appli, this.connexionMySQL));
+        encherir.setCursor(Cursor.HAND);
         return encherir;
     }
 
@@ -133,7 +146,7 @@ public class CaseVente extends HBox {
                 description += "\n";
                 cpt = 0;
             }
-            description += mot;
+            description += mot + " ";
             cpt++;
         }
         return description;
