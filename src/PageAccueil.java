@@ -156,8 +156,8 @@ public class PageAccueil extends VBox {
         gridVentes.setHgap(100);
         gridVentes.setVgap(80);
         for (int i = 0; i < 8; i++) {
-            gridVentes.add(new CaseVente(null), 0, i);
-            gridVentes.add(new CaseVente(null), 1, i);
+            gridVentes.add(new CaseVente(null, this.appli, this.connexionMySQL), 0, i);
+            gridVentes.add(new CaseVente(null, this.appli, this.connexionMySQL), 1, i);
         }
         return gridVentes;
     }
