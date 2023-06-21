@@ -277,6 +277,7 @@ public class VueVente extends VBox {
      */
     private void initComboBoxCategorie() {
         this.choixCategorie = new ComboBox<>();
+<<<<<<< HEAD
         this.choixCategorie.getItems().addAll("Vêtement", "Chaussure",
                 "Electromenager", "Informatique",
                 "Jeux", "Livre",
@@ -285,6 +286,10 @@ public class VueVente extends VBox {
                 "Ustensile Cuisine", "Vehicule", "Accessoire");
         this.choixCategorie.setStyle(
                 "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
+=======
+        this.choixCategorie.getItems().addAll("Vêtement", "Chaussure", "Accessoire", "Electromenager", "Informatique", "Jeux", "Livre", "Musique", "Sport", "Vehicule","Ustensile Cuisine","Meuble","Outil");
+        this.choixCategorie.setStyle("-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
+>>>>>>> main
     }
 
     /**

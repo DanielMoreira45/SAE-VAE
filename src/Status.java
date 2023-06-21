@@ -2,11 +2,11 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 /**
- * Permet d'avoir le Roles de chaque utilisateur
+ * Permet d'avoir le status de la vente
  */
 public class Status {
     private Status(){}
-public static int AVENIR = 1;
+    public static int AVENIR = 1;
     public static int ENCOURS = 2;
     public static int AVALIDER = 3;
     public static int VALIDEE = 4;

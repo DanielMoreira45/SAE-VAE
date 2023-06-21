@@ -36,14 +36,13 @@ public class ControleurNavBar implements EventHandler<ActionEvent>{
             System.out.println("pop up notif");
         }
         else if (boutonSource.getAccessibleText().equals("Panier")){
-            System.out.println("le panier");
+            this.appli.modeMiseEnVente();
         }
         else if (boutonSource.getAccessibleText().equals("Logo")){
             this.appli.modeAccueil();
         }
         else if (boutonSource.getAccessibleText().equals("Profil Utilisateur")){
             this.appli.modeProfilUtilisateur();
-            System.out.println("profil");
         }
 	}
 

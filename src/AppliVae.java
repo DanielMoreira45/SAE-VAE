@@ -57,12 +57,12 @@ public class AppliVae extends Application{
     /**
      * Page d'accueil
      */
-    //private PageAccueil pageAccueil;
+    private PageAccueil pageAccueil;
 
     /**
      * Page du profil utilisateur
      */
-    //private PageProfilUtilisateur pageProfilUtilisateur;
+    private PageProfilUtilisateur pageProfilUtilisateur;
 
     /**
      * La connexion à la BD
@@ -77,6 +77,13 @@ public class AppliVae extends Application{
     private BorderPane root;
 
     private Utilisateur utilisateurActuel;
+<<<<<<< HEAD
+=======
+
+    private PageProfilObjet pageProfilObjet;
+
+    private VueAdminGestionUtilisateurs vueAdminGestionUtilisateurs;
+>>>>>>> main
 
 
 
@@ -98,10 +105,18 @@ public class AppliVae extends Application{
         this.laConnexionEncherir = new EncherirBD(this.connexionMySQL);
 
         this.pageCoInsc = new FenetreCoInsc(this, this.connexionMySQL);
+<<<<<<< HEAD
         this.pageVente = new VueVente(this, this.connexionMySQL, this.utilisateurActuel);
         //this.pageAccueil = new PageAccueil(this.laConnexionVente, this);
         //this.pageProfilUtilisateur = new PageProfilUtilisateur();
+=======
+        this.pageVente = new VueVente(this, this.connexionMySQL);
+        this.pageAccueil = new PageAccueil(this, this.connexionMySQL);
+        this.pageProfilUtilisateur = new PageProfilUtilisateur(this, this.connexionMySQL);
+>>>>>>> main
         this.navBar = new NavBar(this, this.connexionMySQL);
+        this.pageProfilObjet = new PageProfilObjet(this, this.connexionMySQL);
+        this.vueAdminGestionUtilisateurs = new VueAdminGestionUtilisateurs(this.connexionMySQL);
         this.root = (BorderPane) this.scene.getRoot();
     }
 
@@ -136,20 +151,35 @@ public class AppliVae extends Application{
      * Permet de passer à l'affichage de la page d'accueil
      */
     public void modeAccueil(){
-        scene.getStylesheets().setAll("styleNavBar.css");
-        //scene.getStylesheets().add("styleAccueil.css");
-        //this.scene.setRoot(this.pageAccueil);modeleToutLesUtilisateurs
+        scene.getStylesheets().setAll("styleNavBar.css", "styleCoInsc.css");
         this.root.setTop(this.navBar);
-        System.out.println("Page d'accueil");
+        // this.root.setCenter(this.pageAccueil);
+        this.root.setCenter(new VueAdminGestionUtilisateurs(this.connexionMySQL));
+        
     }
 
     /**
      * Permet de passer à l'affichage de la page profil de l'utilisateur
      */
     public void modeProfilUtilisateur(){
-        //this.scene.setRoot(this.pageProfilUtilisateur)
+        scene.getStylesheets().setAll("styleNavBar.css", "stylePageUtilisateur.css");
+        this.root.setTop(this.navBar);
+        this.root.setCenter(this.pageProfilUtilisateur);
     }
 
+<<<<<<< HEAD
+=======
+    public void modeProfilObjet(){
+        scene.getStylesheets().setAll("styleNavBar.css", "stylePageProfilObjet.css");
+        this.root.setTop(this.navBar);
+        this.root.setCenter(this.pageProfilObjet);
+    }
+
+    public void modeAdministrateur(){
+        this.root.setCenter(this.vueAdminGestionUtilisateurs);
+    }
+
+>>>>>>> main
     public void setUtilisateurActuel(Utilisateur utilisateur){
         this.utilisateurActuel = utilisateur;
     }
@@ -161,6 +191,8 @@ public class AppliVae extends Application{
     public PreparedStatement preparedStatement(String requete){
         return null;
     }
+
+    public PageAccueil getPageAccueil() { return this.pageAccueil; }
 
     @Override
     public void start(Stage stage){

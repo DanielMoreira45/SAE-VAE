@@ -1,17 +1,22 @@
 import javafx.util.Duration;
 import javafx.animation.ScaleTransition;
+import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 
 
 public class FenetreDeLogin extends GridPane{
@@ -31,6 +36,7 @@ public class FenetreDeLogin extends GridPane{
         this.erreurMdpMsg = new Text("");
         this.erreurEmail = new Text("");
         this.ajouteTextField();
+        this.ajouterBoutonOeil();
     }
 
     private void ajouteTextField(){
@@ -38,7 +44,7 @@ public class FenetreDeLogin extends GridPane{
         this.setHgap(10);
         this.setVgap(10);
         //création de textField
-        this.email.setPromptText("Entrez l'email");
+        this.email.setPromptText("Entrez l'email ou le pseudo");
         this.mdp.setPromptText("Entrer le mot de passe");
         //on les place dans le gridPane
         this.add(this.email,50,30);
@@ -95,6 +101,54 @@ public class FenetreDeLogin extends GridPane{
             scaleTransitionReverse.setToX(1); // Retour à la taille d'origine pour l'axe X
             scaleTransitionReverse.setToY(1); // Retour à la taille d'origine pour l'axe Y
             scaleTransitionReverse.play();
+        });
+    }
+
+    public void ajouterBoutonOeil(){
+        ToggleButton voirMdp = new ToggleButton();
+        voirMdp.setCursor(Cursor.HAND);
+        voirMdp.setStyle("-fx-background-color: transparent;");
+        ImageView oeil = new ImageView("oeil.png");
+        oeil.setFitWidth(20);
+        oeil.setFitHeight(20);
+        ImageView oeilBarre = new ImageView("oeilBarre.png");
+        oeilBarre.setFitWidth(20);
+        oeilBarre.setFitHeight(20);
+        voirMdp.setGraphic(oeil);
+        voirMdp.setPrefWidth(20);
+        voirMdp.setPrefHeight(20);
+
+        TextField mdpClair = new TextField();
+        mdpClair.setPromptText("Entrer le mot de passe");
+        mdpClair.getStyleClass().add("text-field");
+        mdpClair.setPrefWidth(400); // Largeur préférée de 350 pixels
+        mdpClair.setPrefHeight(48); // Hauteur préférée de 40 pixels
+
+        StackPane stackPane = new StackPane();
+        stackPane.getChildren().add(mdp);
+        stackPane.getChildren().add(voirMdp);
+        StackPane.setAlignment(voirMdp, Pos.CENTER_RIGHT);
+        this.add(stackPane,50,32);
+
+
+        voirMdp.setOnAction(event -> {
+            if (voirMdp.isSelected()) {
+                stackPane.getChildren().remove(mdp);
+                stackPane.getChildren().add(mdpClair);
+                stackPane.getChildren().remove(voirMdp);
+                stackPane.getChildren().add(voirMdp);
+                mdpClair.setText(mdp.getText());
+                voirMdp.setGraphic(oeilBarre);
+            }
+            else {
+                stackPane.getChildren().remove(mdpClair);
+                stackPane.getChildren().add(mdp);
+                stackPane.getChildren().remove(voirMdp);
+                stackPane.getChildren().add(voirMdp);
+                mdp.setText(mdpClair.getText());
+                voirMdp.setGraphic(oeil);
+
+            }
         });
     }
 
