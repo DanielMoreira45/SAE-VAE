@@ -1,6 +1,8 @@
 import java.security.cert.CertPath;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.text.html.ImageView;
@@ -8,6 +10,7 @@ import javax.swing.text.html.ImageView;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -40,7 +43,8 @@ import javafx.stage.Stage;
 public class PageAccueil extends VBox {
     private AppliVae appli;
     private ConnexionMySQL connexionMySQL;
-    private TouteLesVentes lesVentes;
+    private TouteLesVentes toutesLesVentes;
+    private List<Vente> lesVentes;
 
     /*
     @Override
@@ -69,35 +73,92 @@ public class PageAccueil extends VBox {
         super();
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
-        this.lesVentes = new TouteLesVentes(this.connexionMySQL);
+        this.toutesLesVentes = new TouteLesVentes(this.connexionMySQL);
+        try {
+            this.lesVentes = this.toutesLesVentes.toutVente();
+        } catch (SQLException | ParseException e) {
+            e.printStackTrace();
+        }
 
+        this.getChildren().addAll(this.setTitre(), this.setSousTitre(), this.setBoutonTrier(), this.setVentes());
+        this.setPadding(new Insets(20, 20, 50, 20));
+    }
+
+    public void majAffichage() {
+        this.getChildren().setAll(this.setTitre(), this.setSousTitre(), this.setBoutonTrier(), this.setVentes());
+    }
+
+    private Text setTitre() {
         Text titre = new Text("Catégorie");
         titre.setFont(Font.font("Valera", FontWeight.NORMAL, 58));
+        return titre;
+    }
 
+    private Text setSousTitre() {
         Text sousTitre = new Text("-> Sous-catégorie");
         sousTitre.setFont(Font.font("Valera", FontWeight.NORMAL, 24));
-        
-        ScrollPane ventes = this.setScrollVente();
-        HBox test = new HBox(ventes, this.setScrollBar(ventes));
-
-        this.getChildren().addAll(titre, sousTitre, this.setBoutonTrier(), test);
-        this.setPadding(new Insets(20, 20, 50, 20));
+        return sousTitre;
     }
         
 
     private HBox setBoutonTrier() {
         HBox trierVente = new HBox();
-        trierVente.getChildren().addAll(this.setBoutonEnchereEnCours(), this.setBoutonNonEncherier(), this.setBoutonBientotFini(), this.setPlusTrie(), this.setBoutonInverse());
+        try {
+            trierVente.getChildren().addAll(this.setBoutonTout(), this.setBoutonTrierParDate(), this.setBoutonTrierParNom(), this.setBoutonEnchereEnCours(), this.setBoutonAVenir(), this.setBoutonInverse());
+        } catch (SQLException | ParseException e) {
+            e.printStackTrace();
+        }
         trierVente.setPadding(new Insets(50, 0, 20, 0));
         trierVente.setSpacing(20);
         
         return trierVente;
     }
 
-    private Button setBoutonEnchereEnCours() {
+    private Button setBoutonTout() throws SQLException, ParseException {
+        Circle cercleBleu = new Circle(12);
+        cercleBleu.setFill(Color.web("#00F801"));
+        Text nbTout = new Text(this.toutesLesVentes.toutVente().size()+"");
+        nbTout.setFont(Font.font("Valera", FontWeight.BOLD, 10));
+        StackPane stackTout = new StackPane(cercleBleu, nbTout);
+        Button tout = new Button("Tout", stackTout);
+        tout.setPadding(new Insets(10));
+        tout.setFont(Font.font("Valera", 12));
+        tout.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
+        tout.setBorder(new Border(new BorderStroke(Color.valueOf("black"), BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(1))));
+
+        tout.setOnAction(new ControleurTrier(this, this.toutesLesVentes));
+
+        return tout;
+    }
+
+    private Button setBoutonTrierParDate() throws SQLException, ParseException {
+        Button parDate = new Button("Trier par date");
+        parDate.setPadding(new Insets(14));
+        parDate.setFont(Font.font("Valera", 12));
+        parDate.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
+        parDate.setBorder(new Border(new BorderStroke(Color.valueOf("black"), BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(1))));
+
+        parDate.setOnAction(new ControleurTrier(this, this.toutesLesVentes));
+
+        return parDate;
+    }
+
+    private Button setBoutonTrierParNom() throws SQLException, ParseException {
+        Button parNom = new Button("Trier par nom");
+        parNom.setPadding(new Insets(14));
+        parNom.setFont(Font.font("Valera", 12));
+        parNom.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
+        parNom.setBorder(new Border(new BorderStroke(Color.valueOf("black"), BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(1))));
+
+        parNom.setOnAction(new ControleurTrier(this, this.toutesLesVentes));
+
+        return parNom;
+    }
+
+    private Button setBoutonEnchereEnCours() throws SQLException, ParseException {
         Circle cercleVert = new Circle(12);
         cercleVert.setFill(Color.web("#72FF91"));
-        Text nbEnchereEnCours = new Text("3");
+        Text nbEnchereEnCours = new Text(this.toutesLesVentes.getNombreVenteParStatus(Status.ENCOURS)+"");
         nbEnchereEnCours.setFont(Font.font("Valera", FontWeight.BOLD, 12));
         StackPane stackEnchereEnCours = new StackPane(cercleVert, nbEnchereEnCours);
         Button enchereEnCours = new Button("Enchères en cours", stackEnchereEnCours);
@@ -105,68 +166,83 @@ public class PageAccueil extends VBox {
         enchereEnCours.setFont(Font.font("Valera", 12));
         enchereEnCours.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
         enchereEnCours.setBorder(new Border(new BorderStroke(Color.valueOf("black"), BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(1))));
+
+        enchereEnCours.setOnAction(new ControleurTrier(this, this.toutesLesVentes));
+
         return enchereEnCours;
     }
 
-    private Button setBoutonNonEncherier() {
-        Circle cercleJaune = new Circle(12);
-        cercleJaune.setFill(Color.web("#FFED4E"));
-        Text nbNonEncherier = new Text("7");
-        nbNonEncherier.setFont(Font.font("Valera", FontWeight.BOLD, 12));
-        StackPane stackNonEncherier = new StackPane(cercleJaune, nbNonEncherier);
-        Button objetNonEncherier = new Button("Objets non-enchèries", stackNonEncherier);
-        objetNonEncherier.setPadding(new Insets(10));
-        objetNonEncherier.setFont(Font.font("Valera", 12));
-        objetNonEncherier.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
-        objetNonEncherier.setBorder(new Border(new BorderStroke(Color.valueOf("black"), BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(1))));
-        return objetNonEncherier;
-    }
+    // private Button setBoutonNonEncherier() {
+    //     Circle cercleJaune = new Circle(12);
+    //     cercleJaune.setFill(Color.web("#FFED4E"));
+    //     Text nbNonEncherier = new Text("7");
+    //     nbNonEncherier.setFont(Font.font("Valera", FontWeight.BOLD, 12));
+    //     StackPane stackNonEncherier = new StackPane(cercleJaune, nbNonEncherier);
+    //     Button objetNonEncherier = new Button("Objets non-enchèries", stackNonEncherier);
+    //     objetNonEncherier.setPadding(new Insets(10));
+    //     objetNonEncherier.setFont(Font.font("Valera", 12));
+    //     objetNonEncherier.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
+    //     objetNonEncherier.setBorder(new Border(new BorderStroke(Color.valueOf("black"), BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(1))));
+    //     return objetNonEncherier;
+    // }
 
-    private Button setBoutonBientotFini() {
-        Circle cercleRouge = new Circle(12);
-        cercleRouge.setFill(Color.web("#FF9292"));
-        Text nbBientotFini = new Text("10");
-        nbBientotFini.setFont(Font.font("Valera", FontWeight.BOLD, 12));
-        StackPane stackBientotFini = new StackPane(cercleRouge, nbBientotFini);
-        Button enchereBientotFini = new Button("Enchères bientôt finies", stackBientotFini);
-        enchereBientotFini.setPadding(new Insets(10));
-        enchereBientotFini.setFont(Font.font("Valera", 12));
-        enchereBientotFini.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
-        enchereBientotFini.setBorder(new Border(new BorderStroke(Color.valueOf("black"), BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(1))));
-        return enchereBientotFini;
-    }
+    // private Button setBoutonBientotFini() {
+    //     Circle cercleRouge = new Circle(12);
+    //     cercleRouge.setFill(Color.web("#FF9292"));
+    //     Text nbBientotFini = new Text("10");
+    //     nbBientotFini.setFont(Font.font("Valera", FontWeight.BOLD, 12));
+    //     StackPane stackBientotFini = new StackPane(cercleRouge, nbBientotFini);
+    //     Button enchereBientotFini = new Button("Enchères bientôt finies", stackBientotFini);
+    //     enchereBientotFini.setPadding(new Insets(10));
+    //     enchereBientotFini.setFont(Font.font("Valera", 12));
+    //     enchereBientotFini.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
+    //     enchereBientotFini.setBorder(new Border(new BorderStroke(Color.valueOf("black"), BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(1))));
+    //     return enchereBientotFini;
+    // }
 
-    private Button setBoutonTrierValide() {
+    private Button setBoutonAVenir() throws SQLException, ParseException {
         Circle cercleBleu = new Circle(12);
         cercleBleu.setFill(Color.valueOf("blue"));
-        Text nbValide = new Text("10");
+        Text nbValide = new Text(this.toutesLesVentes.getNombreVenteParStatus(Status.AVENIR)+"");
         nbValide.setFont(Font.font("Valera", FontWeight.BOLD, 12));
         StackPane stackBientotFini = new StackPane(cercleBleu, nbValide);
-        Button enchereValide = new Button("Enchères validés", stackBientotFini);
-        enchereValide.setPadding(new Insets(0, 2, 0, 2));
-        enchereValide.setFont(Font.font("Valera", 12));
-        enchereValide.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
-        enchereValide.setBorder(new Border(new BorderStroke(Color.TRANSPARENT, BorderStrokeStyle.NONE, CornerRadii.EMPTY, BorderWidths.EMPTY)));
-        return enchereValide;
-    }
+        Button enchereAvenir = new Button("Enchères à venir", stackBientotFini);
+        enchereAvenir.setPadding(new Insets(10));
+        enchereAvenir.setFont(Font.font("Valera", 12));
+        enchereAvenir.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
+        enchereAvenir.setBorder(new Border(new BorderStroke(Color.valueOf("black"), BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(1))));
 
-    private ComboBox<Button> setPlusTrie() {
-        ComboBox<Button> plus = new ComboBox<>();
-        plus.getItems().addAll(this.setBoutonTrierValide(), new Button("b"));
-        plus.getSelectionModel().selectFirst();
-        plus.setPadding(new Insets(5));
-        plus.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
-        plus.setBorder(new Border(new BorderStroke(Color.valueOf("black"), BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(1))));
-        return plus;
+        enchereAvenir.setOnAction(new ControleurTrier(this, this.toutesLesVentes));
+
+        return enchereAvenir;
     }
 
     private Button setBoutonInverse() {
         Button inverse = new Button("Inverse");
-        inverse.setPadding(new Insets(10));
+        inverse.setPadding(new Insets(14));
         inverse.setFont(Font.font("Valera", 12));
         inverse.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
         inverse.setBorder(new Border(new BorderStroke(Color.valueOf("black"), BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(1))));
+
+        inverse.setOnAction(new ControleurTrier(this, this.toutesLesVentes));
+
         return inverse;
+    }
+
+    private HBox setVentes() {
+        ScrollPane scrollVentes = this.setScrollVente();
+        HBox ventes = new HBox();
+        ventes.setPrefWidth(1550);
+        if (this.lesVentes.size() > 4) ventes.getChildren().addAll(scrollVentes, this.setScrollBar(scrollVentes));
+        else if (this.lesVentes.size() == 0) {
+            Text pasVentesCorrespondante = new Text("Pas d'article correspondant");
+            pasVentesCorrespondante.setFont(Font.font("Valera", 18));
+            ventes.setAlignment(Pos.CENTER);
+            ventes.setPadding(new Insets(280, 0, 0, 0));
+            ventes.getChildren().add(pasVentesCorrespondante);
+        }
+        else ventes.getChildren().add(scrollVentes);
+        return ventes;
     }
 
     private GridPane setGridVente() {
@@ -174,15 +250,11 @@ public class PageAccueil extends VBox {
         gridVentes.setPadding(new Insets(50, 50, 0, 50));
         gridVentes.setHgap(100);
         gridVentes.setVgap(40);
-        try {
-            for (int i = 0; i < 10; i+=2) {
-                gridVentes.add(new CaseVente(this.lesVentes.toutVente().get(i)), 0, i);
-                gridVentes.add(new CaseVente(this.lesVentes.toutVente().get(i+1)), 1, i);
+        for (int i = 0; i < 20; i+=2) {
+            if (this.lesVentes.size() > i+1) {
+                gridVentes.add(new CaseVente(this.lesVentes.get(i)), 0, i);
+                gridVentes.add(new CaseVente(this.lesVentes.get(i+1)), 1, i);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
         return gridVentes;
     }
@@ -198,7 +270,7 @@ public class PageAccueil extends VBox {
     private ScrollBar setScrollBar(ScrollPane ventes) {
         ScrollBar bar = new ScrollBar();
         bar.setPrefHeight(ventes.getHeight()-10);
-        bar.setMinWidth(0);
+        bar.setMinWidth(20);
         bar.setPrefWidth(20);
         bar.setOrientation(Orientation.VERTICAL);
         bar.setMin(ventes.getVmin());
@@ -207,4 +279,16 @@ public class PageAccueil extends VBox {
         bar.setBackground(new Background(new BackgroundFill(Color.web("#B5D6FD"), new CornerRadii(20), Insets.EMPTY)));
         return bar;
     }
+
+    public void setLesVentes(List<Vente> lesVentes) {
+        this.lesVentes = lesVentes;
+    }
+
+    public void reverseLesVentes() {
+        Collections.reverse(this.lesVentes);
+    }
+
+    public TouteLesVentes getTouteLesVentes() { return this.toutesLesVentes; }
+
+    public List<Vente> getLesVentes() { return this.lesVentes; }
 }

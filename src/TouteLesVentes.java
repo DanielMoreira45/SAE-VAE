@@ -1,5 +1,6 @@
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -84,8 +85,8 @@ public class TouteLesVentes {
      * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
      * @throws ParseException
      */
-    public List<Vente> trieVenteParNomObjet() throws SQLException, ParseException {
-        List<Vente> liste = venteBD.touteLesVentes();
+    public List<Vente> trieVenteParNomObjet(List<Vente> lesVentes) throws SQLException, ParseException {
+        List<Vente> liste = new ArrayList<>(lesVentes);
         Collections.sort(liste, new ComparatorVenteNom());
         return liste;
     }
@@ -97,9 +98,13 @@ public class TouteLesVentes {
      * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
      * @throws ParseException
      */
-    public List<Vente> trieVenteParDate() throws SQLException, ParseException {
-        List<Vente> liste = venteBD.touteLesVentes();
+    public List<Vente> trieVenteParDate(List<Vente> lesVentes) throws SQLException, ParseException {
+        List<Vente> liste = new ArrayList<>(lesVentes);
         Collections.sort(liste, new ComparatorVenteDateFin());
         return liste;
+    }
+
+    public List<Vente> recherche(String text) throws SQLException, ParseException {
+        return venteBD.recherche(text);
     }
 }

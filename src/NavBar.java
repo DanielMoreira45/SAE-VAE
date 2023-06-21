@@ -47,6 +47,7 @@ public class NavBar extends HBox{
 
     private AppliVae appli;
     private ConnexionMySQL connexionMySQL;
+    private TextField textFieldRecherche;
 
     public NavBar(AppliVae appli, ConnexionMySQL connexionMySQL){
         this.appli = appli;
@@ -88,11 +89,13 @@ public class NavBar extends HBox{
         ImageView imageRecherche = new ImageView("imageRecherche.png");
         imageRecherche.setFitHeight(30);
         imageRecherche.setFitWidth(30);
+        imageRecherche.setOnMouseClicked(new ControleurRechercheClick(this.appli, this));
 
-        TextField textFieldRecherche = new TextField();
+        this.textFieldRecherche = new TextField();
         textFieldRecherche.setPromptText("Nom d'un produit");
         textFieldRecherche.getStyleClass().add("text-field");
         textFieldRecherche.setPrefWidth(400);
+        textFieldRecherche.setOnKeyReleased(new ControleurRechercheEntrer(this.appli, this));
 
 
         GridPane gridPane = new GridPane();
@@ -105,9 +108,10 @@ public class NavBar extends HBox{
         ComboBox<String> comboBox = new ComboBox<>();
         comboBox.setCursor(Cursor.HAND);
         comboBox.getItems().addAll("Tout", "Vêtement", "Chaussure", "Accessoire", "Electromenager", "Informatique", "Jeux", "Livre", "Musique", "Sport", "Vehicule","Ustensile Cuisine","Meuble","Outil");
-        comboBox.setPromptText("Categories Populaires");
+        comboBox.setPromptText("Tout");
         comboBox.setStyle("-fx-background-color: white; -fx-text-fill: black; -fx-font-size: 15px; -fx-border-radius: 10; -fx-background-radius: 10; -fx-border-color: black; -fx-border-width: 1;");
-        comboBox.setPrefHeight(40);
+        comboBox.setPrefHeight(45);
+        comboBox.setOnAction(new ControleurCategorie(this.appli));
         navBar2.getChildren().addAll(navBar,comboBox);
 
         // Bouton deconnexion
@@ -170,6 +174,8 @@ public class NavBar extends HBox{
 
 
     }
+
+    public TextField getTextFieldRecherche() { return this.textFieldRecherche; }
 
 
 

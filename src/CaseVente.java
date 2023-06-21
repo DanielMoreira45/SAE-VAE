@@ -77,7 +77,6 @@ public class CaseVente extends HBox {
 
     private Text setDescription() {
         Text description = new Text(this.setDescription(this.getTxtMinLongueur(this.vente.getObjet().getDescription(), 200)));
-        // Text description = new Text(this.setDescription(this.getTxtMinLongueur("ezfoie zjfezoij fezofj oe zfjoe zfjo ezjf ezfoie zjfezoij fezofj oe zfjoe zfjo ezjf ezfoie zjfezoij fezofj oe zfjoe zfjo ezjf ezfoie zjfezoij fezofj oe zfjoe zfjo ezjf ezfoie zjfezoij fezofj oe zfjoe zfjo ezjf ", 200)));
         description.setTextAlignment(TextAlignment.LEFT);
         return description;
     }
