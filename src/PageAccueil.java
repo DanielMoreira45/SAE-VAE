@@ -252,8 +252,8 @@ public class PageAccueil extends VBox {
         gridVentes.setVgap(40);
         for (int i = 0; i < 20; i+=2) {
             if (this.lesVentes.size() > i+1) {
-                gridVentes.add(new CaseVente(this.lesVentes.get(i)), 0, i);
-                gridVentes.add(new CaseVente(this.lesVentes.get(i+1)), 1, i);
+                gridVentes.add(new CaseVente(this.lesVentes.get(i), this.appli, this.connexionMySQL), 0, i);
+                gridVentes.add(new CaseVente(this.lesVentes.get(i+1), this.appli, this.connexionMySQL), 1, i);
             }
         }
         return gridVentes;

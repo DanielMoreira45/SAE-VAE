@@ -78,6 +78,8 @@ public class AppliVae extends Application{
 
     private Utilisateur utilisateurActuel;
 
+    private PageProfilObjet pageProfilObjet;
+
 
 
     /**
@@ -102,6 +104,7 @@ public class AppliVae extends Application{
         this.pageAccueil = new PageAccueil(this, this.connexionMySQL);
         //this.pageProfilUtilisateur = new PageProfilUtilisateur();
         this.navBar = new NavBar(this, this.connexionMySQL);
+        this.pageProfilObjet = new PageProfilObjet(this, this.connexionMySQL);
         this.root = (BorderPane) this.scene.getRoot();
     }
 
@@ -148,6 +151,12 @@ public class AppliVae extends Application{
      */
     public void modeProfilUtilisateur(){
         //this.scene.setRoot(this.pageProfilUtilisateur)
+    }
+
+    public void modeProfilObjet(){
+        scene.getStylesheets().setAll("styleNavBar.css", "stylePageProfilObjet.css");
+        this.root.setTop(this.navBar);
+        this.root.setCenter(this.pageProfilObjet);
     }
 
     public void setUtilisateurActuel(Utilisateur utilisateur){
