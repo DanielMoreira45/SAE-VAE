@@ -39,8 +39,12 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
         String marque = vue.getMarque();
         Double prixMin = vue.getPrixMin();
         Double prixBase = vue.getprixBase();
-            this.dateDeBut = vue.dateDebutToString().replace("-", "/");
-            this.dateFin = vue.dateFinToString().replace("-", "/");
+        this.dateDeBut = vue.dateDebutToString();
+        this.dateFin = vue.dateFinToString();
+        if(this.dateDeBut != null & this.dateFin != null){
+            this.dateFin  = this.dateFin.replace("-", "/");
+            this.dateDeBut = this.dateDeBut.replace("-", "/");
+        }
         System.out.println(cat);
         String desc = vue.getDesc();
         List<Photo> lesPhotos = vue.getPhotos();
@@ -76,7 +80,7 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
                     vue.getDateFin().setStyle(
                             "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: red;");
 
-                    // vue.setMessageErreurDate();
+                    vue.setMessageErreurDate();
                     
                 }
                 if (prixMin >= prixBase) {
@@ -84,7 +88,6 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
                             "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: red;");
                     vue.getprixBaseTf().setStyle(
                             "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: red;");
-                    // vue.setMessageErreurPrix();
                 }
                 if (vue.valideDate() && prixMin < prixBase) {
                     try {

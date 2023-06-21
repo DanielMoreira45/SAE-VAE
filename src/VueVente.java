@@ -43,18 +43,21 @@ public class VueVente extends VBox {
     DatePicker dateFin;
     Button ajoutVente;
     AppliVae appli;
-    TextField tfErreur;
+    Label labelErreur;
     ConnexionMySQL connexionMySQL;
     String titre = null;
     ImageView imageActu = null;
     private Utilisateur utilisateur;
     VBox vboxDescVentes;
+    VBox vboxDesDates;
+    Label labelErreurPrix;
+    HBox laBoitePrix;
 
     public VueVente(AppliVae appli, ConnexionMySQL connexionMySQL, Utilisateur utilisateur) {
-        super(10);
+        super(5);
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
-        Insets insetsParDefaut = new Insets(2, 70, 2, 70);
+        Insets insetsParDefaut = new Insets(0, 70, 0, 70);
         this.setPadding(new Insets(20));
         VBox sectionPhotos = this.sectionDesPhotos();
         VBox sectionTitre = this.sectionTitreVente();
@@ -73,7 +76,9 @@ public class VueVente extends VBox {
         ajoutVente.setOnAction(cme);
         this.utilisateur = utilisateur; // vendeur
         this.lesPhotos = new ArrayList<>();
-        this.tfErreur = new TextField();
+        this.labelErreur = new Label();
+        this.labelErreurPrix = new Label("");
+
     }
 
     public String getCategorie() {
@@ -114,25 +119,26 @@ public class VueVente extends VBox {
         return this.prixBase;
     }
 
-
-public String dateDebutToString() {
-    LocalDate date = dateDebut.getValue();
-    if (date != null) {
-        return date.toString();
+    public String dateDebutToString() {
+        LocalDate date = dateDebut.getValue();
+        if (date != null) {
+            return date.toString();
+        }
+        return null;
     }
-    return null;
-}
 
-public String dateFinToString() {
-    LocalDate date = dateFin.getValue();
-    if (date != null) {
-        return date.toString();
+    public String dateFinToString() {
+        LocalDate date = dateFin.getValue();
+        if (date != null) {
+            return date.toString();
+        }
+        return null;
     }
-    return null;
-}
-public boolean valideDate() {
-    return dateDebut.getValue().isBefore(dateFin.getValue()) || dateDebut.equals(dateFin);
-}
+
+    public boolean valideDate() {
+        return dateDebut.getValue().isBefore(dateFin.getValue()) || dateDebut.equals(dateFin);
+    }
+
     public String titreVente() {
         return this.tfTitreVente.getText();
     }
@@ -155,7 +161,8 @@ public boolean valideDate() {
     private void initDesPhotos() {
         this.listeDesPhotos = new ArrayList<>();
         ImageView imageParDefaut = new ImageView(new Image("file:./img/defaultImage.png"));
-        imageParDefaut.setFitWidth(200);
+        // imageParDefaut.setFitWidth(200);
+        imageParDefaut.setFitHeight(100);
         imageParDefaut.setPreserveRatio(true);
         this.listeDesPhotos.add(imageParDefaut);
     }
@@ -271,12 +278,11 @@ public boolean valideDate() {
     private void initComboBoxCategorie() {
         this.choixCategorie = new ComboBox<>();
         this.choixCategorie.getItems().addAll("Vêtement", "Chaussure",
-               "Electromenager", "Informatique",
+                "Electromenager", "Informatique",
                 "Jeux", "Livre",
                 "Meuble", "Musique",
                 "Outil", "Sport",
-                "Ustensile Cuisine", "Vehicule","Accessoire"
-                );
+                "Ustensile Cuisine", "Vehicule", "Accessoire");
         this.choixCategorie.setStyle(
                 "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: white;");
     }
@@ -398,7 +404,7 @@ public boolean valideDate() {
         this.vboxDescVentes.setStyle(
                 "-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
         vboxDescVentes.getChildren().addAll(this.titreDesSection("Décris ton article"), this.descriptionVente);
-        VBox.setMargin(this.descriptionVente, new Insets(5, 50, 15, 50));
+        VBox.setMargin(this.descriptionVente, new Insets(5, 30, 15, 30));
         return vboxDescVentes;
     }
 
@@ -489,8 +495,8 @@ public boolean valideDate() {
      * @return HBox : la boite contenant les labels et les TextFields des prix.
      */
     private HBox boiteTfPrix(int largeur) {
-        HBox laBoite = new HBox(150);
-        laBoite.setPadding(new Insets(25));
+        this.laBoitePrix  = new HBox(150);
+        laBoitePrix.setPadding(new Insets(25));
         Label euroMin = new Label("€");
         Label euroMax = new Label("€");
         StackPane champMin = new StackPane(this.prixMin, euroMin);
@@ -503,8 +509,8 @@ public boolean valideDate() {
         VBox boiteprixBase = new VBox(new Label("Prix de Base"), champVise);
         boitePrixMin.setAlignment(Pos.CENTER);
         boiteprixBase.setAlignment(Pos.CENTER);
-        laBoite.getChildren().addAll(boitePrixMin, boiteprixBase);
-        return laBoite;
+        laBoitePrix.getChildren().addAll(boitePrixMin, boiteprixBase);
+        return laBoitePrix;
     }
 
     /**
@@ -533,16 +539,14 @@ public boolean valideDate() {
      */
     private VBox boiteChampsDates() {
         this.initDates();
-        VBox vboxDesDates = new VBox(5);
+        this.vboxDesDates = new VBox(5);
         VBox boiteDebut = new VBox(5, new Label("début"), this.dateDebut);
         VBox boiteFin = new VBox(5, new Label("fin"), this.dateFin);
         boiteDebut.setAlignment(Pos.CENTER);
         boiteFin.setAlignment(Pos.CENTER);
-        vboxDesDates.getChildren().addAll(boiteDebut, boiteFin);
-        return vboxDesDates;
+        this.vboxDesDates.getChildren().addAll(boiteDebut, boiteFin);
+        return this.vboxDesDates;
     }
-
-
 
     /**
      * Méthode permettant de créer la section des dates.
@@ -589,7 +593,7 @@ public boolean valideDate() {
         alert.showAndWait();
     }
 
-     public void popUpRemplirChamp() {
+    public void popUpRemplirChamp() {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Erreur");
         alert.setHeaderText(null);
@@ -601,17 +605,17 @@ public boolean valideDate() {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Mise aux enchères de l'objet");
         alert.setHeaderText("Mise aux enchères effectué !");
-        alert.setContentText("Votre objet "+ nomOb + "au prix de "+prixBase + " est maintenant visible.");
+        alert.setContentText("Votre objet " + nomOb + "au prix de " + prixBase + " est maintenant visible.");
         alert.showAndWait();
     }
 
-//     public void setMessageErreurDate() {
-//     Label lebErreur = new Label("La date de début doit être inférieure à celle de mise en vente");
-//     lebErreur.setStyle("-fx-text-fill: red;");
-//     VBox.setMargin(lebErreur, new Insets(10, 0, 10, 0));
-//     VBox.setVgrow(lebErreur, Priority.ALWAYS);
-//     lebErreur.setAlignment(Pos.BOTTOM_CENTER);
-//     vboxDescVentes.getChildren().add(lebErreur);
-// }
+    public void setMessageErreurDate() {
+        this.labelErreur.setText("La date de début doit être inférieure à celle de mise en vente");
+        this.labelErreur.setStyle("-fx-text-fill: red;");
+        VBox.setMargin(labelErreur, new Insets(10, 0, 10, 0));
+        VBox.setVgrow(labelErreur, Priority.ALWAYS);
+        labelErreur.setAlignment(Pos.BOTTOM_CENTER);
+        vboxDesDates.getChildren().add(labelErreur);
+    }
 
 }
