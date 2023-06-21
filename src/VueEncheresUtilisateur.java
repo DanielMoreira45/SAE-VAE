@@ -1,3 +1,5 @@
+import java.util.List;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -12,6 +14,11 @@ import javafx.scene.text.Text;
 
 public class VueEncheresUtilisateur extends BorderPane {
     private ScrollPane scrollPaneEncheres;
+    // private List<> lesEncheresUtilisateur;
+    
+    /**
+     * Constructeur permettant de créer une page listant les enchères d'un utilisateur.
+     */
     public VueEncheresUtilisateur() {
         Text titre = this.initTitrePrincipal();
         BorderPane partieCentrale = this.getPartieCentrale();
@@ -23,12 +30,20 @@ public class VueEncheresUtilisateur extends BorderPane {
         BorderPane.setAlignment(partieCentrale, Pos.TOP_CENTER);
     }
 
+    /**
+     * Méthode permettant d'initialiser le titre principal de la page.
+     * @return Text : le titre de la page.
+     */
     private Text initTitrePrincipal() {
         Text titrePrincipal = new Text("Vos enchères actuelles");
         titrePrincipal.setFont(Font.font("Arial", 32));
         return titrePrincipal;
     }
 
+    /**
+     * Méthode permettant d'initialiser le ScrollPane situé dans la partie centrale de la page.
+     * Il contiendra toutes les enchères auquel l'utilisateur participe.
+     */
     private void initScrollPaneEncheres() {
         this.scrollPaneEncheres = new ScrollPane();
         this.scrollPaneEncheres.setStyle("-fx-background: #fdfdfd; -fx-border-color: #dddddd; -fx-border-radius : 0.8em; -fx-background-radius: 0.8em;");
@@ -36,6 +51,10 @@ public class VueEncheresUtilisateur extends BorderPane {
         this.scrollPaneEncheres.setPadding(new Insets(0, 20, 0, 20));
     }
 
+    /**
+     * Méthode permettant de constituer la partie centrale de la page.
+     * @return BorderPane : la partie centrale de la page.
+     */
     private BorderPane getPartieCentrale() {
         BorderPane leCentre = new BorderPane();
         leCentre.setPadding(new Insets(10));
@@ -46,7 +65,7 @@ public class VueEncheresUtilisateur extends BorderPane {
         leCentre.setTop(boiteRecherche);
         leCentre.setCenter(this.scrollPaneEncheres);
         BorderPane.setMargin(boiteRecherche, new Insets(0, 0, 10, 0));
-        BorderPane.setMargin(this.scrollPaneEncheres, new Insets(10));
+        BorderPane.setMargin(this.scrollPaneEncheres, new Insets(15, 20, 40, 20));
         return leCentre;
     }
 
@@ -91,19 +110,4 @@ public class VueEncheresUtilisateur extends BorderPane {
         boiteRecherche.setStyle("-fx-background-color: #b5d6fd; -fx-background-radius: 0.8em; -fx-border-color : black; -fx-border-radius: 0.8em;");
         return boiteRecherche;
     }
-
-    // /**
-    //  * Méthode permettant de constituer une boite, contenant la boite de la barre de recherche, avec la ComboBox de la dernière connexion.
-    //  * @return HBox : une boite contenant la barre de recherche et la ComboBox de temps de connexion.
-    //  */
-    // private HBox getElemsRecherche() {
-    //     HBox boiteCatRecherche = new HBox(5);
-    //     boiteCatRecherche.setPadding(new Insets(10));
-    //     boiteCatRecherche.setMaxWidth(600);
-    //     this.initComboBox();
-    //     HBox laBoiteDeRecherche = this.getBoiteBarreDeRecherche();
-    //     laBoiteDeRecherche.setAlignment(Pos.CENTER);
-    //     boiteCatRecherche.getChildren().addAll(laBoiteDeRecherche, this.comboBoxDerniereConnexion);
-    //     return boiteCatRecherche;
-    // }
 }
