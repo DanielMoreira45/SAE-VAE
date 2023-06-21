@@ -171,6 +171,8 @@ public class AppliVae extends Application{
         return null;
     }
 
+    public PageAccueil getPageAccueil() { return this.pageAccueil; }
+
     @Override
     public void start(Stage stage){
         stage.setTitle("Appli VAE");
