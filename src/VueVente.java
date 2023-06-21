@@ -119,6 +119,9 @@ public String dateFinToString() {
     }
     return null;
 }
+public boolean valideDate() {
+    return dateDebut.getValue().isBefore(dateFin.getValue()) || dateDebut.equals(dateFin);
+}
     public String titreVente() {
         return this.tfTitreVente.getText();
     }
@@ -588,6 +591,13 @@ public String dateFinToString() {
         alert.setTitle("Mise aux enchères de l'objet");
         alert.setHeaderText("Mise aux enchères effectué !");
         alert.setContentText("Votre objet "+ nomOb + "au prix de "+prixBase + " est maintenant visible.");
+        alert.showAndWait();
+    }
+
+    public void dateInvalidePopUp() {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("ATTENTION A LA DATE");
+        alert.setContentText("La date de début de mise en enchère doit être inférieur à la date de fin des enchères");
         alert.showAndWait();
     }
 }

@@ -69,7 +69,16 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
         }
         if (bouton.getText().equals("Ajouter le produit > ")) {
             if (prixMin != null && prixBase != null && cat != null && dateFin != null && dateDeBut != null) {
-
+                if(!(vue.valideDate())){
+                    vue.getDateDebut().setStyle(
+                "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: red;");
+                }
+                vue.getDateFin().setStyle(
+                "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: red;");
+                }
+                if(prixMin >= prixBase){
+                    prixMin.setSt
+                }
                 try {
                     this.obj = new Objet(objetBD.maxIdObjet() + 1, desc, titreOb, lesPhotos, vue.getVendeur(), 1);
                     objetBD.insereObjet(obj);
@@ -86,18 +95,15 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
                 vue.popUpVenteInserer(titreOb, prixBase);
                 System.out.println(dateDeBut);
                 System.out.println(dateFin);
-
                 venteDeOb.insereVente(vente);
             } catch (SQLException e) {
                 vue.popUpVenteInserer(titreOb, 10.0);
             } catch (ParseException e) {
                 System.out.println("problème de parse");
             }
-
         }
             else{
                 this.vue.popUpRemplirChamp();
             }
         }
     }
-}
