@@ -181,12 +181,37 @@ public class VenteBD {
         ob.setVente(ven);
         return ven;
     }
+
     public int maxIdVe() throws SQLException {
         Statement s = this.laConnexionMySQL.createStatement();
         ResultSet rs = s.executeQuery("SELECT MAX(idve) FROM VENTE");
-        if (rs.next()){
-            return rs.getInt(1);
-        }
-        return 0;
+        return rs.getInt(1);
     }
+
+    public List<Vente> venteSansEnchere() throws SQLException, ParseException {
+        Statement s = this.laConnexionMySQL.createStatement();
+        ObjetBD obBD = new ObjetBD(laConnexionMySQL);
+        ResultSet rs = s.executeQuery(
+                "select idve, prixbase, prixmin, debutve, finve, idob, idst from VENTE where not Exists (select * from ENCHERIR where VENTE.idVe = ENCHERIR.idVe)");
+        List<Vente> liste = new ArrayList<Vente>();
+        while (rs.next()) {
+            int idve = rs.getInt(1);
+            Double prixBase = rs.getDouble(2);
+            Double prixmin = rs.getDouble(3);
+            Timestamp debutVe = new Timestamp(rs.getDate(4).getTime());
+            LocalDateTime dateTimeDebut = LocalDateTime.parse(debutVe.toString(), this.inputFormatter);
+            String debutVeString = dateTimeDebut.format(this.outputFormatter);
+            Timestamp finVe = new Timestamp(rs.getDate(5).getTime());
+            LocalDateTime dateTimeFin = LocalDateTime.parse(finVe.toString(), this.inputFormatter);
+            String finVeString = dateTimeFin.format(this.outputFormatter);
+            int idob = rs.getInt(6);
+            int idst = rs.getInt(7);
+            Objet ob = obBD.objetParId(idob);
+            Vente vente = new Vente(idve, prixBase, prixmin, debutVeString, finVeString, idst, ob);
+            liste.add(vente);
+        }
+        return liste;
+
+    }
+
 }

@@ -102,4 +102,8 @@ public class TouteLesVentes {
         Collections.sort(liste, new ComparatorVenteDateFin());
         return liste;
     }
+
+    public List<Vente> venteSansEnchere() throws SQLException, ParseException{
+        return venteBD.venteSansEnchere();
+    }
 }
