@@ -38,15 +38,19 @@ public class ControleurConnexion implements EventHandler<ActionEvent>{
             UtilisateurBD userBd = new UtilisateurBD(connexionMySQL);
             String mail = vue.getEmail();
             this.laMap = userBd.rechercherJoueurParMail(mail);
+            if (this.laMap == null){
+                String pseudo = vue.getEmail();
+                this.laMap = userBd.rechercherJoueurParPseudo(pseudo);
+            }
         }
         catch(SQLException e){
-                e.printStackTrace();
+            e.printStackTrace();
         }
         try {
             if (this.vue.getEmail().equals("erreur")) throw new Exception();
             this.vue.setEmailErreur(false);
             this.vue.setMessageEmailErreur("");
-            if(laMap == null){
+            if(this.laMap == null){
                 throw new Exception();
             }
             try {
