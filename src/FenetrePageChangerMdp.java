@@ -42,34 +42,33 @@ public class FenetrePageChangerMdp extends GridPane{
 
 
     public void creerPageChangerMdp(){
-        GridPane gridPane = new GridPane();
-        gridPane.setStyle("-fx-border-color: #D9D9D9; -fx-border-width: 3px; -fx-border-radius: 10; -fx-padding: 20px;");
-        BorderPane.setMargin(gridPane, new Insets(130, 100, 100, 30));
-        gridPane.setHgap(30);
-        gridPane.setVgap(40);
+        this.setStyle("-fx-border-color: #D9D9D9; -fx-border-width: 3px; -fx-border-radius: 10; -fx-padding: 20px;");
+        BorderPane.setMargin(this, new Insets(130, 100, 100, 30));
+        this.setHgap(30);
+        this.setVgap(40);
 
-        gridPane.add(new Text("Charger de Mot de Passe"), 0, 0);
-        gridPane.add(new Text("Mot de Passe actuelle "), 0, 1);
+        this.add(new Text("Charger de Mot de Passe"), 0, 0);
+        this.add(new Text("Mot de Passe actuelle "), 0, 1);
         TextField textFieldMdpAc = new TextField();
-        gridPane.add(textFieldMdpAc, 1, 1);
+        this.add(textFieldMdpAc, 1, 1);
         textFieldMdpAc.setPromptText("Entrer votre mot de passe actuelle");
         textFieldMdpAc.getStyleClass().add("text-fieldU");
 
-        gridPane.add(new Text("Nouveau Mot de Passe"), 0, 2);
+        this.add(new Text("Nouveau Mot de Passe"), 0, 2);
         TextField textFieldNouveauMdp = new TextField();
-        gridPane.add(textFieldNouveauMdp, 1, 2);
+        this.add(textFieldNouveauMdp, 1, 2);
         textFieldNouveauMdp.setPromptText("Enter votre nouveau mot de passe");
         textFieldNouveauMdp.getStyleClass().add("text-fieldU");
 
-        gridPane.add(new Text("Confirmer votre Mot de Passe"), 0, 3);
+        this.add(new Text("Confirmer votre Mot de Passe"), 0, 3);
         TextField textFieldConfirMdp = new TextField();
-        gridPane.add(textFieldConfirMdp, 1, 3);
+        this.add(textFieldConfirMdp, 1, 3);
         textFieldConfirMdp.setPromptText("Confirmer le nouveau mot de passe");
         textFieldConfirMdp.getStyleClass().add("text-fieldU");
 
         Button boutonValider = new Button("Valider");
         boutonValider.getStyleClass().add("buttonBleu");
-        gridPane.add(boutonValider, 1, 4);
+        this.add(boutonValider, 1, 4);
 
     }
 
