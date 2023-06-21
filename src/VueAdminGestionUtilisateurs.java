@@ -1,3 +1,5 @@
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,13 +28,20 @@ public class VueAdminGestionUtilisateurs extends BorderPane {
     private ComboBox<String> comboBoxDerniereConnexion;
     private ScrollPane scrollPaneProfils;
     private List<BorderPane> listeDesProfils;
+    private List<Utilisateur> listeUtilisateurs;
+    private ToutLesUtilisateurs toutLesUtilisateurs;
 
     /**
      * Construction permettant de créer une nouvelle vue de gestion des utilisateurs.
      */
-    public VueAdminGestionUtilisateurs() {
+    public VueAdminGestionUtilisateurs(ConnexionMySQL laConnexionMySQL) {
         super();
-        this.listeDesProfils = new ArrayList<>();
+        this.toutLesUtilisateurs = new ToutLesUtilisateurs(laConnexionMySQL);
+        try {
+            this.listeUtilisateurs = toutLesUtilisateurs.toutUtilisateurs();
+        } catch (SQLException | ParseException e) {
+            e.printStackTrace();
+        }
         Text titre = this.initTitrePage();
         BorderPane partieCentrale = this.getPartieCentrale();
         this.setTop(titre);
@@ -44,61 +53,32 @@ public class VueAdminGestionUtilisateurs extends BorderPane {
         BorderPane.setAlignment(partieCentrale, Pos.TOP_CENTER);
         this.getStylesheets().add("stylePageUtilisateur.css");
 
-        // this.ajouterUnProfil("test1", 0);
-        // this.ajouterUnProfil("test2", 2);
-        // this.ajouterUnProfil("test3", 4);
-        // this.ajouterUnProfil("test4", 6);
-        // this.ajouterUnProfil("test5", 8);
-        // this.ajouterUnProfil("test6", 10);
-        // this.ajouterUnProfil("test7", 12);
-        // this.ajouterUnProfil("test8", 14);
-        // this.ajouterUnProfil("test9", 16);
-        // this.ajouterUnProfil("test10", 18);
-        // this.ajouterUnProfil("test11", 20);
-        // this.ajouterUnProfil("test12", 60);
-        // this.ajouterUnProfil("test13", 1440);
-        // this.ajouterUnProfil("test14", 8500);
         this.majDesProfils();
     }
 
     /**
-     * Méthode permettant d'ajouter un nouveau profil (à modifier si besoin).
-     * @param nom String : le nom de l'utilisateur à ajouter.
-     * @param derniereConnexion int : sa dernière connexion.
+     * Méthode permettant d'ajouter tout les profils.
      */
-    public void ajouterUnProfil(String nom, int derniereConnexion) {
-        BorderPane tempProfil = new BorderPane();
-        tempProfil.setPrefWidth(this.scrollPaneProfils.getWidth());
-        tempProfil.setStyle("-fx-background-color: #fdfdfd;");
-        tempProfil.setPadding(new Insets(5));
-
-        VBox boiteBoutonsGestion = this.getLesBoutonsProfil();
-        Text nomDuProfil = this.getNomDuProfil(nom);
-        ImageView photoProfil = this.getImageProfil();
-        VBox boiteInfosProfil = this.getInfosProfil(nomDuProfil, derniereConnexion);
-
-        tempProfil.setLeft(photoProfil);
-        tempProfil.setCenter(boiteInfosProfil);
-        tempProfil.setRight(boiteBoutonsGestion);
-
-        BorderPane.setMargin(photoProfil, new Insets(5));
-        BorderPane.setMargin(boiteInfosProfil, new Insets(5, 0, 5, 5));
-        BorderPane.setMargin(boiteBoutonsGestion, new Insets(5, 5, 5, 0));
-        BorderPane.setAlignment(boiteBoutonsGestion, Pos.CENTER);
-
-        this.listeDesProfils.add(tempProfil);
+    public void ajouterProfils() {
+        this.listeDesProfils = new ArrayList<>();
+        for (int i = 0; i < 50; i++) {
+            if (i < this.listeUtilisateurs.size()) {
+                this.listeDesProfils.add(new CaseProfil(this.listeUtilisateurs.get(i), this));
+            }
+        }
     }
 
     /**
      * Méthode permettant de mettre à jour l'affichage des profils dans le ScrollPane.
      */
     public void majDesProfils() {
+        this.ajouterProfils();
         VBox tousLesProfils = new VBox(10);
         tousLesProfils.setStyle("-fx-background-color: transparent;");
         if (this.listeDesProfils.isEmpty()) {
-            Text texteListeVide = new Text("Il n'y a aucun utilisateur existant.");
+            Text texteListeVide = new Text("Il n'y a aucun utilisateur correspondant.");
             texteListeVide.setFont(Font.font("Arial", 18));
-            tousLesProfils.setPadding(new Insets(15, 0, 0, 0));
+            tousLesProfils.setPadding(new Insets(250, 0, 0, 500));
             tousLesProfils.getChildren().add(texteListeVide);
         }
         else {
@@ -107,72 +87,6 @@ public class VueAdminGestionUtilisateurs extends BorderPane {
             }
         }
         this.scrollPaneProfils.setContent(tousLesProfils);
-    }
-
-    /**
-     * Méthode permettant de créer les boutons "supprimer" et "désactiver" du profil.
-     * @return VBox : la boite contenant les boutons "supprimer" et "désactiver".
-     */
-    private VBox getLesBoutonsProfil() {
-        Button supprimer = new Button("Supprimer");
-        Button desactiver = new Button("Désactiver");
-        supprimer.setStyle("-fx-background-color : #ff9292; -fx-border-radius: 0.8em; -fx-background-radius : 0.8em; -fx-effect: dropshadow(gaussian, grey, 8, 0, 1, 1);");
-        desactiver.setStyle("-fx-background-color : #6a6a6a; -fx-border-radius: 0.8em; -fx-background-radius : 0.8em; -fx-effect: dropshadow(gaussian, grey, 8, 0, 1, 1);");
-        VBox boiteBoutonsGestion = new VBox(10, supprimer, desactiver);
-        boiteBoutonsGestion.setPadding(new Insets(10));
-        boiteBoutonsGestion.setStyle("-fx-background-color: #f1f1f1;");
-        return boiteBoutonsGestion;
-    }
-
-    /**
-     * Méthode permettant de créer le nom d'utilisateur.
-     * @param nom String : le nom de l'utilisateur à créer.
-     * @return Text : le nom de l'utilisateur sous forme de Text.
-     */
-    private Text getNomDuProfil(String nom) {
-        Text nomDuProfil = new Text(nom);
-        nomDuProfil.setFont(Font.font("Arial", 16));
-        return nomDuProfil;
-    }
-
-    /**
-     * Méthode permettant de créer la photo de profil.
-     * @return ImageView : la photo de profil de l'utilisateur.
-     */
-    private ImageView getImageProfil() {
-        Circle cercleImage = new Circle(40, 40, 40);
-        ImageView photoProfil = new ImageView(new Image("file:./img/photoParDefaut.png"));
-        photoProfil.setStyle("-fx-border-radius: 1em; -fx-background-radius: 1em;");
-        photoProfil.setFitWidth(80);
-        photoProfil.setFitHeight(80);
-        photoProfil.setClip(cercleImage);
-        return photoProfil;
-    }
-
-    /**
-     * Méthode permettant de créer une boite contentant le nom de l'utilisateur et la dernière connexion.
-     * @param nomDuProfil Text : le nom de l'utilisateur.
-     * @param derniereConnexion int : sa dernière connexion (en minutes).
-     * @return VBox : une boite contenant les informations de profil de l'utilisateur (son pseudo et sa dernière connexion).
-     */
-    private VBox getInfosProfil(Text nomDuProfil, int derniereConnexion) {
-        String connexion = "Dernière connexion :";
-        VBox boiteInfosProfil = new VBox(10, nomDuProfil);
-        if (derniereConnexion == 0) {
-            boiteInfosProfil.getChildren().add(new Label(connexion + " à l'instant."));
-        }
-        else if (derniereConnexion < 60) {
-            boiteInfosProfil.getChildren().add(new Label(connexion + " il y a " + derniereConnexion + " min."));
-        }
-        else if (derniereConnexion >= 60 && derniereConnexion < 1440) {
-            boiteInfosProfil.getChildren().add(new Label(connexion + " il y a " + derniereConnexion/60 + " h."));
-        }
-        else {
-            boiteInfosProfil.getChildren().add(new Label(connexion + " il y a " + derniereConnexion/1440 + " j."));
-        }
-        boiteInfosProfil.setPadding(new Insets(10));
-        boiteInfosProfil.setStyle("-fx-background-color: #f1f1f1;");
-        return boiteInfosProfil;
     }
 
     /**
@@ -285,11 +199,15 @@ public class VueAdminGestionUtilisateurs extends BorderPane {
      * Méthode permettant de créer la barre de recherche en elle-même.
      * @return TextField : le champ de recherche.
      */
-    private TextField getBarreDeRecherche() {
-        TextField barreDeRecherche = new TextField("Nom d'un utilisateur");
+    private TextField setBarreDeRecherche() {
+        TextField barreDeRecherche = new TextField();
+        barreDeRecherche.setPromptText("Nom d'un utilisateur");
         barreDeRecherche.setAlignment(Pos.CENTER_LEFT);
         barreDeRecherche.setStyle("-fx-effect: dropshadow(gaussian, grey, 8, 0, 1, 1); -fx-background-radius: 0.8em; -fx-background-color: white;");
         barreDeRecherche.setPrefWidth(320);
+        
+        barreDeRecherche.setOnKeyPressed(new ControleurRechercheUtilisateursClavier(this));
+
         return barreDeRecherche;
     }
 
@@ -298,7 +216,7 @@ public class VueAdminGestionUtilisateurs extends BorderPane {
      * @return HBox : le boite contenant le bouton et la barre de recherche.
      */
     private HBox getBoiteBarreDeRecherche() {
-        TextField barreDeRech = this.getBarreDeRecherche();
+        TextField barreDeRech = this.setBarreDeRecherche();
         Button leBouton = this.getBoutonRecherche();
         HBox boiteRecherche = new HBox(5);
         boiteRecherche.setMaxWidth(400);
@@ -322,5 +240,17 @@ public class VueAdminGestionUtilisateurs extends BorderPane {
         laBoiteDeRecherche.setAlignment(Pos.CENTER);
         boiteCatRecherche.getChildren().addAll(laBoiteDeRecherche, this.comboBoxDerniereConnexion);
         return boiteCatRecherche;
+    }
+
+    public ToutLesUtilisateurs getToutLesUtilisateurs() { return this.toutLesUtilisateurs; }
+
+    public void setListeUtilisateurs(List<Utilisateur> liste) {
+        this.listeUtilisateurs = liste;
+    }
+
+    public ScrollPane getScrollPaneProfils() { return this.scrollPaneProfils; }
+
+    public void removeUtilisateur(Utilisateur utilisateur) {
+        this.listeUtilisateurs.remove(utilisateur);
     }
 }

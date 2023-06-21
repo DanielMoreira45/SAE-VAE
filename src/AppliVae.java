@@ -62,7 +62,7 @@ public class AppliVae extends Application{
     /**
      * Page du profil utilisateur
      */
-    //private PageProfilUtilisateur pageProfilUtilisateur;
+    private PageProfilUtilisateur pageProfilUtilisateur;
 
     /**
      * La connexion à la BD
@@ -102,7 +102,7 @@ public class AppliVae extends Application{
         this.pageCoInsc = new FenetreCoInsc(this, this.connexionMySQL);
         this.pageVente = new VueVente(this, this.connexionMySQL);
         this.pageAccueil = new PageAccueil(this, this.connexionMySQL);
-        //this.pageProfilUtilisateur = new PageProfilUtilisateur();
+        this.pageProfilUtilisateur = new PageProfilUtilisateur(this, this.connexionMySQL);
         this.navBar = new NavBar(this, this.connexionMySQL);
         this.pageProfilObjet = new PageProfilObjet(this, this.connexionMySQL);
         this.root = (BorderPane) this.scene.getRoot();
@@ -138,11 +138,10 @@ public class AppliVae extends Application{
      * Permet de passer à l'affichage de la page d'accueil
      */
     public void modeAccueil(){
-        System.out.println("Page d'accueil");
-        scene.getStylesheets().setAll("styleNavBar.css");
-        scene.getStylesheets().add("styleCoInsc.css");
+        scene.getStylesheets().setAll("styleNavBar.css", "styleCoInsc.css");
         this.root.setTop(this.navBar);
-        this.root.setCenter(this.pageAccueil);
+        // this.root.setCenter(this.pageAccueil);
+        this.root.setCenter(new VueAdminGestionUtilisateurs(this.connexionMySQL));
         
     }
 
@@ -150,7 +149,15 @@ public class AppliVae extends Application{
      * Permet de passer à l'affichage de la page profil de l'utilisateur
      */
     public void modeProfilUtilisateur(){
-        //this.scene.setRoot(this.pageProfilUtilisateur)
+        scene.getStylesheets().setAll("styleNavBar.css", "stylePageUtilisateur.css");
+        this.root.setTop(this.navBar);
+        this.root.setCenter(this.pageProfilUtilisateur);
+    }
+
+    public void modeProfilObjet(){
+        scene.getStylesheets().setAll("styleNavBar.css", "stylePageProfilObjet.css");
+        this.root.setTop(this.navBar);
+        this.root.setCenter(this.pageProfilObjet);
     }
 
     public void modeProfilObjet(){
