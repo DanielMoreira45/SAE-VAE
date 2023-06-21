@@ -94,9 +94,9 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
                         this.obj = new Objet(objetBD.maxIdObjet() + 1, desc, titreOb, lesPhotos, vue.getVendeur(), Categorie.getIntCategorie(cat));
                         objetBD.insereObjet(obj);
                         vue.popUpObjetCo(titreOb);
-                        for (Photo photos : lesPhotos) {
-                            photoBd.insertPhoto(photos, obj);
-                        }
+                        // for (Photo photos : lesPhotos) {
+                        //     photoBd.insertPhoto(photos, obj);
+                        // }
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
