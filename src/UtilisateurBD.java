@@ -117,4 +117,24 @@ public class UtilisateurBD {
         ps.setInt(6, j.getRole());
         ps.executeUpdate();
     }
+
+    public Utilisateur utilisateurParId(int idut) throws SQLException{
+        Statement s = this.laConnexionMySQL.createStatement();
+        ResultSet rs = s.executeQuery("SELECT pseudout,emailut,mdput,activeut,idrole FROM UTILISATEUR where idut =" + idut);
+        rs.next();
+        String pseudoV = rs.getString(1);
+        String emailV = rs.getString(2);
+        String mdpV = rs.getString(3);
+        String activeV = rs.getString(4);
+        boolean actifV = false;
+        if (activeV.equals("O")) {
+            actifV = true;
+        }
+        int idRoleV = rs.getInt(5);
+        Utilisateur util = new Utilisateur(idut, pseudoV, emailV, mdpV, actifV, idRoleV);
+        s.close();
+        rs.close();
+        return util;
+    }
+
 }
