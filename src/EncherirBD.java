@@ -91,4 +91,13 @@ public class EncherirBD {
         return liste;
     }
 
+    public int EnchereParStatus(int status) throws SQLException{
+        Statement s = this.laConnexionMySQL.createStatement();
+        ResultSet rs = s.executeQuery("select count(*) from ENCHERIR NATURAL JOIN VENTE WHERE idst = "+status);
+        if(rs.next()){
+            return rs.getInt(1);
+        }
+        return 0;
+    }
+
 }
