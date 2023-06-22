@@ -88,13 +88,10 @@ public class CaseVente extends HBox {
         prix.setTextAlignment(TextAlignment.CENTER);
         HBox prixPane = new HBox(prix);
         prixPane.setPadding(new Insets(8, 0, 0, 0));
-
         HBox bouton = new HBox(this.setBoutonEncherir(), prixPane);
         bouton.setSpacing(20);
-
         HBox cercleBox = new HBox(this.setCercle());
         cercleBox.setPadding(new Insets(5, 0, 0, 0));
-
         HBox bas = new HBox(bouton, cercleBox);
         bas.setSpacing(140);
         return bas;

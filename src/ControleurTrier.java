@@ -23,12 +23,18 @@ public class ControleurTrier implements EventHandler<ActionEvent> {
                     this.vue.setLesVentes(this.touteLesVentes.toutVente());
                     break;
                 case "Trier par date":
-                    if (this.vue.getLesVentes().isEmpty()) this.vue.setLesVentes(this.touteLesVentes.trieVenteParNomObjet(this.vue.getTouteLesVentes().toutVente()));
-                    else this.vue.setLesVentes(this.touteLesVentes.trieVenteParDate(this.vue.getLesVentes()));
-                    break; 
+                    if (this.vue.getLesVentes().isEmpty())
+                        this.vue.setLesVentes(
+                                this.touteLesVentes.trieVenteParNomObjet(this.vue.getTouteLesVentes().toutVente()));
+                    else
+                        this.vue.setLesVentes(this.touteLesVentes.trieVenteParDate(this.vue.getLesVentes()));
+                    break;
                 case "Trier par nom":
-                    if (this.vue.getLesVentes().isEmpty()) this.vue.setLesVentes(this.touteLesVentes.trieVenteParNomObjet(this.vue.getTouteLesVentes().toutVente()));
-                    else this.vue.setLesVentes(this.touteLesVentes.trieVenteParNomObjet(this.vue.getLesVentes()));
+                    if (this.vue.getLesVentes().isEmpty())
+                        this.vue.setLesVentes(
+                                this.touteLesVentes.trieVenteParNomObjet(this.vue.getTouteLesVentes().toutVente()));
+                    else
+                        this.vue.setLesVentes(this.touteLesVentes.trieVenteParNomObjet(this.vue.getLesVentes()));
                     break;
                 case "Enchères en cours":
                     this.vue.setLesVentes(this.touteLesVentes.trieVenteParStatus(Status.ENCOURS));
@@ -39,7 +45,7 @@ public class ControleurTrier implements EventHandler<ActionEvent> {
                 case "Inverse":
                     this.vue.reverseLesVentes();
                     break;
-            
+
                 default:
                     break;
             }

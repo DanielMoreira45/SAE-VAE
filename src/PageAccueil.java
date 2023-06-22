@@ -78,6 +78,8 @@ public class PageAccueil extends VBox {
         }
         this.prixMin = new TextField();
         this.prixMax = new TextField();
+        prixMax.setOnKeyPressed(new ControleurPrixMinMax(this, this.toutesLesVentes));
+        prixMin.setOnKeyPressed(new ControleurPrixMinMax(this, this.toutesLesVentes));
         this.getChildren().addAll(this.setTitre(), this.setSousTitre(), this.setBoutonTrier(), this.setVentes());
         this.setPadding(new Insets(20, 20, 50, 20));
     }
@@ -88,6 +90,15 @@ public class PageAccueil extends VBox {
     HBox hbox = new HBox(prixMinLabel);
     hbox.setAlignment(Pos.CENTER_LEFT);
     return hbox;
+
+}
+
+public TextField getPrixMinTf(){
+    return this.prixMin;
+}
+
+public TextField getPrixMax(){
+    return this.prixMax;
 }
 
 private HBox setPrixMaxLabel() {
