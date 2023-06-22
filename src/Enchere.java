@@ -118,4 +118,20 @@ public class Enchere {
         this.vente = v;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        if (obj instanceof Enchere) {
+            Enchere enchere = (Enchere) obj;
+            return utilisateur.equals(enchere.getEncherisseur()) && vente.equals(enchere.getVente())
+                    && montant.equals(enchere.getMontant()) && this.getDateHeure().equals(enchere.getDateHeure());
+        }
+        return false;
+
+    }
 }
