@@ -158,8 +158,8 @@ public class FenetreDeLogin extends GridPane{
         return this.mdp.getText();
     }
 
-    public String getTfLog() {
-        return this.email.getText();
+    public String getMdpClair(){
+        return this.mdpClair.getText();
     }
 
     public String getEmail() {
@@ -195,6 +195,12 @@ public class FenetreDeLogin extends GridPane{
         alert.setTitle("Compte desactivé");
         alert.setHeaderText("Votre compte a été désactivé.\nVous ne pouvez plus accéder à l'application.");
         alert.showAndWait();
+    }
+
+    public void resetTF(){
+        this.mdpClair.setText("");
+        this.mdp.setText("");
+        this.email.setText("");
     }
 
     // public void popUpCompteInexistant() {
