@@ -109,10 +109,10 @@ public class UtilisateurBD {
         return resultat;
     }
 
-    public void setActif(Utilisateur user) throws SQLException {
+    public void setActif(Utilisateur utilisateur) throws SQLException {
         PreparedStatement ps = laConnexionMySQL.preparedStatement("UPDATE UTILISATEUR SET activeut = ? WHERE idut = ?");
-        ps.setString(1, user.estActive() ? "O" : "N");
-        ps.setInt(2, user.getId());
+        ps.setString(1, utilisateur.estActive() ? "O" : "N");
+        ps.setInt(2, utilisateur.getId());
         ps.executeUpdate();
     }
 
@@ -169,5 +169,12 @@ public class UtilisateurBD {
                     rs.getBoolean(5), rs.getInt(6)));
         }
         return listeUtilisateurs;
+    }
+
+    public void setRole(Utilisateur utilisateur) throws SQLException {
+        PreparedStatement ps = laConnexionMySQL.preparedStatement("UPDATE UTILISATEUR SET idrole = ? WHERE idut = ?");
+        ps.setInt(1, utilisateur.getRole());
+        ps.setInt(2, utilisateur.getId());
+        ps.executeUpdate();
     }
 }
