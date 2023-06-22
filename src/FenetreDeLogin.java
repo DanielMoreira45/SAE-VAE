@@ -27,12 +27,14 @@ public class FenetreDeLogin extends GridPane{
     private Text erreurEmail;
     private AppliVae appli;
     private ConnexionMySQL connexionMySQL;
+    private TextField mdpClair;
 
     public FenetreDeLogin(AppliVae appli, ConnexionMySQL connexionMySQL){
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
         this.email = new TextField();
         this.mdp = new PasswordField();
+        this.mdpClair = new TextField();
         this.erreurMdpMsg = new Text("");
         this.erreurEmail = new Text("");
         this.ajouteTextField();
@@ -118,7 +120,7 @@ public class FenetreDeLogin extends GridPane{
         voirMdp.setPrefWidth(20);
         voirMdp.setPrefHeight(20);
 
-        TextField mdpClair = new TextField();
+        
         mdpClair.setPromptText("Entrer le mot de passe");
         mdpClair.getStyleClass().add("text-field");
         mdpClair.setPrefWidth(400); // Largeur préférée de 350 pixels

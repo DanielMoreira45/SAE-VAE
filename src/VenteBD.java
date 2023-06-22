@@ -341,4 +341,16 @@ public class VenteBD {
 
     }
 
+    public List<Vente> ventePourAcheteur(int idut) throws SQLException, ParseException {
+        Statement s = this.laConnexionMySQL.createStatement();
+        ResultSet rs = s.executeQuery(
+                "select idve, max(montant) from VENTE natural join ENCHERIR where idut = " + idut + " group by idve");
+        List<Vente> ventes = new ArrayList<Vente>();
+        if (rs.next()) {
+            int idve = rs.getInt(1);
+            Vente vente = this.venteParId(idve);
+            ventes.add(vente);
+        }
+        return ventes;
+    }
 }
