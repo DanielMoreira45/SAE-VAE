@@ -62,7 +62,7 @@ public class UtilisateurBD {
         int nb = resultats.getInt(1);
         Integer maxId = maxIdUtilisateur();
         if (nb == maxId) {
-            return maxId+1;
+            return maxId + 1;
         } else {
             ResultSet lesId = this.st.executeQuery("SELECT idUt FROM UTILISATEUR");
             while (lesId.next()) {
@@ -80,8 +80,8 @@ public class UtilisateurBD {
         return this.idLibre;
     }
 
-    public Map<String, Object> rechercherJoueurParMail(String mail) throws SQLException {
-        Map<String, Object> resultat = null;
+    public Utilisateur rechercherJoueurParMail(String mail) throws SQLException {
+        Utilisateur user = null;
         String query = "SELECT * FROM UTILISATEUR WHERE emailut = ?";
         System.out.println("rentrefonction");
         PreparedStatement statement = laConnexionMySQL.preparedStatement(query);
@@ -89,24 +89,14 @@ public class UtilisateurBD {
         System.out.println("preparedinsertinmail");
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
-            resultat = new HashMap<String, Object>();
-            int id = resultSet.getInt("idUt");
-            String pseudo = resultSet.getString("pseudout");
-            String email = resultSet.getString("emailut");
-            String motDePasse = resultSet.getString("mdput");
-            boolean estActif = resultSet.getString("activeut").equalsIgnoreCase("O");
-            int role = resultSet.getInt("idrole");
-            resultat.put("idut", id);
-            resultat.put("pseudout", pseudo);
-            resultat.put("emailut", email);
-            resultat.put("mdput", motDePasse);
-            resultat.put("activeut", estActif);
-            resultat.put("idrole", role);
+            user = new Utilisateur(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getBoolean(5), resultSet.getInt(6));
         }
         resultSet.close();
         statement.close();
+        return user;
 
-        return resultat;
     }
 
     public void setActif(Utilisateur user) throws SQLException {
