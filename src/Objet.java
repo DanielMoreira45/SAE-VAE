@@ -169,4 +169,19 @@ public class Objet {
     public void setVendeur(Utilisateur vendeur) {
         this.vendeur = vendeur;
     }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        if (obj instanceof Objet) {
+            Objet objet = (Objet) obj;
+            return idOb == objet.idOb && description.equals(objet.getDescription()) && nomOb.equals(objet.getNomObjet())&& categorie == objet.getCategorie() && vendeur.equals(objet.getVendeur());
+        }
+        return false;
+
+    }
 }

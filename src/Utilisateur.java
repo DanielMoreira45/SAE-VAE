@@ -198,11 +198,19 @@ public class Utilisateur {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null) return false;
-        if (!(obj instanceof Utilisateur)) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        if (obj instanceof Utilisateur) {
+            Utilisateur utilisateur = (Utilisateur) obj;
+            return id == utilisateur.id && role == utilisateur.role && pseudo.equals(utilisateur.getPseudo())
+                    && email.equals(utilisateur.getEmail()) && mdp.equals(utilisateur.getMotDePasse())
+                    && this.active == utilisateur.estActive();
+        }
+        return false;
 
-        Utilisateur u = (Utilisateur) obj;
-        return this.getId() == u.getId();
     }
 }
