@@ -59,12 +59,8 @@ public class Vente {
         this.idVente = idVente;
         this.prixBase = prixBase;
         this.prixMin = prixMin;
-        System.out.println(this.finVe);
-        System.out.println(this.debutVe);
         this.finVe = lecteur.parse(finVe);
         this.debutVe = lecteur.parse(debutVe);
-        System.out.println(this.finVe);
-        System.out.println(this.debutVe);
         this.status = status;
         this.objetVente = objetVente;
         this.encheres = new ArrayList<>();
@@ -248,6 +244,10 @@ public class Vente {
                     && objetVente.equals(vente.getObjet());
         }
         return false;
-
     }
+
+    // @Override
+    // public String toString(){
+    //     String res
+    // }
 }

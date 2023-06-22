@@ -32,7 +32,6 @@ public class ControleurConnexion implements EventHandler<ActionEvent> {
      */
     @Override
     public void handle(ActionEvent actionEvent) {
-        System.out.println("avant");
         try {
             UtilisateurBD userBd = new UtilisateurBD(connexionMySQL);
             String mail = vue.getTfLog();
