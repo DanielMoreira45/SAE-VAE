@@ -35,7 +35,7 @@ public class ControleurNavBar implements EventHandler<ActionEvent>{
             System.out.println("pop up notif");
         }
         else if (boutonSource.getAccessibleText().equals("Panier")){
-
+            this.appli.modeEnchereUtilisateur();
         }
         else if (boutonSource.getAccessibleText().equals("Logo")){
             this.appli.modeAccueil();
