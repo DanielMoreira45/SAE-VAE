@@ -186,4 +186,14 @@ public class Utilisateur {
     public void ajouteEnchere(Enchere enchere) {
         this.lesEncheres.add(enchere);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof Utilisateur)) return false;
+
+        Utilisateur u = (Utilisateur) obj;
+        return this.getId() == u.getId();
+    }
 }
