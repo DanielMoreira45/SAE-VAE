@@ -33,7 +33,9 @@ public class PageAccueil extends VBox {
     private TouteLesVentes toutesLesVentes;
     private List<Vente> lesVentes;
     private Text titreCat;
+    private Text sousTitreCat;
     private String cat;
+    private String sousTitre;
 
     /*
      * @Override
@@ -62,6 +64,7 @@ public class PageAccueil extends VBox {
     public PageAccueil(AppliVae appli, ConnexionMySQL connexionMySQL) {
         super();
         this.cat = "Tout type de produit";
+        this.sousTitre = "Aucun filtre";
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
         this.toutesLesVentes = new TouteLesVentes(this.connexionMySQL);
@@ -80,11 +83,11 @@ public class PageAccueil extends VBox {
     }
 
     public void majAffichage() {
-        this.getChildren().setAll(this.setTitre(this.cat), this.setSousTitre(), this.setBoutonTrier(), this.setVentes());
+        this.getChildren().setAll(this.setTitre(this.cat), this.setSousTitre(this.sousTitre), this.setBoutonTrier(), this.setVentes());
     }
 
     private Text setTitre() {
-        this.titreCat = new Text("Catégorie");
+        this.titreCat = new Text(sousTitre);
         titreCat.setFont(Font.font("Valera", FontWeight.NORMAL, 58));
         return titreCat;
     }
@@ -96,9 +99,16 @@ public class PageAccueil extends VBox {
     }
 
     private Text setSousTitre() {
-        Text sousTitre = new Text("-> Sous-catégorie");
-        sousTitre.setFont(Font.font("Valera", FontWeight.NORMAL, 24));
-        return sousTitre;
+        this.sousTitreCat = new Text("-> "+ this.sousTitre);
+        this.sousTitreCat.setFont(Font.font("Valera", FontWeight.NORMAL, 24));
+        return sousTitreCat;
+    }
+
+    public Text setSousTitre(String sousCat) {
+        this.sousTitre= sousCat; 
+        this.sousTitreCat = new Text("-> " + sousCat);
+        this.sousTitreCat.setFont(Font.font("Valera", FontWeight.NORMAL, 24));
+        return sousTitreCat;
     }
 
     private HBox setBoutonTrier() {
