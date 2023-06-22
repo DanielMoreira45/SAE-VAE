@@ -32,7 +32,7 @@ public class CaseProfil extends BorderPane{
 
         this.setLeft(photoProfil);
         this.setCenter(boiteInfosProfil);
-        if (this.utilisateur.getRole() != 1) this.setRight(boiteBoutonsGestion);
+        this.setRight(boiteBoutonsGestion);
 
         BorderPane.setMargin(photoProfil, new Insets(5));
         BorderPane.setMargin(boiteInfosProfil, new Insets(5, 0, 5, 5));
@@ -53,16 +53,24 @@ public class CaseProfil extends BorderPane{
     private VBox getLesBoutonsProfil() {
         Button supprimer = new Button("Supprimer");
         Button desactiver = this.utilisateur.estActive() ? new Button("Désactiver") : new Button("Activer");
+        Button boutonChangerRole = new Button("Changer de rôles");
         desactiver.setCursor(Cursor.HAND);
         supprimer.setCursor(Cursor.HAND);
+        boutonChangerRole.setCursor(Cursor.HAND);
         supprimer.setStyle("-fx-background-color : #ff9292; -fx-border-radius: 0.8em; -fx-background-radius : 0.8em; -fx-effect: dropshadow(gaussian, grey, 8, 0, 1, 1);");
         desactiver.setStyle("-fx-background-color : #6a6a6a; -fx-border-radius: 0.8em; -fx-background-radius : 0.8em; -fx-effect: dropshadow(gaussian, grey, 8, 0, 1, 1);");
-        VBox boiteBoutonsGestion = new VBox(10, supprimer, desactiver);
+        boutonChangerRole.setStyle("-fx-background-color : #b5d6fd; -fx-border-radius: 0.8em; -fx-background-radius : 0.8em; -fx-effect: dropshadow(gaussian, grey, 8, 0, 1, 1);");
+        VBox boiteBoutonsGestion = new VBox(10);
+        if (this.utilisateur.getRole() != 1)  boiteBoutonsGestion.getChildren().addAll(supprimer, desactiver, boutonChangerRole);
+        else boiteBoutonsGestion.getChildren().addAll(boutonChangerRole);
         boiteBoutonsGestion.setPadding(new Insets(10));
+        boiteBoutonsGestion.setAlignment(Pos.BOTTOM_RIGHT);
         boiteBoutonsGestion.setStyle("-fx-background-color: #f1f1f1;");
+
         
         supprimer.setOnAction(new ControleurAdminUtilisateur(this, this.parent));
         desactiver.setOnAction(new ControleurAdminUtilisateur(this, this.parent));
+        boutonChangerRole.setOnAction(new ControleurAdminUtilisateur(this, this.parent));
 
         return boiteBoutonsGestion;
     }
@@ -99,18 +107,15 @@ public class CaseProfil extends BorderPane{
      * @return VBox : une boite contenant les informations de profil de l'utilisateur (son pseudo et sa dernière connexion).
      */
     private VBox getInfosProfil() {
-        VBox boiteInfosProfil = new VBox(10, this.getNomEmailDuProfil(this.utilisateur.getPseudo(), this.utilisateur.getEmail()));
+        VBox boiteInfosProfil = new VBox(this.getNomEmailDuProfil(this.utilisateur.getPseudo(), this.utilisateur.getEmail()));
 
         if (this.utilisateur.estActive()) boiteInfosProfil.getChildren().add(new Label("Statut : Actif"));
         else boiteInfosProfil.getChildren().add(new Label("Statut : Inactif"));
 
-        Button boutonChangerRole = new Button("Changer de roles");
-        boutonChangerRole.setStyle("-fx-background-color : #b5d6fd; -fx-border-radius: 0.8em; -fx-background-radius : 0.8em; -fx-effect: dropshadow(gaussian, grey, 8, 0, 1, 1);");
-        HBox boiteGestionRole = new HBox(this.utilisateur.getRole() == 1 ? new Label("Role : Admin") : new Label("Role : Utilisateur"), boutonChangerRole);
-        boiteGestionRole.setSpacing(20);
-        boiteInfosProfil.getChildren().add(boiteGestionRole);
+        boiteInfosProfil.getChildren().add(this.utilisateur.getRole() == 1 ? new Label("Role : Admin") : new Label("Role : Utilisateur"));
 
         boiteInfosProfil.setPadding(new Insets(10));
+        boiteInfosProfil.setSpacing(30);
         boiteInfosProfil.setStyle("-fx-background-color: #f1f1f1;");
         return boiteInfosProfil;
     }
