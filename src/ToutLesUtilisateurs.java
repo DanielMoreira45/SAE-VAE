@@ -11,7 +11,23 @@ public class ToutLesUtilisateurs {
     this.utilisateurBD = new UtilisateurBD(this.laConnexionMySQL);
   }
 
-  public List<Utilisateur> toutUtilisateurs() throws SQLException, ParseException {
+  public List<Utilisateur> tout() throws SQLException {
+    return utilisateurBD.tout();
+  }
+
+  public List<Utilisateur> toutAdmin() throws SQLException {
+    return utilisateurBD.toutAdmin();
+  }
+
+  public List<Utilisateur> actif() throws SQLException {
+    return utilisateurBD.actif();
+  }
+
+  public List<Utilisateur> inactif() throws SQLException {
+    return utilisateurBD.inactif();
+  }
+
+  public List<Utilisateur> toutUtilisateurs() throws SQLException {
     return utilisateurBD.toutUtilisateurs();
   }
 
@@ -31,8 +47,12 @@ public class ToutLesUtilisateurs {
     this.utilisateurBD.supprimerUtilisateur(num);
   }
 
-  public void setActif(Utilisateur user) throws SQLException {
-    this.utilisateurBD.setActif(user);
+  public void setActif(Utilisateur utilisateur) throws SQLException {
+    this.utilisateurBD.setActif(utilisateur);
+  }
+
+  public void setRole(Utilisateur utilisateur) throws SQLException {
+    this.utilisateurBD.setRole(utilisateur);
   }
 
   // public void desactiverUtilisateur(String pseudo){
