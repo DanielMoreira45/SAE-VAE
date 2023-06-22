@@ -109,6 +109,35 @@ public class UtilisateurBD {
         return resultat;
     }
 
+    public Map<String, Object> rechercherJoueurParPseudo(String lePseudo) throws SQLException {
+        Map<String, Object> resultat = null;
+        String query = "SELECT * FROM UTILISATEUR WHERE pseudout = ?";
+        System.out.println("rentrefonction");
+        PreparedStatement statement = laConnexionMySQL.preparedStatement(query);
+        statement.setString(1, lePseudo);
+        System.out.println("preparedinsertinpseudo");
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            resultat = new HashMap<String, Object>();
+            int id = resultSet.getInt("idUt");
+            String pseudo = resultSet.getString("pseudout");
+            String email = resultSet.getString("emailut");
+            String motDePasse = resultSet.getString("mdput");
+            boolean estActif = resultSet.getString("activeut").equalsIgnoreCase("O");
+            int role = resultSet.getInt("idrole");
+            resultat.put("idut", id);
+            resultat.put("pseudout", pseudo);
+            resultat.put("emailut", email);
+            resultat.put("mdput", motDePasse);
+            resultat.put("activeut", estActif);
+            resultat.put("idrole", role);
+        }
+        resultSet.close();
+        statement.close();
+    
+        return resultat;
+    }
+
     public void setActif(Utilisateur user) throws SQLException {
         PreparedStatement ps = laConnexionMySQL.preparedStatement("UPDATE UTILISATEUR SET activeut = ? WHERE idut = ?");
         ps.setString(1, user.estActive() ? "O" : "N");
