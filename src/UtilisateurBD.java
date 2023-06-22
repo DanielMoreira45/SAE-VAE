@@ -55,6 +55,14 @@ public class UtilisateurBD {
         st.executeUpdate(query);
     }
 
+
+
+    /**
+     * solution non chosie car si un utilisateur possédant des objets aux enchères est supprimé, l'id libre qui sera dorénavant attribuable
+     * associera un nouvel utilisateur aux ventes de l'ancien, hors nous souhaitons (en vue du temps) ne pas s'impliquer dans la gestion de dépense.*
+     * @return int un id libre (c-a-d l'id le plus bas possible attribuable)
+     * @throws SQLException
+     */
     public int idLibre() throws SQLException {
         this.st = laConnexionMySQL.createStatement();
         ResultSet resultats = this.st.executeQuery("SELECT count(idUt) FROM UTILISATEUR");
@@ -62,15 +70,26 @@ public class UtilisateurBD {
         int nb = resultats.getInt(1);
         Integer maxId = maxIdUtilisateur();
         if (nb == maxId) {
-            return maxId+1;
+            return maxId + 1;
         } else {
             ResultSet lesId = this.st.executeQuery("SELECT idUt FROM UTILISATEUR");
-            while (lesId.next()) {
-                Integer actu = lesId.getInt(1);
-                ResultSet leProchain = this.st.executeQuery("SELECT idUt FROM UTILISATEUR WHERE idUt =" + (actu + 1));
-                if (!leProchain.next()) {
-                    this.idLibre = actu + 1;
+            boolean idFound = false;
+            for (int i = 1; i <= maxId; i++) {
+                if (lesId.next()) {
+                    int actu = lesId.getInt(1);
+                    if (actu != i) {
+                        this.idLibre = i;
+                        idFound = true;
+                        break;
+                    }
+                } else {
+                    this.idLibre = i;
+                    idFound = true;
+                    break;
                 }
+            }
+            if (!idFound) {
+                this.idLibre = maxId + 1;
             }
         }
         return this.idLibre;
@@ -78,64 +97,6 @@ public class UtilisateurBD {
 
     public Integer getIDlibre() {
         return this.idLibre;
-    }
-
-    public Map<String, Object> rechercherJoueurParMail(String mail) throws SQLException {
-        Map<String, Object> resultat = null;
-        String query = "SELECT * FROM UTILISATEUR WHERE emailut = ?";
-        System.out.println("rentrefonction");
-        PreparedStatement statement = laConnexionMySQL.preparedStatement(query);
-        statement.setString(1, mail);
-        System.out.println("preparedinsertinmail");
-        ResultSet resultSet = statement.executeQuery();
-        if (resultSet.next()) {
-            resultat = new HashMap<String, Object>();
-            int id = resultSet.getInt("idUt");
-            String pseudo = resultSet.getString("pseudout");
-            String email = resultSet.getString("emailut");
-            String motDePasse = resultSet.getString("mdput");
-            boolean estActif = resultSet.getString("activeut").equalsIgnoreCase("O");
-            int role = resultSet.getInt("idrole");
-            resultat.put("idut", id);
-            resultat.put("pseudout", pseudo);
-            resultat.put("emailut", email);
-            resultat.put("mdput", motDePasse);
-            resultat.put("activeut", estActif);
-            resultat.put("idrole", role);
-        }
-        resultSet.close();
-        statement.close();
-
-        return resultat;
-    }
-
-    public Map<String, Object> rechercherJoueurParPseudo(String lePseudo) throws SQLException {
-        Map<String, Object> resultat = null;
-        String query = "SELECT * FROM UTILISATEUR WHERE pseudout = ?";
-        System.out.println("rentrefonction");
-        PreparedStatement statement = laConnexionMySQL.preparedStatement(query);
-        statement.setString(1, lePseudo);
-        System.out.println("preparedinsertinpseudo");
-        ResultSet resultSet = statement.executeQuery();
-        if (resultSet.next()) {
-            resultat = new HashMap<String, Object>();
-            int id = resultSet.getInt("idUt");
-            String pseudo = resultSet.getString("pseudout");
-            String email = resultSet.getString("emailut");
-            String motDePasse = resultSet.getString("mdput");
-            boolean estActif = resultSet.getString("activeut").equalsIgnoreCase("O");
-            int role = resultSet.getInt("idrole");
-            resultat.put("idut", id);
-            resultat.put("pseudout", pseudo);
-            resultat.put("emailut", email);
-            resultat.put("mdput", motDePasse);
-            resultat.put("activeut", estActif);
-            resultat.put("idrole", role);
-        }
-        resultSet.close();
-        statement.close();
-    
-        return resultat;
     }
 
     public void setActif(Utilisateur user) throws SQLException {
