@@ -44,9 +44,7 @@ public class ControleurCreerCompte implements EventHandler<ActionEvent> {
                 VerificateurMDP.estValide(this.vue.getMdp());
                 try{
                     UtilisateurBD userBd = new UtilisateurBD(this.connexionMySQL);
-                    int idLibre = userBd.idLibre();
-                    System.out.println(idLibre);
-                    Utilisateur user = new Utilisateur(idLibre, vue.getPseudo(), vue.getMail(), vue.getMdp(), 2);
+                    Utilisateur user = new Utilisateur(userBd.idLibre(), vue.getPseudo(), vue.getMail(), vue.getMdp(), 2);
                     userBd.insererUtilisateur(user);
                     vue.popUpCompteValide(user.getPseudo());
                     appli.modeAccueil();
