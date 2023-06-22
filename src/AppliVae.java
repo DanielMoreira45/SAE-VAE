@@ -107,7 +107,7 @@ public class AppliVae extends Application{
         this.pageProfilUtilisateur = new PageProfilUtilisateur(this, this.connexionMySQL);
         this.navBar = new NavBar(this, this.connexionMySQL);
         this.pageProfilObjet = new PageProfilObjet(this, this.connexionMySQL);
-        this.vueAdminGestionUtilisateurs = new VueAdminGestionUtilisateurs(this.connexionMySQL);
+        // this.vueAdminGestionUtilisateurs = new VueAdminGestionUtilisateurs(this.connexionMySQL);
         this.root = (BorderPane) this.scene.getRoot();
     }
 
@@ -165,7 +165,7 @@ public class AppliVae extends Application{
     }
 
     public void modeAdministrateur(){
-        this.root.setCenter(this.vueAdminGestionUtilisateurs);
+        this.root.setCenter(new VueAdminGestionUtilisateurs(this.connexionMySQL, this.utilisateurActuel));
     }
 
     public void setUtilisateurActuel(Utilisateur utilisateur){
