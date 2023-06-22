@@ -1,6 +1,5 @@
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -15,15 +14,17 @@ public class PageProfilUtilisateur extends BorderPane {
 
     private String nomUtilisateur;
 
-    private String nom;
-
-    private String prenom;
-
-    private String dateNaissance;
+    private String email;
 
     private AppliVae appli;
 
     private ConnexionMySQL connexionMySQL;
+
+    private Utilisateur utilisateur;
+
+    public Utilisateur getUtilisateur() {
+        return this.utilisateur;
+    }
 
     private Button textInfos;
 
@@ -33,18 +34,14 @@ public class PageProfilUtilisateur extends BorderPane {
 
     private Button deconnecter;
 
-    public PageProfilUtilisateur(AppliVae appli, ConnexionMySQL connexionMySQL) {
+    public PageProfilUtilisateur(AppliVae appli, ConnexionMySQL connexionMySQL, Utilisateur utilisateur) {
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
+        this.utilisateur = utilisateur;
 
         this.deconnecter = new Button("Se déconnecter");
         this.profileImage = new ImageView("file:img/pp.jpeg");
-        this.nomUtilisateur = "Captain_Ayhos";
-        this.nom = "Rémi";
-        this.prenom = "Boulay";
-        this.dateNaissance = "08/08/2004"; // A MODIFIER (avec les truc au dessus) POUR RECUP LES INFOS DANS LE MODELE
-
-        this.textInfos = new Button("Informations Personnelles");
+        this.textInfos = new Button("Informations Personnelles   >");
         this.textMDP = new Button("Changer de Mot de Passe   >");
         this.textPaiement = new Button("Paiements                          >");
         this.textInfos.getStyleClass().add("buttonBlanc");
@@ -54,34 +51,6 @@ public class PageProfilUtilisateur extends BorderPane {
         this.ajouteMenu();
         this.afficherInfoPerso();
     }
-
-    /*
-     * @Override
-     * public void init() {
-     * this.profileImage = new ImageView("pp.jpeg");
-     * this.nomUtilisateur = "Captain_Ayhos";
-     * this.nom= "Rémi";
-     * this.prenom= "Boulay";
-     * this.dateNaissance= "08/08/2004";
-     * }
-     * 
-     * public void start(Stage stage) throws Exception{
-     * // Construction du graphe de scène
-     * this.root = new BorderPane();
-     * Scene scene = new Scene(root);
-     * stage.setTitle("Fenetre Acceuil");
-     * stage.setFullScreen(true);
-     * this.ajouteMenu(root);
-     * this.ajouteMilieu(root);
-     * stage.setFullScreenExitHint("");
-     * 
-     * scene.getStylesheets().add("styleNavBar.css");
-     * scene.getStylesheets().add("stylePageUtilisateur.css");
-     * 
-     * stage.setScene(scene);
-     * stage.show();
-     * }
-     */
 
     public void afficherInfoPerso() {
         this.ajouteMilieu();
@@ -116,13 +85,13 @@ public class PageProfilUtilisateur extends BorderPane {
         VBox sousMenu = new VBox();
 
         this.textInfos.setCursor(Cursor.HAND);
-        this.textInfos.setOnAction(new ControleurBoutonCompte(this, this.appli, this.connexionMySQL));
+        this.textInfos.setOnAction(new ControleurBoutonCompte(this));
 
         this.textMDP.setCursor(Cursor.HAND);
-        this.textMDP.setOnAction(new ControleurBoutonCompte(this, this.appli, this.connexionMySQL));
+        this.textMDP.setOnAction(new ControleurBoutonCompte(this));
 
         this.textPaiement.setCursor(Cursor.HAND);
-        this.textPaiement.setOnAction(new ControleurBoutonCompte(this, this.appli, this.connexionMySQL));
+        this.textPaiement.setOnAction(new ControleurBoutonCompte(this));
 
         /*
          * this.textInfos.getStyleClass().add("buttonBleu");
@@ -136,6 +105,10 @@ public class PageProfilUtilisateur extends BorderPane {
     }
 
     public void ajouteMilieu() {
+        if (utilisateur != null){
+            this.nomUtilisateur = utilisateur.getPseudo();
+            this.email = utilisateur.getEmail();
+        }
         GridPane gridPane = new GridPane();
         gridPane.setPadding(new Insets(300, 0, 0, 30));
         gridPane.setStyle(
@@ -143,6 +116,8 @@ public class PageProfilUtilisateur extends BorderPane {
         BorderPane.setMargin(gridPane, new Insets(130, 100, 100, 30));
         gridPane.setHgap(30);
         gridPane.setVgap(50);
+
+        
 
         gridPane.add(new Text("Nom d'utilisateur "), 0, 0);
         TextField textFieldNomUtilisateur = new TextField();
@@ -154,32 +129,15 @@ public class PageProfilUtilisateur extends BorderPane {
         gridPane.add(boutonModifNomUtilisateur, 2, 0);
         textFieldNomUtilisateur.getStyleClass().add("text-fieldU");
 
-        gridPane.add(new Text("Nom"), 0, 1);
-        TextField textFieldNom = new TextField();
-        gridPane.add(textFieldNom, 1, 1);
-        textFieldNom.setPromptText(this.nom);
+        gridPane.add(new Text("Email"), 0, 1);
+        TextField textFieldEmail = new TextField();
+        gridPane.add(textFieldEmail, 1, 1);
+        textFieldEmail.setPromptText(this.email);
         Button boutonModifNom = new Button("Modifier");
         boutonModifNom.getStyleClass().add("buttonBleu");
         gridPane.add(boutonModifNom, 2, 1);
-        textFieldNom.getStyleClass().add("text-fieldU");
+        textFieldEmail.getStyleClass().add("text-fieldU");
 
-        gridPane.add(new Text("Prénom"), 0, 2);
-        TextField textFieldPrenom = new TextField();
-        gridPane.add(textFieldPrenom, 1, 2);
-        textFieldPrenom.setPromptText(this.prenom);
-        Button boutonModifPrenom = new Button("Modifier");
-        boutonModifPrenom.getStyleClass().add("buttonBleu");
-        gridPane.add(boutonModifPrenom, 2, 2);
-        textFieldPrenom.getStyleClass().add("text-fieldU");
-
-        gridPane.add(new Text("Date de naissance"), 0, 3);
-        DatePicker datePicker = new DatePicker();
-        gridPane.add(datePicker, 1, 3);
-        datePicker.setPromptText(this.dateNaissance);
-        Button boutonModifDateNaissance = new Button("Modifier");
-        boutonModifDateNaissance.getStyleClass().add("buttonBleu");
-        gridPane.add(boutonModifDateNaissance, 2, 3);
-        datePicker.getStyleClass().add("datePiker");
 
         gridPane.add(new Text("Photo de Profil"), 0, 4);
         gridPane.add(this.profileImage, 1, 4);
@@ -197,9 +155,3 @@ public class PageProfilUtilisateur extends BorderPane {
     }
 
 }
-/*
-private Button deconnecter;
-this.deconnecter = new Button("Se déconnecter");
-this.deconnecter.getStyleClass().add("buttonRouge");
-gridPane.add(deconnecter, 0, 7);
-*/
