@@ -80,25 +80,6 @@ public class UtilisateurBD {
         return this.idLibre;
     }
 
-    public Utilisateur rechercherJoueurParMail(String mail) throws SQLException {
-        Utilisateur user = null;
-        String query = "SELECT * FROM UTILISATEUR WHERE emailut = ?";
-        System.out.println("rentrefonction");
-        PreparedStatement statement = laConnexionMySQL.preparedStatement(query);
-        statement.setString(1, mail);
-        System.out.println("preparedinsertinmail");
-        ResultSet resultSet = statement.executeQuery();
-        if (resultSet.next()) {
-            user = new Utilisateur(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
-                    resultSet.getString(4),
-                    resultSet.getBoolean(5), resultSet.getInt(6));
-        }
-        resultSet.close();
-        statement.close();
-        return user;
-
-    }
-
     public void setActif(Utilisateur user) throws SQLException {
         PreparedStatement ps = laConnexionMySQL.preparedStatement("UPDATE UTILISATEUR SET activeut = ? WHERE idut = ?");
         ps.setString(1, user.estActive() ? "O" : "N");
