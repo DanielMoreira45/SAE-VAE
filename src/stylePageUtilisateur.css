@@ -35,5 +35,14 @@
     -fx-border-width: 0;
     -fx-font-family: Arial, sans-serif;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);
+}
 
+.buttonRouge{
+    -fx-border-width: 0;
+    -fx-text-fill: #000000;
+    -fx-font-size: 15px;
+    -fx-font-family: 'Verdana';
+    -fx-background-color: #ff9292;
+    -fx-border-radius: 0.8em; 
+    -fx-background-radius: 0.8em;
 }
