@@ -158,11 +158,11 @@ public class FenetreDeLogin extends GridPane{
         return this.mdp.getText();
     }
 
-    public String getMdpClair(){
-        return this.mdpClair.getText();
+    public String getPseudo() {
+        return this.mdp.getText();
     }
 
-    public String getEmail() {
+    public String getTfLog() {
         return this.email.getText();
     }
 
