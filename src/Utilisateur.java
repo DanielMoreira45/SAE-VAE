@@ -163,6 +163,15 @@ public class Utilisateur {
     /**
      * Setter role
      * 
+     * @return (int) role
+     */
+    public void setRole(int newRole) {
+        this.role = newRole;
+    }
+
+    /**
+     * Setter role
+     * 
      * @param nouveauRole
      */
     public void ChangeRole(int nouveauRole) {
