@@ -31,11 +31,14 @@ public class VueAdminGestionUtilisateurs extends BorderPane {
     private List<Utilisateur> listeUtilisateurs;
     private ToutLesUtilisateurs toutLesUtilisateurs;
 
+    private Utilisateur admin;
+
     /**
      * Construction permettant de créer une nouvelle vue de gestion des utilisateurs.
      */
-    public VueAdminGestionUtilisateurs(ConnexionMySQL laConnexionMySQL) {
+    public VueAdminGestionUtilisateurs(ConnexionMySQL laConnexionMySQL, Utilisateur admin) {
         super();
+        this.admin = admin;
         this.toutLesUtilisateurs = new ToutLesUtilisateurs(laConnexionMySQL);
         try {
             this.listeUtilisateurs = toutLesUtilisateurs.toutUtilisateurs();
@@ -62,8 +65,8 @@ public class VueAdminGestionUtilisateurs extends BorderPane {
     public void ajouterProfils() {
         this.listeDesProfils = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
-            if (i < this.listeUtilisateurs.size()) {
-                this.listeDesProfils.add(new CaseProfil(this.listeUtilisateurs.get(i), this));
+            if (i < this.listeUtilisateurs.size()) { 
+                if (!this.listeUtilisateurs.get(i).equals(this.admin)) this.listeDesProfils.add(new CaseProfil(this.listeUtilisateurs.get(i), this));
             }
         }
     }
