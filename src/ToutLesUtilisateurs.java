@@ -11,7 +11,23 @@ public class ToutLesUtilisateurs {
     this.utilisateurBD = new UtilisateurBD(this.laConnexionMySQL);
   }
 
-  public List<Utilisateur> toutUtilisateurs() throws SQLException, ParseException {
+  public List<Utilisateur> tout() throws SQLException {
+    return utilisateurBD.tout();
+  }
+
+  public List<Utilisateur> toutAdmin() throws SQLException {
+    return utilisateurBD.toutAdmin();
+  }
+
+  public List<Utilisateur> actif() throws SQLException {
+    return utilisateurBD.actif();
+  }
+
+  public List<Utilisateur> inactif() throws SQLException {
+    return utilisateurBD.inactif();
+  }
+
+  public List<Utilisateur> toutUtilisateurs() throws SQLException {
     return utilisateurBD.toutUtilisateurs();
   }
 
