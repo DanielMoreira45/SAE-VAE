@@ -109,9 +109,7 @@ public class CaseProfil extends BorderPane{
     private VBox getInfosProfil() {
         VBox boiteInfosProfil = new VBox(this.getNomEmailDuProfil(this.utilisateur.getPseudo(), this.utilisateur.getEmail()));
 
-        if (this.utilisateur.estActive()) boiteInfosProfil.getChildren().add(new Label("Statut : Actif"));
-        else boiteInfosProfil.getChildren().add(new Label("Statut : Inactif"));
-
+        boiteInfosProfil.getChildren().add(this.utilisateur.estActive() ? new Label("Statut : Actif") : new Label("Statut : Inactif"));
         boiteInfosProfil.getChildren().add(this.utilisateur.getRole() == 1 ? new Label("Role : Admin") : new Label("Role : Utilisateur"));
 
         boiteInfosProfil.setPadding(new Insets(10));
