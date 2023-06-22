@@ -84,6 +84,8 @@ public class AppliVae extends Application{
 
     private FenetrePageMessage fenetrePageMessage;
 
+    private VueEncheresUtilisateur vueEncheresUtilisateur;
+
 
 
     /**
@@ -111,6 +113,7 @@ public class AppliVae extends Application{
         this.pageProfilObjet = new PageProfilObjet(this, this.connexionMySQL);
         this.vueAdminGestionUtilisateurs = new VueAdminGestionUtilisateurs(this.connexionMySQL, utilisateurActuel);
         this.fenetrePageMessage = new FenetrePageMessage(this, this.connexionMySQL);
+        //this.vueEncheresUtilisateur = new VueEncheresUtilisateur(this, this.connexionMySQL, this.utilisateurActuel.getId());
         this.root = (BorderPane) this.scene.getRoot();
     }
 
@@ -150,8 +153,8 @@ public class AppliVae extends Application{
         scene.getStylesheets().setAll("styleNavBar.css", "styleCoInsc.css");
         this.root.setTop(this.navBar);
         this.root.setCenter(this.pageAccueil);
-        // this.root.setCenter(new VueAdminGestionUtilisateurs(this.connexionMySQL));
-        
+
+        this.vueEncheresUtilisateur = new VueEncheresUtilisateur(this, this.connexionMySQL, this.utilisateurActuel.getId());
     }
 
     /**
@@ -177,6 +180,11 @@ public class AppliVae extends Application{
         scene.getStylesheets().setAll("styleNavBar.css", "stylePageMessagerie.css");
         this.root.setTop(this.navBar);
         this.root.setCenter(this.fenetrePageMessage);
+    }
+
+    public void modeEnchereUtilisateur(){
+        this.root.setTop(this.navBar);
+        this.root.setCenter(this.vueEncheresUtilisateur);
     }
 
 
