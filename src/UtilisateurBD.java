@@ -99,7 +99,7 @@ public class UtilisateurBD {
         return this.idLibre;
     }
 
-    public void setActif(Utilisateur user) throws SQLException {
+    public void setActif(Utilisateur utilisateur) throws SQLException {
         PreparedStatement ps = laConnexionMySQL.preparedStatement("UPDATE UTILISATEUR SET activeut = ? WHERE idut = ?");
         ps.setString(1, utilisateur.estActive() ? "O" : "N");
         ps.setInt(2, utilisateur.getId());
