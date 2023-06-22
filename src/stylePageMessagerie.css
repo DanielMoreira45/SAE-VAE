@@ -1,0 +1,34 @@
+.gaucheMessage{
+    -fx-border-color: #AEAEAE;
+    -fx-border-width: 0 1 0 0;
+}
+
+.buttonVert{
+    -fx-border-width: 0;
+    -fx-text-fill: #000000;
+    -fx-font-size: 15px;
+    -fx-font-family: 'Verdana';
+    -fx-background-color: #72FF91;
+    -fx-border-radius: 0.8em; 
+    -fx-background-radius: 0.8em;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);
+    
+}
+
+.buttonBleu{
+    -fx-border-width: 0;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 15px;
+    -fx-font-family: 'Verdana';
+    -fx-background-color: #4FA0FF;
+    -fx-border-radius: 0.8em; 
+    -fx-background-radius: 0.8em;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);
+    
+}
+
+.petit-Msg{
+    -fx-font-size: 20px;
+    fx-font-family: 'Verdana';
+    -fx-text-fill: #6A6A6A;
+}
