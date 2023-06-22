@@ -199,6 +199,8 @@ public class NavBar extends HBox {
         boutonVendre.getStyleClass().add("bpVendre");
         boutonVendre.setPadding(new Insets(0,10,0,10));
         boutonVendre.setCursor(Cursor.HAND);
+        boutonVendre.setAccessibleText("Vendre un objet");
+        boutonVendre.setOnAction(new ControleurNavBar(this.appli, this.connexionMySQL));
         HBox.setMargin(boutonVendre, new Insets(0, 20, 0, 0));
         bouton.getChildren().addAll(boutonVendre, boutonMessage, boutonCloche, boutonPanier);
 
