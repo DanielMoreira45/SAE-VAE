@@ -29,7 +29,7 @@ public class VenteBD {
     public VenteBD(ConnexionMySQL laConnexionMySQL) {
         this.laConnexionMySQL = laConnexionMySQL;
         this.inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
-        this.outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yy:HH/mm/ss");
+        this.outputFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd:hh/mm/ss");
     }
 
     /**
@@ -79,8 +79,6 @@ public class VenteBD {
                 "SELECT idob,idve,idut,idst,prixbase,prixmin,debutve,finve,nomob,descriptionob FROM VENTE NATURAL JOIN OBJET WHERE idcat = ? order by idob, idve,idut, idst");
         s.setInt(1, categorie);
         ResultSet rs = s.executeQuery();
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yy:HH/mm/ss");
         List<Vente> ventes = new ArrayList<Vente>();
         while (rs.next()) {
             int idob = rs.getInt(1);
