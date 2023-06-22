@@ -62,7 +62,7 @@ public class CaseVente extends HBox {
         HBox nomArtBox = new HBox(nomArticle);
         nomArtBox.setAlignment(Pos.BASELINE_LEFT);
         Text dateFin = new Text(
-                "Fin : " + new Timestamp(this.vente.getFinVente()).toString().replace('-', '/').split(" ")[0]);
+                "Fin : " + new Timestamp(this.vente.getFinVente()).toString().substring(0, 10));
         HBox dateFinBox = new HBox(dateFin);
         dateFinBox.setAlignment(Pos.BASELINE_RIGHT);
         // Text nomArticle = new Text(this.getTxtMinLongueur("Text", 12));

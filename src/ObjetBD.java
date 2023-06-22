@@ -1,13 +1,12 @@
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 /**
  * 
  */
 public class ObjetBD {
     private ConnexionMySQL laConnexionMySQL;
+    Integer idLibreOb = null;
+    Statement st;
 
     /**
      * Default constructor
@@ -35,7 +34,7 @@ public class ObjetBD {
         s.setInt(4, o.getCategorie());
         s.executeQuery();
     }
-
+    
     public Objet objetParId(int idob) throws SQLException {
         UtilisateurBD utilBD = new UtilisateurBD(laConnexionMySQL);
 

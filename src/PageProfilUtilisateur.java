@@ -35,7 +35,7 @@ public class PageProfilUtilisateur extends BorderPane {
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
 
-        this.profileImage = new ImageView("pp.jpeg");
+        this.profileImage = new ImageView("file:img/pp.jpeg");
         this.nomUtilisateur = "Captain_Ayhos";
         this.nom = "Rémi";
         this.prenom = "Boulay";

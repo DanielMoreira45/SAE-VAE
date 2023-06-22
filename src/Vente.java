@@ -59,8 +59,12 @@ public class Vente {
         this.idVente = idVente;
         this.prixBase = prixBase;
         this.prixMin = prixMin;
-        this.debutVe = lecteur.parse(debutVe);
+        System.out.println(this.finVe);
+        System.out.println(this.debutVe);
         this.finVe = lecteur.parse(finVe);
+        this.debutVe = lecteur.parse(debutVe);
+        System.out.println(this.finVe);
+        System.out.println(this.debutVe);
         this.status = status;
         this.objetVente = objetVente;
         this.encheres = new ArrayList<>();
@@ -92,6 +96,8 @@ public class Vente {
     public Double getPrixBase() {
         return this.prixBase;
     }
+
+
 
     /**
      * Setter prixBase
@@ -137,7 +143,7 @@ public class Vente {
      *                        forme est : yyyy/MM/dd:hh/mm/ss
      */
     public void setDebutVente(String nouveauDebutVente) throws ParseException {
-        SimpleDateFormat lecteur = new SimpleDateFormat("yyyy/MMM/dd:hh/mm/ss");
+        SimpleDateFormat lecteur = new SimpleDateFormat("dd/MM/yy:HH/mm/ss");
         this.debutVe = lecteur.parse(nouveauDebutVente);
     }
 
@@ -226,3 +232,5 @@ public class Vente {
         this.encheres.add(nouvelleEnchere);
     }
 }
+
+ 

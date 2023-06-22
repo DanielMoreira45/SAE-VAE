@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -31,6 +32,10 @@ public class PageAccueil extends VBox {
     private ConnexionMySQL connexionMySQL;
     private TouteLesVentes toutesLesVentes;
     private List<Vente> lesVentes;
+    private Text titreCat;
+    private Text sousTitreCat;
+    private String cat;
+    private String sousTitre;
 
     /*
      * @Override
@@ -58,6 +63,8 @@ public class PageAccueil extends VBox {
 
     public PageAccueil(AppliVae appli, ConnexionMySQL connexionMySQL) {
         super();
+        this.cat = "Tout type de produit";
+        this.sousTitre = "Aucun filtre";
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
         this.toutesLesVentes = new TouteLesVentes(this.connexionMySQL);
@@ -71,20 +78,37 @@ public class PageAccueil extends VBox {
         this.setPadding(new Insets(20, 20, 50, 20));
     }
 
+    public void setCategorie(String cat){
+        this.cat = cat;
+    }
+
     public void majAffichage() {
-        this.getChildren().setAll(this.setTitre(), this.setSousTitre(), this.setBoutonTrier(), this.setVentes());
+        this.getChildren().setAll(this.setTitre(this.cat), this.setSousTitre(this.sousTitre), this.setBoutonTrier(), this.setVentes());
     }
 
     private Text setTitre() {
-        Text titre = new Text("Catégorie");
-        titre.setFont(Font.font("Valera", FontWeight.NORMAL, 58));
-        return titre;
+        this.titreCat = new Text(sousTitre);
+        titreCat.setFont(Font.font("Valera", FontWeight.NORMAL, 58));
+        return titreCat;
+    }
+
+    private Text setTitre(String cat) {
+        this.titreCat = new Text(cat);
+        titreCat.setFont(Font.font("Valera", FontWeight.NORMAL, 58));
+        return titreCat;
     }
 
     private Text setSousTitre() {
-        Text sousTitre = new Text("-> Sous-catégorie");
-        sousTitre.setFont(Font.font("Valera", FontWeight.NORMAL, 24));
-        return sousTitre;
+        this.sousTitreCat = new Text("-> "+ this.sousTitre);
+        this.sousTitreCat.setFont(Font.font("Valera", FontWeight.NORMAL, 24));
+        return sousTitreCat;
+    }
+
+    public Text setSousTitre(String sousCat) {
+        this.sousTitre= sousCat; 
+        this.sousTitreCat = new Text("-> " + sousCat);
+        this.sousTitreCat.setFont(Font.font("Valera", FontWeight.NORMAL, 24));
+        return sousTitreCat;
     }
 
     private HBox setBoutonTrier() {

@@ -40,7 +40,7 @@ public class ControleurConnexion implements EventHandler<ActionEvent>{
             this.laMap = userBd.rechercherJoueurParMail(mail);
             if (this.laMap == null){
                 String pseudo = vue.getEmail();
-                this.laMap = userBd.rechercherJoueurParPseudo(pseudo);
+                this.laMap = userBd.rechercherJoueurParMail(pseudo);
             }
         }
         catch(SQLException e){
@@ -61,7 +61,7 @@ public class ControleurConnexion implements EventHandler<ActionEvent>{
                 Utilisateur userCo = new Utilisateur((Integer) laMap.get("idut"),(String)laMap.get("pseudout"), (String) laMap.get("emailut"), (String) laMap.get("mdput"),true, (Integer) laMap.get("idrole"));
                 appli.setUtilisateurActuel(userCo);
                 vue.popUpCompteConnecte((String) laMap.get("pseudout"));
-
+                System.out.println("Role = "+ userCo.getRole()+"");
                 if (userCo.getRole() == (Roles.ADMINISTRATEUR)){
                     this.appli.modeAdministrateur();
                 }

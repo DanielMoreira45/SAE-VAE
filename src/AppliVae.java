@@ -102,7 +102,7 @@ public class AppliVae extends Application{
         this.laConnexionEncherir = new EncherirBD(this.connexionMySQL);
 
         this.pageCoInsc = new FenetreCoInsc(this, this.connexionMySQL);
-        this.pageVente = new VueVente(this, this.connexionMySQL);
+        this.pageVente = new VueVente(this, this.connexionMySQL, utilisateurActuel);
         this.pageAccueil = new PageAccueil(this, this.connexionMySQL);
         this.pageProfilUtilisateur = new PageProfilUtilisateur(this, this.connexionMySQL);
         this.navBar = new NavBar(this, this.connexionMySQL);
@@ -124,7 +124,7 @@ public class AppliVae extends Application{
      * Permet de passer à l'affichage de la page d'inscription/connexion
      */
     public void modeCoInsc(){
-        scene.getStylesheets().setAll("styleCoInsc.css");
+        scene.getStylesheets().setAll("file:src/styleCoInsc.css");
         this.root.setCenter(this.pageCoInsc);
     }
 
@@ -132,9 +132,10 @@ public class AppliVae extends Application{
      * Permet de passer à l'affichage de la page de mise en vente
      */
     public void modeMiseEnVente(){
-        scene.getStylesheets().setAll("styleNavBar.css");
+        scene.getStylesheets().setAll("file:src/styleNavBar.css");
         this.root.setTop(this.navBar);
-        this.root.setCenter(this.pageVente);
+        this.pageVente = new VueVente(this, this.connexionMySQL, this.utilisateurActuel);
+        this.root.setCenter(pageVente);
     }
 
     /**
@@ -143,8 +144,8 @@ public class AppliVae extends Application{
     public void modeAccueil(){
         scene.getStylesheets().setAll("styleNavBar.css", "styleCoInsc.css");
         this.root.setTop(this.navBar);
-        // this.root.setCenter(this.pageAccueil);
-        this.root.setCenter(new VueAdminGestionUtilisateurs(this.connexionMySQL));
+        this.root.setCenter(this.pageAccueil);
+        // this.root.setCenter(new VueAdminGestionUtilisateurs(this.connexionMySQL));
         
     }
 

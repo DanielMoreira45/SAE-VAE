@@ -43,6 +43,7 @@ public class ControleurTrier implements EventHandler<ActionEvent> {
                 default:
                     break;
             }
+            this.vue.setSousTitre(bouton.getText());
             this.vue.majAffichage();
         } catch (SQLException | ParseException e) {
             e.printStackTrace();

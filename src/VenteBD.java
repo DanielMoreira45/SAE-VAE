@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ public class VenteBD {
     public VenteBD(ConnexionMySQL laConnexionMySQL) {
         this.laConnexionMySQL = laConnexionMySQL;
         this.inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
-        this.outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yy:HH/mm/ss");
+        this.outputFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd:hh/mm/ss");
     }
 
     /**
@@ -247,6 +248,7 @@ public class VenteBD {
     public int maxIdVe() throws SQLException {
         Statement s = this.laConnexionMySQL.createStatement();
         ResultSet rs = s.executeQuery("SELECT MAX(idve) FROM VENTE");
+        rs.next();
         return rs.getInt(1);
     }
 
