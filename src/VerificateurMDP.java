@@ -27,4 +27,8 @@ public class VerificateurMDP {
     public static boolean mdpConfirmationValide(String mdp, String mdpConfirmation) { 
         return mdp.equals(mdpConfirmation);
     }
+
+    public static boolean validar(String mdp) {
+        return VerificateurMDP.contientAuMoins8Car(mdp) && VerificateurMDP.pasRepetitionSuccessive(mdp) && VerificateurMDP.auMoinsUneMaj(mdp);
+    }
 }
