@@ -43,16 +43,13 @@ public class ControleurCreerCompte implements EventHandler<ActionEvent> {
             try {
                 VerificateurMDP.estValide(this.vue.getMdp());
                 try{
-                    System.out.println("ControleurConnexion"+this.connexionMySQL);
-                    System.out.println("avant");
                     UtilisateurBD userBd = new UtilisateurBD(this.connexionMySQL);
-                    System.out.println("apres");
                     int idLibre = userBd.idLibre();
                     System.out.println(idLibre);
                     Utilisateur user = new Utilisateur(idLibre, vue.getPseudo(), vue.getMail(), vue.getMdp(), 2);
                     userBd.insererUtilisateur(user);
                     vue.popUpCompteValide(user.getPseudo());
-                    System.out.println("apres1");
+                    appli.modeAccueil();
                 }
                 catch(SQLException e){
                     vue.popUpErreurSQL(e);
@@ -62,7 +59,7 @@ public class ControleurCreerCompte implements EventHandler<ActionEvent> {
                 this.vue.setMessageErreur(e.getMessage());
             }
         } catch (EmailInvalideException e) {
-            this.vue.setEmailErreur("   * Email invalide, vueillez renter un email valide.");
+            this.vue.setEmailErreur("   * Email invalide, veuillez renter un email valide.");
             this.vue.setEmailMessageErreur(true);
         }
 }

@@ -55,6 +55,14 @@ public class UtilisateurBD {
         st.executeUpdate(query);
     }
 
+
+
+    /**
+     * solution non chosie car si un utilisateur possédant des objets aux enchères est supprimé, l'id libre qui sera dorénavant attribuable
+     * associera un nouvel utilisateur aux ventes de l'ancien, hors nous souhaitons (en vue du temps) ne pas s'impliquer dans la gestion de dépense.*
+     * @return int un id libre (c-a-d l'id le plus bas possible attribuable)
+     * @throws SQLException
+     */
     public int idLibre() throws SQLException {
         this.st = laConnexionMySQL.createStatement();
         ResultSet resultats = this.st.executeQuery("SELECT count(idUt) FROM UTILISATEUR");
@@ -65,12 +73,23 @@ public class UtilisateurBD {
             return maxId + 1;
         } else {
             ResultSet lesId = this.st.executeQuery("SELECT idUt FROM UTILISATEUR");
-            while (lesId.next()) {
-                Integer actu = lesId.getInt(1);
-                ResultSet leProchain = this.st.executeQuery("SELECT idUt FROM UTILISATEUR WHERE idUt =" + (actu + 1));
-                if (!leProchain.next()) {
-                    this.idLibre = actu + 1;
+            boolean idFound = false;
+            for (int i = 1; i <= maxId; i++) {
+                if (lesId.next()) {
+                    int actu = lesId.getInt(1);
+                    if (actu != i) {
+                        this.idLibre = i;
+                        idFound = true;
+                        break;
+                    }
+                } else {
+                    this.idLibre = i;
+                    idFound = true;
+                    break;
                 }
+            }
+            if (!idFound) {
+                this.idLibre = maxId + 1;
             }
         }
         return this.idLibre;
