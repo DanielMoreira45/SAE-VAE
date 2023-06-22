@@ -31,8 +31,12 @@ public class ToutLesUtilisateurs {
     this.utilisateurBD.supprimerUtilisateur(num);
   }
 
-  public void setActif(Utilisateur user) throws SQLException {
-    this.utilisateurBD.setActif(user);
+  public void setActif(Utilisateur utilisateur) throws SQLException {
+    this.utilisateurBD.setActif(utilisateur);
+  }
+
+  public void setRole(Utilisateur utilisateur) throws SQLException {
+    this.utilisateurBD.setRole(utilisateur);
   }
 
   // public void desactiverUtilisateur(String pseudo){
