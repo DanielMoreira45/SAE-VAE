@@ -30,7 +30,7 @@ public class AppliPourTests extends Application {
     
     @Override
     public void start(Stage stage) {
-        Pane root = new VueEncheresUtilisateur(this.vae, this.connexion, 130);
+        Pane root = new VueEncheresUtilisateur(this.vae, this.connexion, 6);
         this.scene = new Scene(root, 1000, 1000);
         stage.setScene(scene);
         stage.setTitle("Test page Vente");

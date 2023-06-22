@@ -116,10 +116,12 @@ public class VueEncheresUtilisateur extends BorderPane {
      * @return TextField : le champ de recherche.
      */
     private TextField getBarreDeRecherche() {
-        TextField barreDeRecherche = new TextField("Chercher une enchère actuelle");
+        TextField barreDeRecherche = new TextField();
+        barreDeRecherche.setPromptText("Chercher une enchère actuelle");
         barreDeRecherche.setAlignment(Pos.CENTER_LEFT);
         barreDeRecherche.setStyle("-fx-effect: dropshadow(gaussian, grey, 8, 0, 1, 1); -fx-background-radius: 0.8em; -fx-background-color: white;");
         barreDeRecherche.setPrefWidth(320);
+        // barreDeRecherche.setOnAction(new ControleurRechercheEnchereUtil(this, barreDeRecherche));
         return barreDeRecherche;
     }
 

@@ -19,5 +19,4 @@ public class ControleurTrierEncheresActuelles implements EventHandler<ActionEven
         this.vue.reverseLesVentes();
         this.vue.majLesArticles();
     }
-
 }
