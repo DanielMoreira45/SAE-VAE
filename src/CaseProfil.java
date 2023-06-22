@@ -7,6 +7,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
@@ -26,13 +27,12 @@ public class CaseProfil extends BorderPane{
 
     private void setContenu() {
         VBox boiteBoutonsGestion = this.getLesBoutonsProfil();
-        Text nomEmailDuProfil = this.getNomEmailDuProfil(this.utilisateur.getPseudo(), this.utilisateur.getEmail());
         ImageView photoProfil = this.getImageProfil();
-        VBox boiteInfosProfil = this.getInfosProfil(nomEmailDuProfil);
+        VBox boiteInfosProfil = this.getInfosProfil();
 
         this.setLeft(photoProfil);
         this.setCenter(boiteInfosProfil);
-        this.setRight(boiteBoutonsGestion);
+        if (this.utilisateur.getRole() != 1) this.setRight(boiteBoutonsGestion);
 
         BorderPane.setMargin(photoProfil, new Insets(5));
         BorderPane.setMargin(boiteInfosProfil, new Insets(5, 0, 5, 5));
@@ -98,11 +98,17 @@ public class CaseProfil extends BorderPane{
      * @param derniereConnexion int : sa dernière connexion (en minutes).
      * @return VBox : une boite contenant les informations de profil de l'utilisateur (son pseudo et sa dernière connexion).
      */
-    private VBox getInfosProfil(Text nomDuProfil) {
-        VBox boiteInfosProfil = new VBox(10, nomDuProfil);
+    private VBox getInfosProfil() {
+        VBox boiteInfosProfil = new VBox(10, this.getNomEmailDuProfil(this.utilisateur.getPseudo(), this.utilisateur.getEmail()));
 
         if (this.utilisateur.estActive()) boiteInfosProfil.getChildren().add(new Label("Statut : Actif"));
         else boiteInfosProfil.getChildren().add(new Label("Statut : Inactif"));
+
+        Button boutonChangerRole = new Button("Changer de roles");
+        boutonChangerRole.setStyle("-fx-background-color : #b5d6fd; -fx-border-radius: 0.8em; -fx-background-radius : 0.8em; -fx-effect: dropshadow(gaussian, grey, 8, 0, 1, 1);");
+        HBox boiteGestionRole = new HBox(this.utilisateur.getRole() == 1 ? new Label("Role : Admin") : new Label("Role : Utilisateur"), boutonChangerRole);
+        boiteGestionRole.setSpacing(20);
+        boiteInfosProfil.getChildren().add(boiteGestionRole);
 
         boiteInfosProfil.setPadding(new Insets(10));
         boiteInfosProfil.setStyle("-fx-background-color: #f1f1f1;");
