@@ -158,8 +158,8 @@ public class FenetreDeLogin extends GridPane{
         return this.mdp.getText();
     }
 
-    public String getMdpClair(){
-        return this.mdpClair.getText();
+    public String getTfLog() {
+        return this.email.getText();
     }
 
     public String getEmail() {
@@ -203,6 +203,7 @@ public class FenetreDeLogin extends GridPane{
         this.email.setText("");
     }
 
+
     // public void popUpCompteInexistant() {
     //     Alert alert = new Alert(AlertType.INFORMATION);
     //     alert.setTitle("Le compte n'existe pas.");
@@ -212,3 +213,4 @@ public class FenetreDeLogin extends GridPane{
     // }
 
 }
+

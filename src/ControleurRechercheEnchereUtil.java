@@ -18,14 +18,14 @@ public class ControleurRechercheEnchereUtil implements EventHandler<MouseEvent> 
 
     @Override
     public void handle(MouseEvent event) {
-        List<Vente> lesVentes = new ArrayList<>(this.fenetreEncheres.getLesVentes());
-        try {
-            // ...
-            this.fenetreEncheres.setLesVentes(touteLesVentes.recherche(barreRecherche.getText()));
-            this.fenetreEncheres.majAffichage();
-        } catch (SQLException | ParseException e) {
-            e.printStackTrace();
-        }
+
+        // List<Vente> lesVentes = new ArrayList<>(this.fenetreEncheres.getLesVentes());
+        // try {
+        //     this.fenetreEncheres.setLesVentes(touteLesVentes.recherche(barreRecherche.getText()));
+        //     this.fenetreEncheres.majAffichage();
+        // } catch (SQLException | ParseException e) {
+        //     e.printStackTrace();
+        // }
     }
 
 }

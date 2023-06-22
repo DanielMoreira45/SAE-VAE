@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -36,6 +37,8 @@ public class PageAccueil extends VBox {
     private Text sousTitreCat;
     private String cat;
     private String sousTitre;
+    private TextField prixMin;
+    private TextField prixMax;
 
     /*
      * @Override
@@ -73,17 +76,46 @@ public class PageAccueil extends VBox {
         } catch (SQLException | ParseException e) {
             e.printStackTrace();
         }
-
+        this.prixMin = new TextField();
+        this.prixMax = new TextField();
+        prixMax.setOnKeyPressed(new ControleurPrixMinMax(this, this.toutesLesVentes));
+        prixMin.setOnKeyPressed(new ControleurPrixMinMax(this, this.toutesLesVentes));
         this.getChildren().addAll(this.setTitre(), this.setSousTitre(), this.setBoutonTrier(), this.setVentes());
         this.setPadding(new Insets(20, 20, 50, 20));
     }
 
-    public void setCategorie(String cat){
+    private HBox setPrixMinLabel() {
+    Label prixMinLabel = new Label("Prix Min:");
+    prixMinLabel.setFont(Font.font("Valera", FontWeight.NORMAL, 12));
+    HBox hbox = new HBox(prixMinLabel);
+    hbox.setAlignment(Pos.CENTER_LEFT);
+    return hbox;
+
+}
+
+public TextField getPrixMinTf(){
+    return this.prixMin;
+}
+
+public TextField getPrixMax(){
+    return this.prixMax;
+}
+
+private HBox setPrixMaxLabel() {
+    Label prixMaxLabel = new Label("Prix Max:");
+    prixMaxLabel.setFont(Font.font("Valera", FontWeight.NORMAL, 12));
+    HBox hbox = new HBox(prixMaxLabel);
+    hbox.setAlignment(Pos.CENTER_LEFT);
+    return hbox;
+}
+
+    public void setCategorie(String cat) {
         this.cat = cat;
     }
 
     public void majAffichage() {
-        this.getChildren().setAll(this.setTitre(this.cat), this.setSousTitre(this.sousTitre), this.setBoutonTrier(), this.setVentes());
+        this.getChildren().setAll(this.setTitre(this.cat), this.setSousTitre(this.sousTitre), this.setBoutonTrier(),
+                this.setVentes());
     }
 
     private Text setTitre() {
@@ -99,13 +131,13 @@ public class PageAccueil extends VBox {
     }
 
     private Text setSousTitre() {
-        this.sousTitreCat = new Text("-> "+ this.sousTitre);
+        this.sousTitreCat = new Text("-> " + this.sousTitre);
         this.sousTitreCat.setFont(Font.font("Valera", FontWeight.NORMAL, 24));
         return sousTitreCat;
     }
 
     public Text setSousTitre(String sousCat) {
-        this.sousTitre= sousCat; 
+        this.sousTitre = sousCat;
         this.sousTitreCat = new Text("-> " + sousCat);
         this.sousTitreCat.setFont(Font.font("Valera", FontWeight.NORMAL, 24));
         return sousTitreCat;
@@ -116,7 +148,7 @@ public class PageAccueil extends VBox {
         try {
             trierVente.getChildren().addAll(this.setBoutonTout(), this.setBoutonTrierParDate(),
                     this.setBoutonTrierParNom(), this.setBoutonEnchereEnCours(), this.setBoutonAVenir(),
-                    this.setBoutonInverse());
+                    this.setBoutonInverse(), this.setBoutonTrierParNom(),this.setPrixMinLabel(),this.prixMin,this.setPrixMaxLabel(), this.prixMax);
         } catch (SQLException | ParseException e) {
             e.printStackTrace();
         }

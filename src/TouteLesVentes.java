@@ -143,4 +143,9 @@ public class TouteLesVentes {
     public List<Vente> ventesPourUnAcheteur(int idve) throws SQLException, ParseException {
         return venteBD.ventePourAcheteur(idve);
     }
+
+
+    public List<Vente> trieVenteIntervalle(String prixMin, String prixMax) throws SQLException, ParseException {
+        return venteBD.ventePrixMinMaxList(Integer.valueOf(prixMin), Integer.valueOf(prixMax));
+    }
 }

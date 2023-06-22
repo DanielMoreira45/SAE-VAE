@@ -41,7 +41,7 @@ public class FenetrePageMessage extends BorderPane{
     public FenetrePageMessage(AppliVae appli, ConnexionMySQL connexionMySQL){
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
-        this.profileImage = new ImageView("pp.jpeg");
+        this.profileImage = new ImageView("file:/pp.jpeg");
         this.listeContart = new ArrayList<>();
         
         ajouteContact();
@@ -207,9 +207,9 @@ public class FenetrePageMessage extends BorderPane{
         Button micro = new Button();
         Button addUser = new Button();
         Button personnes = new Button();
-        ImageView imageMicro = new ImageView(new Image("imageMicro.png"));
-        ImageView imageAddUser = new ImageView(new Image("ImageAddUser.png"));
-        ImageView imagePerssonne = new ImageView(new Image("imagePersonnes.png"));
+        ImageView imageMicro = new ImageView(new Image("file:/imageMicro.png"));
+        ImageView imageAddUser = new ImageView(new Image("file:/ImageAddUser.png"));
+        ImageView imagePerssonne = new ImageView(new Image("file:/imagePersonnes.png"));
         micro.setGraphic(imageMicro);
         addUser.setGraphic(imageAddUser);
         personnes.setGraphic(imagePerssonne);
@@ -249,7 +249,7 @@ public class FenetrePageMessage extends BorderPane{
             //contact.setStyle("-fx-background-color: #ffffff");
 
             // Créer un ImageView pour afficher l'image
-            ImageView imagePP = new ImageView(new Image("pp.jpeg"));
+            ImageView imagePP = new ImageView(new Image("file:/pp.jpeg"));
             imagePP.setFitWidth(80); // Largeur de l'image
             imagePP.setFitHeight(80); // Hauteur de l'image
             contact.getChildren().add(imagePP);

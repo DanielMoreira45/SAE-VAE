@@ -65,9 +65,6 @@ public class CaseVente extends HBox {
                 "Fin : " + new Timestamp(this.vente.getFinVente()).toString().substring(0, 10));
         HBox dateFinBox = new HBox(dateFin);
         dateFinBox.setAlignment(Pos.BASELINE_RIGHT);
-        // Text nomArticle = new Text(this.getTxtMinLongueur("Text", 12));
-        // Text prix = new Text("8.99 €");
-        // Text dateFin = new Text("20/06/2023");
         nomArticle.setFont(Font.font("Valera", FontWeight.MEDIUM, 20));
         nomArticle.setTextAlignment(TextAlignment.LEFT);
         dateFin.setFont(Font.font("Valera", FontWeight.MEDIUM, 20));
@@ -86,20 +83,15 @@ public class CaseVente extends HBox {
     }
 
     private HBox setBas() {
-        HBox bouton = new HBox(this.setBoutonEncherir());
         Text prix = new Text("Prix : " + (this.vente.getPrixBase()) + "€");
         prix.setFont(Font.font("Valera", FontWeight.MEDIUM, 16));
         prix.setTextAlignment(TextAlignment.CENTER);
         HBox prixPane = new HBox(prix);
         prixPane.setPadding(new Insets(8, 0, 0, 0));
-
-        // HBox bouton = new HBox(this.setBoutonVoirAnnonce(), this.setBoutonEncherir(),
-        // prixPane);
+        HBox bouton = new HBox(this.setBoutonEncherir(), prixPane);
         bouton.setSpacing(20);
-
         HBox cercleBox = new HBox(this.setCercle());
         cercleBox.setPadding(new Insets(5, 0, 0, 0));
-
         HBox bas = new HBox(bouton, cercleBox);
         bas.setSpacing(140);
         return bas;

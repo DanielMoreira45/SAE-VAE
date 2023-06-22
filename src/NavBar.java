@@ -222,9 +222,6 @@ public class NavBar extends HBox {
     
 
         Button boutonPhotoProfil = new Button();
-
-
-        // Image de profile a modifier un fois les page relié entre elle
         Image profileImage = new Image("file:img/pp.jpeg");
         // Créer un ImageView pour afficher l'image
         ImageView imagePP = new ImageView(profileImage);
@@ -246,7 +243,6 @@ public class NavBar extends HBox {
         boutonPhotoProfil.setAccessibleText("Profil Utilisateur");
         boutonPhotoProfil.setOnAction(new ControleurNavBar(this.appli, this.connexionMySQL));
         this.getChildren().add(boutonPhotoProfil);
-
         boutonPhotoProfil.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
             ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), boutonPhotoProfil);
             scaleTransition.setToX(1.1); // Facteur d'agrandissement horizontal
