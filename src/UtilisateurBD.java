@@ -148,13 +148,58 @@ public class UtilisateurBD {
         return util;
     }
 
-    public List<Utilisateur> toutUtilisateurs() throws SQLException {
+    public List<Utilisateur> tout() throws SQLException {
         ResultSet rs = this.laConnexionMySQL.createStatement()
                 .executeQuery("SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR;");
         List<Utilisateur> listeUtilisateurs = new ArrayList<>();
         while (rs.next()) {
+            System.out.println(rs.getString(5) == "O" ? true : false);
             listeUtilisateurs.add(new Utilisateur(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
-                    rs.getBoolean(5), rs.getInt(6)));
+                    rs.getString(5).equals("O") ? true : false, rs.getInt(6)));
+        }
+        return listeUtilisateurs;
+    }
+
+    public List<Utilisateur> toutAdmin() throws SQLException {
+        ResultSet rs = this.laConnexionMySQL.createStatement()
+                .executeQuery("SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR WHERE idrole = 1;");
+        List<Utilisateur> listeUtilisateurs = new ArrayList<>();
+        while (rs.next()) {
+            listeUtilisateurs.add(new Utilisateur(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                    rs.getString(5).equals("O") ? true : false, rs.getInt(6)));
+        }
+        return listeUtilisateurs;
+    }
+
+    public List<Utilisateur> toutUtilisateurs() throws SQLException {
+        ResultSet rs = this.laConnexionMySQL.createStatement()
+                .executeQuery("SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR WHERE idrole = 2;");
+        List<Utilisateur> listeUtilisateurs = new ArrayList<>();
+        while (rs.next()) {
+            listeUtilisateurs.add(new Utilisateur(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                    rs.getString(5).equals("O") ? true : false, rs.getInt(6)));
+        }
+        return listeUtilisateurs;
+    }
+
+    public List<Utilisateur> actif() throws SQLException {
+        ResultSet rs = this.laConnexionMySQL.createStatement()
+                .executeQuery("SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR WHERE activeut = 'O';");
+        List<Utilisateur> listeUtilisateurs = new ArrayList<>();
+        while (rs.next()) {
+            listeUtilisateurs.add(new Utilisateur(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                    rs.getString(5).equals("O") ? true : false, rs.getInt(6)));
+        }
+        return listeUtilisateurs;
+    }
+
+    public List<Utilisateur> inactif() throws SQLException {
+        ResultSet rs = this.laConnexionMySQL.createStatement()
+                .executeQuery("SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR WHERE activeut = 'N';");
+        List<Utilisateur> listeUtilisateurs = new ArrayList<>();
+        while (rs.next()) {
+            listeUtilisateurs.add(new Utilisateur(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                    rs.getString(5).equals("O") ? true : false, rs.getInt(6)));
         }
         return listeUtilisateurs;
     }
@@ -166,7 +211,7 @@ public class UtilisateurBD {
         List<Utilisateur> listeUtilisateurs = new ArrayList<>();
         while (rs.next()) {
             listeUtilisateurs.add(new Utilisateur(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
-                    rs.getBoolean(5), rs.getInt(6)));
+                    rs.getString(5).equals("O") ? true : false, rs.getInt(6)));
         }
         return listeUtilisateurs;
     }
