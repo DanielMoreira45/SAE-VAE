@@ -1,14 +1,16 @@
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 
-public class ControleurConnexion implements EventHandler<ActionEvent> {
-
+public class ControleurConnexion implements EventHandler<ActionEvent>{
+    
     /**
      * La vue FenetreCoInsc
-     */
+     */ 
     private FenetreDeLogin vue;
 
     /**
@@ -16,57 +18,73 @@ public class ControleurConnexion implements EventHandler<ActionEvent> {
      */
     private AppliVae appli;
     private ConnexionMySQL connexionMySQL;
-    private List<Utilisateur> utilisateurTrouve;
-    private Utilisateur uti;
+    private Map<String, Object> laMap;
 
-    public ControleurConnexion(FenetreDeLogin vue, AppliVae appli, ConnexionMySQL connexionMySQL) {
+    public ControleurConnexion(FenetreDeLogin vue, AppliVae appli, ConnexionMySQL connexionMySQL){
         this.vue = vue;
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
-        this.utilisateurTrouve = new ArrayList<>();
+        laMap = new HashMap<>();
     }
 
     /**
      * L'action consiste à changer de fenêtre pour aller à la page de connexion
-     * 
      * @param actionEvent l'événement action
      */
-    @Override
-    public void handle(ActionEvent actionEvent) {
+	@Override
+	public void handle(ActionEvent actionEvent) {
+        laMap = new HashMap<>();
         System.out.println("avant");
-        try {
+        try{
             UtilisateurBD userBd = new UtilisateurBD(connexionMySQL);
-            String mail = vue.getTfLog();
-            this.utilisateurTrouve = userBd.recherche(mail);
-            if (!(utilisateurTrouve.isEmpty())) {
-                this.uti = utilisateurTrouve.get(0);
+            String mail = vue.getEmail();
+            this.laMap = userBd.rechercherJoueurParMail(mail);
+            if (this.laMap == null){
+                String pseudo = vue.getEmail();
+                this.laMap = userBd.rechercherJoueurParPseudo(pseudo);
             }
-        } catch (SQLException e) {
+        }
+        catch(SQLException e){
             e.printStackTrace();
         }
         try {
-            if (this.vue.getTfLog().equals("erreur"))
-                throw new Exception();
+            if (this.vue.getEmail().equals("erreur")) throw new Exception();
             this.vue.setEmailErreur(false);
             this.vue.setMessageEmailErreur("");
-            if (utilisateurTrouve == null) {
+            if(this.laMap == null){
                 throw new Exception();
             }
             try {
-                if (this.vue.getMdp().equals("erreur"))
-                    throw new Exception();
-                if (!vue.getMdp().equals(this.uti.getMotDePasse())) {
+                if (this.vue.getMdp().equals("erreur")){
+                    if (this.vue.getMdpClair().equals("erreur")){
+                        throw new Exception();
+                    }
+                }
+                String mdpBon;
+                if (this.vue.getMdp().equals(laMap.get("mdput"))){
+                    mdpBon = this.vue.getMdp();
+                }
+                else if(this.vue.getMdpClair().equals(laMap.get("mdput"))){
+                    mdpBon = this.vue.getMdpClair();
+                }
+                else{
                     throw new Exception();
                 }
-                appli.setUtilisateurActuel(uti);
-                vue.popUpCompteConnecte(this.uti.getPseudo());
-                System.out.println("Role = " + this.uti.getRole() + "");
-                if (this.uti.getRole() == (Roles.ADMINISTRATEUR)) {
-                    this.appli.modeAdministrateur();
-                } else {
-                    this.appli.modeAccueil();
+                Utilisateur userCo = new Utilisateur((Integer) laMap.get("idut"), mdpBon, (String) laMap.get("emailut"), (String) laMap.get("mdput"), (boolean) laMap.get("activeut"), (Integer) laMap.get("idrole"));
+                if (userCo.estActive()){
+                    appli.setUtilisateurActuel(userCo);
+                    vue.popUpCompteConnecte((String) laMap.get("pseudout"));
+                    if (userCo.getRole() == (Roles.ADMINISTRATEUR)){
+                        this.appli.modeAdministrateur();
+                    }
+                    else{
+                        this.appli.modeAccueil();
+                    }
                 }
-
+                else{
+                    this.vue.popUpCompteDesactive(mdpBon);
+                }
+                
             } catch (Exception e) {
                 System.out.println("b");
                 this.vue.setMdpErreur();
@@ -77,6 +95,6 @@ public class ControleurConnexion implements EventHandler<ActionEvent> {
             this.vue.setEmailErreur(true);
             this.vue.setMessageEmailErreur("   * Cet Email n'existe pas");
         }
-    }
+	}
 
 }
