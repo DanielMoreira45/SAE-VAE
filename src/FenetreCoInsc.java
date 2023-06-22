@@ -22,6 +22,8 @@ public class FenetreCoInsc extends HBox {
     private AppliVae appli;
     private ConnexionMySQL connexionMySQL;
 
+    private FenetreDeLogin fenetreDeLogin;
+
     public FenetreCoInsc(AppliVae appli, ConnexionMySQL connexionMySQL) {
         this.panelCentral = new BorderPane();
         this.appli = appli;
@@ -75,7 +77,8 @@ public class FenetreCoInsc extends HBox {
         this.creerCompte.setDisable(false);
         this.rectangleC.setFill(Color.web("#4FA0FF"));
         this.rectangleI.setFill(Color.web("#a3a3a3aa"));
-        this.panelCentral.setCenter(new FenetreDeLogin(this.appli, this.connexionMySQL));
+        this.fenetreDeLogin = new FenetreDeLogin(this.appli, this.connexionMySQL);
+        this.panelCentral.setCenter(this.fenetreDeLogin);
     }
 
     public void modeCreationCompte() {
@@ -158,9 +161,9 @@ public class FenetreCoInsc extends HBox {
             scaleTransitionReverse.play();
         });
     }
-    /*
-     * public static void main(String[] args) {
-     * launch(args);
-     * }
-     */
+
+    public void resetTF(){
+        this.fenetreDeLogin.resetTF();
+    }
+
 }

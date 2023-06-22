@@ -31,10 +31,13 @@ public class PageProfilUtilisateur extends BorderPane {
 
     private Button textPaiement;
 
+    private Button deconnecter;
+
     public PageProfilUtilisateur(AppliVae appli, ConnexionMySQL connexionMySQL) {
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
 
+        this.deconnecter = new Button("Se déconnecter");
         this.profileImage = new ImageView("file:img/pp.jpeg");
         this.nomUtilisateur = "Captain_Ayhos";
         this.nom = "Rémi";
@@ -186,7 +189,17 @@ public class PageProfilUtilisateur extends BorderPane {
         profileImage.setPreserveRatio(true);
         profileImage.setFitWidth(200); // Spécifiez la largeur souhaitée ici
 
+        this.deconnecter.getStyleClass().add("buttonRouge");
+        gridPane.add(deconnecter, 0, 7);
+        this.deconnecter.setOnAction(new ControleurProfilUtilisateur(this.appli, this.connexionMySQL));
+
         this.setCenter(gridPane);
     }
 
 }
+/*
+private Button deconnecter;
+this.deconnecter = new Button("Se déconnecter");
+this.deconnecter.getStyleClass().add("buttonRouge");
+gridPane.add(deconnecter, 0, 7);
+*/

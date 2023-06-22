@@ -128,6 +128,8 @@ public class AppliVae extends Application{
      */
     public void modeCoInsc(){
         scene.getStylesheets().setAll("file:src/styleCoInsc.css");
+        this.root.setTop(null);
+        this.pageCoInsc.resetTF();
         this.root.setCenter(this.pageCoInsc);
     }
 
