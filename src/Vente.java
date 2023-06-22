@@ -97,8 +97,6 @@ public class Vente {
         return this.prixBase;
     }
 
-
-
     /**
      * Setter prixBase
      * 
@@ -222,7 +220,8 @@ public class Vente {
      * Ajoute une enchère sur la vente
      * 
      * @param nouvelleEnchere la nouvelle enchere
-     * @throws ExceptionPrixIncorrecte Si le prix est trop petit par rapport au prix de la meilleur enchere
+     * @throws ExceptionPrixIncorrecte Si le prix est trop petit par rapport au prix
+     *                                 de la meilleur enchere
      */
     public void ajouteEnchere(Enchere nouvelleEnchere) throws ExceptionPrixIncorrecte {
         if (nouvelleEnchere.getMontant() < this.prixMin
@@ -231,6 +230,24 @@ public class Vente {
         }
         this.encheres.add(nouvelleEnchere);
     }
-}
 
- 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (obj instanceof Vente) {
+            Vente vente = (Vente) obj;
+            return idVente == vente.getIDVente() &&
+                    prixBase.equals(vente.getPrixBase()) && prixMin.equals(vente.getPrixMin())
+                    && this.getDebutVente().equals(vente.getDebutVente())
+                    && this.getFinVente().equals(vente.getFinVente()) && status == vente.getStatus()
+                    && objetVente.equals(vente.getObjet());
+        }
+        return false;
+
+    }
+}

@@ -163,6 +163,15 @@ public class Utilisateur {
     /**
      * Setter role
      * 
+     * @return (int) role
+     */
+    public void setRole(int newRole) {
+        this.role = newRole;
+    }
+
+    /**
+     * Setter role
+     * 
      * @param nouveauRole
      */
     public void ChangeRole(int nouveauRole) {
@@ -185,5 +194,23 @@ public class Utilisateur {
      */
     public void ajouteEnchere(Enchere enchere) {
         this.lesEncheres.add(enchere);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        if (obj instanceof Utilisateur) {
+            Utilisateur utilisateur = (Utilisateur) obj;
+            return id == utilisateur.id && role == utilisateur.role && pseudo.equals(utilisateur.getPseudo())
+                    && email.equals(utilisateur.getEmail()) && mdp.equals(utilisateur.getMotDePasse())
+                    && this.active == utilisateur.estActive();
+        }
+        return false;
+
     }
 }

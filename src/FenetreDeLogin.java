@@ -158,11 +158,11 @@ public class FenetreDeLogin extends GridPane{
         return this.mdp.getText();
     }
 
-    public String getPseudo() {
-        return this.mdp.getText();
+    public String getTfLog() {
+        return this.email.getText();
     }
 
-    public String getTfLog() {
+    public String getEmail() {
         return this.email.getText();
     }
 
@@ -182,12 +182,27 @@ public class FenetreDeLogin extends GridPane{
     public void setMessageEmailErreur(String msg) {
         this.erreurEmail.setText(msg);
     }
+
     public void popUpCompteConnecte(String nomCompte) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Confirmation de logging de compte");
         alert.setHeaderText("Compte log avec succès");
         alert.showAndWait();
     }
+
+    public void popUpCompteDesactive(String nomCompte) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Compte desactivé");
+        alert.setHeaderText("Votre compte a été désactivé.\nVous ne pouvez plus accéder à l'application.");
+        alert.showAndWait();
+    }
+
+    public void resetTF(){
+        this.mdpClair.setText("");
+        this.mdp.setText("");
+        this.email.setText("");
+    }
+
 
     // public void popUpCompteInexistant() {
     //     Alert alert = new Alert(AlertType.INFORMATION);
@@ -198,3 +213,4 @@ public class FenetreDeLogin extends GridPane{
     // }
 
 }
+

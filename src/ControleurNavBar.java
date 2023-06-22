@@ -28,21 +28,24 @@ public class ControleurNavBar implements EventHandler<ActionEvent>{
 	public void handle(ActionEvent actionEvent) {
         Button boutonSource = (Button) actionEvent.getSource();
         if (boutonSource.getAccessibleText().equals("Messagerie")){
-            //this.appli.modeMessagerie();
-            System.out.println("messagerie");
+            this.appli.modeMessage();
         }
         else if (boutonSource.getAccessibleText().equals("Notifications")){
             //this.appli.popUpNotif();
             System.out.println("pop up notif");
         }
         else if (boutonSource.getAccessibleText().equals("Panier")){
-            this.appli.modeMiseEnVente();
+
         }
         else if (boutonSource.getAccessibleText().equals("Logo")){
             this.appli.modeAccueil();
         }
         else if (boutonSource.getAccessibleText().equals("Profil Utilisateur")){
             this.appli.modeProfilUtilisateur();
+        }
+
+        else if (boutonSource.getAccessibleText().equals("Vendre un objet")){
+            this.appli.modeMiseEnVente();
         }
 	}
 

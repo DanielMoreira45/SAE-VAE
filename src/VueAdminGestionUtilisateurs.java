@@ -31,15 +31,18 @@ public class VueAdminGestionUtilisateurs extends BorderPane {
     private List<Utilisateur> listeUtilisateurs;
     private ToutLesUtilisateurs toutLesUtilisateurs;
 
+    private Utilisateur admin;
+
     /**
      * Construction permettant de créer une nouvelle vue de gestion des utilisateurs.
      */
-    public VueAdminGestionUtilisateurs(ConnexionMySQL laConnexionMySQL) {
+    public VueAdminGestionUtilisateurs(ConnexionMySQL laConnexionMySQL, Utilisateur admin) {
         super();
+        this.admin = admin;
         this.toutLesUtilisateurs = new ToutLesUtilisateurs(laConnexionMySQL);
         try {
-            this.listeUtilisateurs = toutLesUtilisateurs.toutUtilisateurs();
-        } catch (SQLException | ParseException e) {
+            this.listeUtilisateurs = toutLesUtilisateurs.tout();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         Text titre = this.initTitrePage();
@@ -62,8 +65,8 @@ public class VueAdminGestionUtilisateurs extends BorderPane {
     public void ajouterProfils() {
         this.listeDesProfils = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
-            if (i < this.listeUtilisateurs.size()) {
-                this.listeDesProfils.add(new CaseProfil(this.listeUtilisateurs.get(i), this));
+            if (i < this.listeUtilisateurs.size()) { 
+                if (!this.listeUtilisateurs.get(i).equals(this.admin)) this.listeDesProfils.add(new CaseProfil(this.listeUtilisateurs.get(i), this));
             }
         }
     }
@@ -135,9 +138,10 @@ public class VueAdminGestionUtilisateurs extends BorderPane {
     private void initComboBox() {
         this.comboBoxDerniereConnexion = new ComboBox<>();
         this.comboBoxDerniereConnexion.setStyle("-fx-background-color: white; -fx-background-radius : 0.8em; -fx-border-radius: 0.8em; -fx-border-color : lightgrey;");
-        this.comboBoxDerniereConnexion.getItems().addAll("Dernière connexion", "Connectés", "> 5 min", "> 10 min", "> 30 min", "> 1h", "> 1j");
+        this.comboBoxDerniereConnexion.getItems().addAll("Tout", "Admin", "Utilisateurs", "Actif", "Inactif");
         this.comboBoxDerniereConnexion.getSelectionModel().selectFirst();
         this.comboBoxDerniereConnexion.setMaxHeight(40);
+        this.comboBoxDerniereConnexion.setOnAction(new ControleurAdminTrieUtilisateur(this));
     }
 
     /**

@@ -4,10 +4,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
+import javafx.animation.ScaleTransition;
 import javafx.geometry.Insets;
 
 public class NavBar extends HBox {
@@ -67,6 +70,20 @@ public class NavBar extends HBox {
         boutonLogo.setAccessibleText("Logo");
         boutonLogo.setOnAction(new ControleurNavBar(this.appli, this.connexionMySQL));
 
+        boutonLogo.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), boutonLogo);
+            scaleTransition.setToX(1.1); // Facteur d'agrandissement horizontal
+            scaleTransition.setToY(1.1); // Facteur d'agrandissement vertical
+            scaleTransition.play();
+        });
+        boutonLogo.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
+            ScaleTransition scaleTransitionReverse = new ScaleTransition(Duration.millis(200), boutonLogo); 
+            scaleTransitionReverse.setToX(1); // Retour à la taille d'origine pour l'axe X
+            scaleTransitionReverse.setToY(1); // Retour à la taille d'origine pour l'axe Y
+            scaleTransitionReverse.play();
+        });
+    
+
         this.getChildren().add(boutonLogo);
 
         // Rectangle Bleu
@@ -106,7 +123,7 @@ public class NavBar extends HBox {
         comboBox.setOnAction(new ControleurCategorie(this.appli));
         navBar2.getChildren().addAll(navBar, comboBox);
 
-        // Bouton deconnexion
+        // Boutons
         HBox bouton = new HBox();
         Button boutonMessage = new Button();
         boutonMessage.setGraphic(new ImageView(new Image("file:img/message.png")));
@@ -114,11 +131,39 @@ public class NavBar extends HBox {
         boutonMessage.setAccessibleText("Messagerie");
         boutonMessage.setOnAction(new ControleurNavBar(this.appli, this.connexionMySQL));
 
+        boutonMessage.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), boutonMessage);
+            scaleTransition.setToX(1.1); // Facteur d'agrandissement horizontal
+            scaleTransition.setToY(1.1); // Facteur d'agrandissement vertical
+            scaleTransition.play();
+        });
+        boutonMessage.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
+            ScaleTransition scaleTransitionReverse = new ScaleTransition(Duration.millis(200), boutonMessage); 
+            scaleTransitionReverse.setToX(1); // Retour à la taille d'origine pour l'axe X
+            scaleTransitionReverse.setToY(1); // Retour à la taille d'origine pour l'axe Y
+            scaleTransitionReverse.play();
+        });
+    
+
         Button boutonCloche = new Button();
         boutonCloche.setGraphic(new ImageView(new Image("file:img/cloche.png")));
         boutonCloche.setCursor(Cursor.HAND);
         boutonCloche.setAccessibleText("Notifications");
         boutonCloche.setOnAction(new ControleurNavBar(this.appli, this.connexionMySQL));
+
+        boutonCloche.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), boutonCloche);
+            scaleTransition.setToX(1.1); // Facteur d'agrandissement horizontal
+            scaleTransition.setToY(1.1); // Facteur d'agrandissement vertical
+            scaleTransition.play();
+        });
+        boutonCloche.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
+            ScaleTransition scaleTransitionReverse = new ScaleTransition(Duration.millis(200), boutonCloche); 
+            scaleTransitionReverse.setToX(1); // Retour à la taille d'origine pour l'axe X
+            scaleTransitionReverse.setToY(1); // Retour à la taille d'origine pour l'axe Y
+            scaleTransitionReverse.play();
+        });
+    
 
         Button boutonPanier = new Button();
         boutonPanier.setGraphic(new ImageView(new Image("file:img/panier.png")));
@@ -126,20 +171,57 @@ public class NavBar extends HBox {
         boutonPanier.setAccessibleText("Panier");
         boutonPanier.setOnAction(new ControleurNavBar(this.appli, this.connexionMySQL));
 
+        boutonPanier.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), boutonPanier);
+            scaleTransition.setToX(1.1); // Facteur d'agrandissement horizontal
+            scaleTransition.setToY(1.1); // Facteur d'agrandissement vertical
+            scaleTransition.play();
+        });
+        boutonPanier.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
+            ScaleTransition scaleTransitionReverse = new ScaleTransition(Duration.millis(200), boutonPanier); 
+            scaleTransitionReverse.setToX(1); // Retour à la taille d'origine pour l'axe X
+            scaleTransitionReverse.setToY(1); // Retour à la taille d'origine pour l'axe Y
+            scaleTransitionReverse.play();
+        });
+    
+
         boutonMessage.setStyle("-fx-background-color: transparent;");
         boutonCloche.setStyle("-fx-background-color: transparent;");
         boutonPanier.setStyle("-fx-background-color: transparent;");
-        bouton.getChildren().addAll(boutonMessage, boutonCloche, boutonPanier);
         bouton.setSpacing(7);
-        this.getChildren().addAll(navBar2, bouton);
         this.setPadding(new Insets(10, 0, 10, 10));
-        HBox.setMargin(navBar2, new Insets(15, 770, 0, 15));
+        HBox.setMargin(navBar2, new Insets(15, 550, 0, 15));
         HBox.setMargin(rectangleB, new Insets(15, 0, 10, 200));
-        HBox.setMargin(bouton, new Insets(15, 0, 0, 0));
+        HBox.setMargin(bouton, new Insets(15, 0, 0, 20));
+
+        Button boutonVendre = new Button("Vendre ");
+        boutonVendre.setGraphic(new ImageView(new Image("file:img/argent.png")));
+        boutonVendre.getStyleClass().add("bpVendre");
+        boutonVendre.setPadding(new Insets(0,10,0,10));
+        boutonVendre.setCursor(Cursor.HAND);
+        boutonVendre.setAccessibleText("Vendre un objet");
+        boutonVendre.setOnAction(new ControleurNavBar(this.appli, this.connexionMySQL));
+        HBox.setMargin(boutonVendre, new Insets(0, 20, 0, 0));
+        bouton.getChildren().addAll(boutonVendre, boutonMessage, boutonCloche, boutonPanier);
+
+        this.getChildren().addAll(navBar2, bouton);
+        
+    
+        boutonVendre.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), boutonVendre);
+            scaleTransition.setToX(1.1); // Facteur d'agrandissement horizontal
+            scaleTransition.setToY(1.1); // Facteur d'agrandissement vertical
+            scaleTransition.play();
+        });
+        boutonVendre.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
+            ScaleTransition scaleTransitionReverse = new ScaleTransition(Duration.millis(200), boutonVendre); 
+            scaleTransitionReverse.setToX(1); // Retour à la taille d'origine pour l'axe X
+            scaleTransitionReverse.setToY(1); // Retour à la taille d'origine pour l'axe Y
+            scaleTransitionReverse.play();
+        });
+    
 
         Button boutonPhotoProfil = new Button();
-
-        // Image de profile a modifier un fois les page relié entre elle
         Image profileImage = new Image("file:img/pp.jpeg");
         // Créer un ImageView pour afficher l'image
         ImageView imagePP = new ImageView(profileImage);
@@ -161,6 +243,19 @@ public class NavBar extends HBox {
         boutonPhotoProfil.setAccessibleText("Profil Utilisateur");
         boutonPhotoProfil.setOnAction(new ControleurNavBar(this.appli, this.connexionMySQL));
         this.getChildren().add(boutonPhotoProfil);
+        boutonPhotoProfil.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), boutonPhotoProfil);
+            scaleTransition.setToX(1.1); // Facteur d'agrandissement horizontal
+            scaleTransition.setToY(1.1); // Facteur d'agrandissement vertical
+            scaleTransition.play();
+        });
+        boutonPhotoProfil.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
+            ScaleTransition scaleTransitionReverse = new ScaleTransition(Duration.millis(200), boutonPhotoProfil); 
+            scaleTransitionReverse.setToX(1); // Retour à la taille d'origine pour l'axe X
+            scaleTransitionReverse.setToY(1); // Retour à la taille d'origine pour l'axe Y
+            scaleTransitionReverse.play();
+        });
+    
 
     }
 

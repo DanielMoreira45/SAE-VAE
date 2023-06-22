@@ -18,27 +18,30 @@ public class ControleurAdminUtilisateur implements EventHandler<ActionEvent> {
     @Override
     public void handle(ActionEvent event) {
         Button bouton = (Button) event.getTarget();
+        Utilisateur utilisateur = this.caseProfil.getUtilisateur();
         try {
             switch (bouton.getText()) {
                 case "Supprimer":
-                    this.vue.getToutLesUtilisateurs().supprimeUnUtilisateur(this.caseProfil.getUtilisateur().getId());
+                    this.vue.getToutLesUtilisateurs().supprimeUnUtilisateur(utilisateur.getId());
                     this.vue.removeUtilisateur(caseProfil.getUtilisateur());
-                    this.vue.majDesProfils();
                     break;
                 case "Désactiver":
-                    this.caseProfil.getUtilisateur().setActive(false);
-                    this.vue.getToutLesUtilisateurs().setActif(this.caseProfil.getUtilisateur());
-                    this.vue.majDesProfils();
+                    utilisateur.setActive(false);
+                    this.vue.getToutLesUtilisateurs().setActif(utilisateur);
                     break;
                 case "Activer":
-                    this.caseProfil.getUtilisateur().setActive(true);
-                    this.vue.getToutLesUtilisateurs().setActif(this.caseProfil.getUtilisateur());
-                    this.vue.majDesProfils();
+                    utilisateur.setActive(true);
+                    this.vue.getToutLesUtilisateurs().setActif(utilisateur);
+                    break;
+                case "Changer de rôles":
+                    utilisateur.setRole(utilisateur.getRole() == 1 ? 2 : 1);
+                    this.vue.getToutLesUtilisateurs().setRole(utilisateur);
                     break;
             
                 default:
                     break;
             }
+            this.vue.majDesProfils();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -12,7 +12,6 @@ public class ControleurConnexion implements EventHandler<ActionEvent> {
     private FenetreDeLogin vue;
 
     /**
-     * La vue de l'application
      */
     private AppliVae appli;
     private ConnexionMySQL connexionMySQL;
@@ -58,25 +57,26 @@ public class ControleurConnexion implements EventHandler<ActionEvent> {
                 if (!vue.getMdp().equals(this.uti.getMotDePasse())) {
                     throw new Exception();
                 }
-                appli.setUtilisateurActuel(uti);
-                vue.popUpCompteConnecte(this.uti.getPseudo());
-                System.out.println("Role = " + this.uti.getRole() + "");
-                if (this.uti.getRole() == (Roles.ADMINISTRATEUR)) {
-                    this.appli.modeAdministrateur();
+                if (uti.estActive()) {
+                    appli.setUtilisateurActuel(uti);
+                    vue.popUpCompteConnecte(this.uti.getPseudo());
+                    System.out.println("Role = " + this.uti.getRole() + "");
+                    if (this.uti.getRole() == (Roles.ADMINISTRATEUR)) {
+                        this.appli.modeAdministrateur();
+                    } else {
+                        this.appli.modeAccueil();
+                    }
                 } else {
-                    this.appli.modeAccueil();
+                    this.vue.popUpCompteDesactive(uti.getPseudo());
                 }
-
             } catch (Exception e) {
                 System.out.println("b");
                 this.vue.setMdpErreur();
-                this.vue.setMessageErreur("   * Mot de passe incorrect");
-            }
-        } catch (Exception e) {
-            System.out.println("a");
             this.vue.setEmailErreur(true);
             this.vue.setMessageEmailErreur("   * Cet Email n'existe pas");
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
         }
     }
-
 }
