@@ -82,6 +82,8 @@ public class AppliVae extends Application{
 
     private VueAdminGestionUtilisateurs vueAdminGestionUtilisateurs;
 
+    private FenetrePageMessage fenetrePageMessage;
+
 
 
     /**
@@ -107,7 +109,8 @@ public class AppliVae extends Application{
         this.pageProfilUtilisateur = new PageProfilUtilisateur(this, this.connexionMySQL);
         this.navBar = new NavBar(this, this.connexionMySQL);
         this.pageProfilObjet = new PageProfilObjet(this, this.connexionMySQL);
-        // this.vueAdminGestionUtilisateurs = new VueAdminGestionUtilisateurs(this.connexionMySQL);
+        this.vueAdminGestionUtilisateurs = new VueAdminGestionUtilisateurs(this.connexionMySQL);
+        this.fenetrePageMessage = new FenetrePageMessage(this, this.connexionMySQL);
         this.root = (BorderPane) this.scene.getRoot();
     }
 
@@ -165,8 +168,15 @@ public class AppliVae extends Application{
     }
 
     public void modeAdministrateur(){
-        this.root.setCenter(new VueAdminGestionUtilisateurs(this.connexionMySQL, this.utilisateurActuel));
+        this.root.setCenter(this.vueAdminGestionUtilisateurs);
     }
+
+    public void modeMessage(){
+        scene.getStylesheets().setAll("styleNavBar.css", "stylePageMessagerie.css");
+        this.root.setTop(this.navBar);
+        this.root.setCenter(this.fenetrePageMessage);
+    }
+
 
     public void setUtilisateurActuel(Utilisateur utilisateur){
         this.utilisateurActuel = utilisateur;
