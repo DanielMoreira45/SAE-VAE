@@ -1,6 +1,7 @@
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javafx.geometry.Insets;
@@ -29,19 +30,19 @@ public class VueEncheresUtilisateur extends BorderPane {
     private ConnexionMySQL connexionMySQL;
     private ScrollPane scrollPaneEncheres;
     private TouteLesVentes toutesLesVentes;
-    private List<HBox> lesVentes;
+    private List<Vente> lesVentes;
     
     /**
      * Constructeur permettant de créer une page listant les enchères d'un utilisateur.
      */
-    public VueEncheresUtilisateur(AppliVae appli, ConnexionMySQL connexionMySQL) {
+    public VueEncheresUtilisateur(AppliVae appli, ConnexionMySQL connexionMySQL, int idUtil) {
         super();
 
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
         this.toutesLesVentes = new TouteLesVentes(this.connexionMySQL);
         try {
-            this.lesVentes = this.toutesLesVentes.toutVente();
+            this.lesVentes = this.toutesLesVentes.ventesPourUnAcheteur(idUtil);
         } catch (SQLException | ParseException e) {
             e.printStackTrace();
         }
@@ -75,7 +76,7 @@ public class VueEncheresUtilisateur extends BorderPane {
         this.scrollPaneEncheres = new ScrollPane();
         this.scrollPaneEncheres.setStyle("-fx-background: #fdfdfd; -fx-border-color: #dddddd; -fx-border-radius : 0.8em; -fx-background-radius: 0.8em;");
         this.scrollPaneEncheres.setFitToWidth(true);
-        this.scrollPaneEncheres.setPadding(new Insets(5, 20, 5, 20));
+        this.scrollPaneEncheres.setPadding(new Insets(5, 10, 5, 10));
     }
 
     /**
@@ -84,7 +85,7 @@ public class VueEncheresUtilisateur extends BorderPane {
      */
     private BorderPane getPartieCentrale() {
         BorderPane leCentre = new BorderPane();
-        leCentre.setPadding(new Insets(5, 60, 30, 60));
+        leCentre.setPadding(new Insets(5, 30, 30, 30));
         this.initScrollPaneEncheres();
         HBox boiteRecherche = this.getElemsRecherche();
         BorderPane.setAlignment(boiteRecherche, Pos.CENTER);
@@ -148,7 +149,7 @@ public class VueEncheresUtilisateur extends BorderPane {
         inverse.setFont(Font.font("Valera", 12));
         inverse.setBackground(new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
         inverse.setBorder(new Border(new BorderStroke(Color.valueOf("black"), BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(1))));
-        inverse.setOnAction(new ControleurTrier(this, this.toutesLesVentes));
+        inverse.setOnAction(new ControleurTrierEncheresActuelles(this, this.toutesLesVentes));
         return inverse;
     }
 
@@ -168,21 +169,24 @@ public class VueEncheresUtilisateur extends BorderPane {
      * Méthode permettant de mettre à jour le ScrollPane contenant les ventes.
      */
     public void majLesArticles() {
-        VBox toutesLesVentes = new VBox(10);
-        toutesLesVentes.setPadding(new Insets(10, 0, 10, 0));
-        toutesLesVentes.setStyle("-fx-background-color: transparent;");
+        VBox vboxToutesLesVentes = new VBox(10);
+        vboxToutesLesVentes.setPadding(new Insets(10, 0, 10, 0));
+        vboxToutesLesVentes.setStyle("-fx-background-color: transparent;");
         if (this.lesVentes.isEmpty()) {
             Text texteListeVide = new Text("Vous avez participé à aucune enchère.");
             texteListeVide.setFont(Font.font("Arial", 18));
-            toutesLesVentes.setPadding(new Insets(15, 0, 0, 0));
-            toutesLesVentes.getChildren().add(texteListeVide);
+            vboxToutesLesVentes.setPadding(new Insets(15));
+            vboxToutesLesVentes.getChildren().add(texteListeVide);
         }
         else {
             for (int i = 0; i < this.lesVentes.size(); i++) {
-                toutesLesVentes.getChildren().add(new CaseVente(this.lesVentes.get(i), this.appli, this.connexionMySQL));
+                CaseVente venteTemp = new CaseVente(this.lesVentes.get(i), this.appli, this.connexionMySQL);
+                venteTemp.setMinWidth(200);
+                venteTemp.setPadding(new Insets(5));
+                vboxToutesLesVentes.getChildren().add(venteTemp);
             }
         }
-        this.scrollPaneEncheres.setContent(toutesLesVentes);
+        this.scrollPaneEncheres.setContent(vboxToutesLesVentes);
     }
 
     /**
@@ -207,5 +211,12 @@ public class VueEncheresUtilisateur extends BorderPane {
      */
     public List<Vente> getLesVentes() {
         return this.lesVentes;
+    }
+
+    /**
+     * Méthode permettant d'inverser la liste des ventes.
+     */
+    public void reverseLesVentes() {
+        Collections.reverse(this.lesVentes);
     }
 }
