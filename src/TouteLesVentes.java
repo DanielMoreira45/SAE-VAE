@@ -129,4 +129,18 @@ public class TouteLesVentes {
         return venteBD.recherche(text);
 
     }
+
+    /**
+     * Permet de faire une liste de vente pour un Utilisateur, c'est l'enchere la
+     * plus haute qui est pris en compte si il y a plusieurs enchere avec la même
+     * idut et idve
+     * 
+     * @param idve L'id de l'utilisateur
+     * @return La liste de vente
+     * @throws SQLException   Si il y a un probleme avec l'execution des lignes sql
+     * @throws ParseException Si il y a un probleme avec la date des ventes
+     */
+    public List<Vente> ventesPourUnAcheteur(int idve) throws SQLException, ParseException {
+        return venteBD.ventePourAcheteur(idve);
+    }
 }

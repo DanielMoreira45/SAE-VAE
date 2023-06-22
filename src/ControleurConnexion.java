@@ -8,7 +8,7 @@ import javafx.scene.control.Button;
 
 public class ControleurConnexion implements EventHandler<ActionEvent>{
     
-        /**
+    /**
      * La vue FenetreCoInsc
      */ 
     private FenetreDeLogin vue;
@@ -33,6 +33,7 @@ public class ControleurConnexion implements EventHandler<ActionEvent>{
      */
 	@Override
 	public void handle(ActionEvent actionEvent) {
+        laMap = new HashMap<>();
         System.out.println("avant");
         try{
             UtilisateurBD userBd = new UtilisateurBD(connexionMySQL);
@@ -40,7 +41,7 @@ public class ControleurConnexion implements EventHandler<ActionEvent>{
             this.laMap = userBd.rechercherJoueurParMail(mail);
             if (this.laMap == null){
                 String pseudo = vue.getEmail();
-                this.laMap = userBd.rechercherJoueurParMail(pseudo);
+                this.laMap = userBd.rechercherJoueurParPseudo(pseudo);
             }
         }
         catch(SQLException e){
@@ -54,19 +55,34 @@ public class ControleurConnexion implements EventHandler<ActionEvent>{
                 throw new Exception();
             }
             try {
-                if (this.vue.getMdp().equals("erreur")) throw new Exception();
-                if (!vue.getMdp().equals(laMap.get("mdput"))) {
-                    throw new Exception();
+                if (this.vue.getMdp().equals("erreur")){
+                    if (this.vue.getMdpClair().equals("erreur")){
+                        throw new Exception();
+                    }
                 }
-                Utilisateur userCo = new Utilisateur((Integer) laMap.get("idut"),(String)laMap.get("pseudout"), (String) laMap.get("emailut"), (String) laMap.get("mdput"),true, (Integer) laMap.get("idrole"));
-                appli.setUtilisateurActuel(userCo);
-                vue.popUpCompteConnecte((String) laMap.get("pseudout"));
-                System.out.println("Role = "+ userCo.getRole()+"");
-                if (userCo.getRole() == (Roles.ADMINISTRATEUR)){
-                    this.appli.modeAdministrateur();
+                String mdpBon;
+                if (this.vue.getMdp().equals(laMap.get("mdput"))){
+                    mdpBon = this.vue.getMdp();
+                }
+                else if(this.vue.getMdpClair().equals(laMap.get("mdput"))){
+                    mdpBon = this.vue.getMdpClair();
                 }
                 else{
-                    this.appli.modeAccueil();
+                    throw new Exception();
+                }
+                Utilisateur userCo = new Utilisateur((Integer) laMap.get("idut"), mdpBon, (String) laMap.get("emailut"), (String) laMap.get("mdput"), (boolean) laMap.get("activeut"), (Integer) laMap.get("idrole"));
+                if (userCo.estActive()){
+                    appli.setUtilisateurActuel(userCo);
+                    vue.popUpCompteConnecte((String) laMap.get("pseudout"));
+                    if (userCo.getRole() == (Roles.ADMINISTRATEUR)){
+                        this.appli.modeAdministrateur();
+                    }
+                    else{
+                        this.appli.modeAccueil();
+                    }
+                }
+                else{
+                    this.vue.popUpCompteDesactive(mdpBon);
                 }
                 
             } catch (Exception e) {
