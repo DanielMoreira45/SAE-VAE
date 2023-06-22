@@ -54,11 +54,28 @@ public class ControleurConnexion implements EventHandler<ActionEvent>{
                 throw new Exception();
             }
             try {
-                if (this.vue.getMdp().equals("erreur")) throw new Exception();
-                if (!vue.getMdp().equals(laMap.get("mdput"))) {
+                if (this.vue.getMdp().equals("erreur")){
+                    if (this.vue.getMdpClair().equals("erreur")){
+                        throw new Exception();
+                    }
+                }
+                String mdpBon;
+                if (this.vue.getMdp().equals(laMap.get("mdput"))){
+                    mdpBon = this.vue.getMdp();
+                }
+                else if(this.vue.getMdpClair().equals(laMap.get("mdput"))){
+                    mdpBon = this.vue.getMdpClair();
+                }
+                else{
                     throw new Exception();
                 }
-                Utilisateur userCo = new Utilisateur((Integer) laMap.get("idut"),(String)laMap.get("pseudout"), (String) laMap.get("emailut"), (String) laMap.get("mdput"),true, (Integer) laMap.get("idrole"));
+                /*if (!vue.getMdp().equals(laMap.get("mdput"))) {
+                    if (!vue.getMdpClair().equals(laMap.get("mdput"))) {
+                        throw new Exception();
+                    }
+                    String mdpBon = this.vue.getMdpClair();
+                }*/
+                Utilisateur userCo = new Utilisateur((Integer) laMap.get("idut"), mdpBon, (String) laMap.get("emailut"), (String) laMap.get("mdput"),true, (Integer) laMap.get("idrole"));
                 appli.setUtilisateurActuel(userCo);
                 vue.popUpCompteConnecte((String) laMap.get("pseudout"));
                 //System.out.println("Role = "+ userCo.getRole()+"");
