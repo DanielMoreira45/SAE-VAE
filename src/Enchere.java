@@ -16,10 +16,10 @@ public class Enchere {
      * @param montant Le montant de l'enchere
      * @param date    La date de l'enchere sous la forme (dd/MM/yy:hh/mm/ss)
      * @throws ParseException Si la date n'est pas sous la bonne forme, la bonne
-     *                        forme est : dd/MM/yy:hh/mm/ss
+     *                        forme est : dd/MM/yyyy:hh/mm/ss
      */
     public Enchere(Utilisateur u, Vente v, Double montant, String date) throws ParseException {
-        SimpleDateFormat lecteur = new SimpleDateFormat("dd/MM/yy:hh/mm/ss");
+        SimpleDateFormat lecteur = new SimpleDateFormat("dd/MM/yyyy:hh/mm/ss");
         this.utilisateur = u;
         this.vente = v;
         this.montant = montant;
@@ -65,7 +65,7 @@ public class Enchere {
     /**
      * Permet d'optenir la date de l'enchere
      * 
-     * @return la date sous la forme (dd/MM/yy:hh/mm/ss)
+     * @return le Long de la date
      */
     public Long getDateHeure() {
         return dateHeure.getTime();
@@ -78,7 +78,7 @@ public class Enchere {
      * @throws ParseException Si la forme de la date n'est pas respecter
      */
     public void setDateHeure(String nouvelleDate) throws ParseException {
-        SimpleDateFormat lecteur = new SimpleDateFormat("dd/MM/yy:hh/mm/ss");
+        SimpleDateFormat lecteur = new SimpleDateFormat("dd/MM/yyyy:hh/mm/ss");
         this.dateHeure = lecteur.parse(nouvelleDate);
     }
 

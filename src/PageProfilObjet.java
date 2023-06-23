@@ -1,12 +1,17 @@
 
+import java.util.Arrays;
+
 import javafx.animation.ScaleTransition;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -29,11 +34,19 @@ import javafx.util.Duration;
 public class PageProfilObjet extends BorderPane {
     private AppliVae appli;
     private ConnexionMySQL connexionMySQL;
+    private Vente vente;
+    private Utilisateur utilisateur;
+    private TextField TFEncherir;
+    private Label labelErreur;
 
-    public PageProfilObjet(AppliVae appli, ConnexionMySQL connexionMySQL) {
+    public PageProfilObjet(AppliVae appli, ConnexionMySQL connexionMySQL, Vente vente, Utilisateur utilisateur) {
         super();
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
+        this.vente = vente;
+        this.utilisateur = utilisateur;
+        this.TFEncherir = new TextField();
+        this.labelErreur = new Label("");
         VBox left = left();
         this.setLeft(left);
         VBox.setMargin(left, new Insets(80, 80, 80, 80));
@@ -86,6 +99,12 @@ public class PageProfilObjet extends BorderPane {
 
         gridPane.setPadding(new Insets(30, 30, 30, 30));
         gridPane.getStyleClass().add("center-gridPane");
+
+        HBox hBox = new HBox(this.labelErreur);
+        gridPane.add(hBox, 0, 5);
+        GridPane.setMargin(hBox, new Insets(10, 10, 10, 10));
+        hBox.setAlignment(Pos.CENTER);
+        this.labelErreur.setStyle("-fx-text-fill: red");
         return gridPane;
     }
 
@@ -265,11 +284,13 @@ public class PageProfilObjet extends BorderPane {
 
     private HBox encherir() {
         HBox hbox = new HBox();
-        TextField textField = new TextField();
-        textField.setPromptText("Votre montant en €");
-        textField.getStyleClass().add("text-field-montant");
+        
+        this.TFEncherir.setPromptText("Votre montant en €");
+        this.TFEncherir.getStyleClass().add("text-field-montant");
 
         Button bouton = new Button("ENCHERIR >");
+
+        bouton.setOnAction(new ControleurEncherir(this, this.appli, this.connexionMySQL, this.vente, this.utilisateur));
         bouton.setCursor(Cursor.HAND);
         bouton.getStyleClass().add("button-encherir");
         bouton.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> { // Animation du bouton qui grandit quand on passe la
@@ -287,7 +308,37 @@ public class PageProfilObjet extends BorderPane {
             scaleTransitionReverse.play();
         });
 
-        hbox.getChildren().addAll(textField, bouton);
+        hbox.getChildren().addAll(this.TFEncherir, bouton);
+        
         return hbox;
+    }
+
+    public String getTFEncherir(){
+        return this.TFEncherir.getText();
+    }
+
+    public void erreurEncherir(boolean erreur){
+        if (erreur){
+            this.TFEncherir.setStyle("-fx-border-color: red");
+        }
+        else{
+            this.TFEncherir.setStyle("-fx-border-color: #DDDDDD");
+        }
+    }
+
+    public void messageErreurEncherir(String erreur){
+        if (erreur.equals("lettre")){
+            this.labelErreur.setText("  * Le montant doit être un nombre");
+        }
+        else {
+            this.labelErreur.setText("  * Le montant doit être supérieur à la dernière enchère");
+        }
+    }
+
+    public void popUpEnchereAjoutee(){
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Enchère ajoutée");
+        alert.setHeaderText("Votre enchère a bien été ajoutée");
+        alert.showAndWait();
     }
 }
