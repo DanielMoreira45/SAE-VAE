@@ -149,7 +149,21 @@ public class TouteLesVentes {
         return venteBD.ventePrixMinMaxList(Double.valueOf(prixMin), Double.valueOf(prixMax));
     }
 
-    public Double maxPrixEnchere(int idVente) throws SQLException {
-        return this.venteBD.maxPrixEnchere(idVente);
-    }  
+    /**
+     * Méthode permettant de rechercher une ou plusieurs ventes sur lesquelles un utilisateur aurait enchérit.
+     * @param idve int : l'id de la personne
+     * @param nom String : le nom de l'objet à rechercher.
+     * @return List<Vente> : la liste des objets correspondant à la recherche.
+     * @throws SQLException : Si il y a un probleme avec l'execution des lignes sql
+     * @throws ParseException : Si il y a un probleme avec la date des ventes
+     */
+    public List<Vente> rechercheEnchereUtil(int idve, String nom) throws SQLException, ParseException {
+        List<Vente> lesEncheresRecherchees = new ArrayList<>();
+        for (Vente uneVente : this.ventesPourUnAcheteur(idve)) {
+            if (uneVente.getObjet().getNomObjet().toUpperCase().contains(nom.toUpperCase())) {
+                lesEncheresRecherchees.add(uneVente);
+            }
+        }
+        return lesEncheresRecherchees;
+    }
 }

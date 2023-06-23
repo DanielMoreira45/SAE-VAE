@@ -45,11 +45,20 @@ public class UtilisateurBD {
     }
 
     public void supprimerUtilisateur(int num) throws SQLException {
-        this.st = laConnexionMySQL.createStatement();
-        String query;
-        query = "DELETE FROM UTILISATEUR WHERE idUt =" + num + ";";
-        this.st.executeUpdate(query);
-        st.executeUpdate(query);
+        ResultSet resultNumObj = laConnexionMySQL.createStatement().executeQuery("SELECT idob FROM OBJET WHERE idut =" + num + ";");
+        if (resultNumObj.next()) {
+            int numObj = resultNumObj.getInt(1);
+            ResultSet resultNumVe = laConnexionMySQL.createStatement().executeQuery("SELECT idve FROM VENTE WHERE idob =" + numObj + ";");
+            if (resultNumVe.next()) {
+                int numVe = resultNumVe.getInt(1);
+                laConnexionMySQL.createStatement().executeUpdate("DELETE FROM ENCHERIR WHERE idve =" + numVe + ";");
+            }
+            laConnexionMySQL.createStatement().executeUpdate("DELETE FROM VENTE WHERE idob =" + numObj + ";");
+            laConnexionMySQL.createStatement().executeUpdate("DELETE FROM PHOTO WHERE idob =" + numObj + ";");
+        }
+        laConnexionMySQL.createStatement().executeUpdate("DELETE FROM OBJET WHERE idut =" + num + ";");
+        laConnexionMySQL.createStatement().executeUpdate("DELETE FROM ENCHERIR WHERE idut =" + num + ";");
+        laConnexionMySQL.createStatement().executeUpdate("DELETE FROM UTILISATEUR WHERE idut =" + num + ";");
     }
 
 
@@ -207,5 +216,14 @@ public class UtilisateurBD {
         ps.setInt(1, utilisateur.getRole());
         ps.setInt(2, utilisateur.getId());
         ps.executeUpdate();
+    }
+    
+    public void updateUtilisateur(Utilisateur utilisateur) throws SQLException{
+        PreparedStatement s = laConnexionMySQL.preparedStatement("UPDATE UTILISATEUR SET pseudout = ?, emailut = ?, mdput = ? where idut = ?");
+        s.setString(1, utilisateur.getPseudo());
+        s.setString(2, utilisateur.getEmail());
+        s.setString(3, utilisateur.getMotDePasse());
+        s.setInt(4, utilisateur.getId());
+        s.executeUpdate();
     }
 }

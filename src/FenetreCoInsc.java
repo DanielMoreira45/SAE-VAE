@@ -99,13 +99,13 @@ public class FenetreCoInsc extends HBox {
 
     private void gridButton() {
         GridPane gridePaneBouton = new GridPane();// Création du rectangle bleu en dessous de Se connectez
-        this.rectangleC = new Rectangle(0, 0, 115, 6);
+        this.rectangleC = new Rectangle(0, 0, 130, 6);
         gridePaneBouton.add(rectangleC, 0, 1);
         this.rectangleC.setArcWidth(10); // Rayon de courbure horizontal des coins
         this.rectangleC.setArcHeight(10);
         this.rectangleC.setFill(Color.web("#4FA0FF"));
         // Création du rectangle gris en dessous de Créez un compte
-        this.rectangleI = new Rectangle(0, 0, 140, 6);
+        this.rectangleI = new Rectangle(0, 0, 160, 6);
         gridePaneBouton.add(rectangleI, 3, 1);
         this.rectangleI.setArcWidth(10); // Rayon de courbure horizontal des coins
         this.rectangleI.setArcHeight(10);
