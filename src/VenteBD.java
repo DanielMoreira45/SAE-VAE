@@ -353,7 +353,12 @@ public class VenteBD {
         }
         return ventes;
     }
-    
+
+    public Double maxPrixEnchere(int idVente) throws SQLException {
+        ResultSet resultMaxEnchere = this.laConnexionMySQL.createStatement().executeQuery("SELECT idve, max(montant) montantMax FROM VENTE natural join ENCHERIR WHERE idve = "+idVente+" group by idve;");
+        if (!resultMaxEnchere.next()) return 0.0;
+        return resultMaxEnchere.getDouble(2);
+    }  
 
 
     public List<Vente> ventePrixMinMaxList(Double prixMin, Double prixMax) throws SQLException, ParseException {
