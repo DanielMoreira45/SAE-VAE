@@ -21,7 +21,6 @@ public class UtilisateurBD {
      */
     public UtilisateurBD(ConnexionMySQL laConnexionMySQL) {
         this.laConnexionMySQL = laConnexionMySQL;
-        System.out.println("connecteur " + this.laConnexionMySQL);
     }
 
     int maxIdUtilisateur() throws SQLException {
@@ -34,9 +33,7 @@ public class UtilisateurBD {
     }
 
     public void insererUtilisateur(Utilisateur j) throws SQLException {
-        System.out.println("Utilisateur BD" + this.laConnexionMySQL);
         PreparedStatement ps = laConnexionMySQL.preparedStatement("INSERT INTO UTILISATEUR VALUES(?, ?, ?, ?, ?, ?)");
-        System.out.println(idLibre());
         ps.setInt((1), idLibre());
         ps.setString(2, j.getPseudo());
         ps.setString(3, j.getEmail());
@@ -143,7 +140,6 @@ public class UtilisateurBD {
                 .executeQuery("SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR;");
         List<Utilisateur> listeUtilisateurs = new ArrayList<>();
         while (rs.next()) {
-            System.out.println(rs.getString(5) == "O" ? true : false);
             listeUtilisateurs.add(new Utilisateur(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
                     rs.getString(5).equals("O") ? true : false, rs.getInt(6)));
         }

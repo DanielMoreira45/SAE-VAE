@@ -84,6 +84,8 @@ public class AppliVae extends Application{
 
     private FenetrePageMessage fenetrePageMessage;
 
+    private VueEncheresUtilisateur vueEncheresUtilisateur;
+
 
 
     /**
@@ -104,12 +106,10 @@ public class AppliVae extends Application{
         this.laConnexionEncherir = new EncherirBD(this.connexionMySQL);
 
         this.pageCoInsc = new FenetreCoInsc(this, this.connexionMySQL);
-        this.pageVente = new VueVente(this, this.connexionMySQL, utilisateurActuel);
         this.pageAccueil = new PageAccueil(this, this.connexionMySQL);
         this.pageProfilUtilisateur = new PageProfilUtilisateur(this, this.connexionMySQL, utilisateurActuel);
         this.navBar = new NavBar(this, this.connexionMySQL);
         this.pageProfilObjet = new PageProfilObjet(this, this.connexionMySQL);
-        this.vueAdminGestionUtilisateurs = new VueAdminGestionUtilisateurs(this.connexionMySQL, utilisateurActuel);
         this.fenetrePageMessage = new FenetrePageMessage(this, this.connexionMySQL);
         this.root = (BorderPane) this.scene.getRoot();
     }
@@ -147,11 +147,12 @@ public class AppliVae extends Application{
      * Permet de passer à l'affichage de la page d'accueil
      */
     public void modeAccueil(){
+        this.pageVente = new VueVente(this, this.connexionMySQL, utilisateurActuel);
+        this.vueEncheresUtilisateur = new VueEncheresUtilisateur(this, this.connexionMySQL, this.utilisateurActuel.getId());
+        
         scene.getStylesheets().setAll("styleNavBar.css", "styleCoInsc.css");
         this.root.setTop(this.navBar);
         this.root.setCenter(this.pageAccueil);
-        // this.root.setCenter(new VueAdminGestionUtilisateurs(this.connexionMySQL));
-        
     }
 
     /**
@@ -172,6 +173,7 @@ public class AppliVae extends Application{
     }
 
     public void modeAdministrateur(){
+        this.vueAdminGestionUtilisateurs = new VueAdminGestionUtilisateurs(this.connexionMySQL, utilisateurActuel);
         this.root.setCenter(this.vueAdminGestionUtilisateurs);
     }
 
@@ -179,6 +181,11 @@ public class AppliVae extends Application{
         scene.getStylesheets().setAll("styleNavBar.css", "stylePageMessagerie.css");
         this.root.setTop(this.navBar);
         this.root.setCenter(this.fenetrePageMessage);
+    }
+
+    public void modeEnchereUtilisateur(){
+        this.root.setTop(this.navBar);
+        this.root.setCenter(this.vueEncheresUtilisateur);
     }
 
 

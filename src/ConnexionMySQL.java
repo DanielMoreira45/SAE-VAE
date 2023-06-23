@@ -34,8 +34,6 @@ public class ConnexionMySQL {
 			System.out.println("Msg : " + ex.getMessage() + ex.getErrorCode());
 		}
 		this.connecte=this.mysql!=null;
-
-		System.out.println(this.connecte);
     }
     public boolean isConnecte() {
         return this.connecte;

@@ -158,6 +158,9 @@ private HBox setPrixMaxLabel() {
         return trierVente;
     }
 
+
+    
+
     private Button setBoutonTout() throws SQLException, ParseException {
         Circle cercleBleu = new Circle(12);
         cercleBleu.setFill(Color.web("#00F801"));
@@ -189,21 +192,6 @@ private HBox setPrixMaxLabel() {
 
         return parDate;
     }
-
-    private Button setBoutonTrierParNom() throws SQLException, ParseException {
-        Button parNom = new Button("Trier par nom");
-        parNom.setPadding(new Insets(14));
-        parNom.setFont(Font.font("Valera", 12));
-        parNom.setBackground(
-                new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
-        parNom.setBorder(new Border(new BorderStroke(Color.valueOf("black"), BorderStrokeStyle.SOLID,
-                new CornerRadii(8), new BorderWidths(1))));
-
-        parNom.setOnAction(new ControleurTrier(this, this.toutesLesVentes));
-
-        return parNom;
-    }
-
     private Button setBoutonEnchereEnCours() throws SQLException, ParseException {
         Circle cercleVert = new Circle(12);
         cercleVert.setFill(Color.web("#72FF91"));
@@ -222,6 +210,21 @@ private HBox setPrixMaxLabel() {
 
         return enchereEnCours;
     }
+
+    private Button setBoutonTrierParNom() throws SQLException, ParseException {
+        Button parNom = new Button("Trier par nom");
+        parNom.setPadding(new Insets(14));
+        parNom.setFont(Font.font("Valera", 12));
+        parNom.setBackground(
+                new Background(new BackgroundFill(Color.rgb(0, 0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
+        parNom.setBorder(new Border(new BorderStroke(Color.valueOf("black"), BorderStrokeStyle.SOLID,
+                new CornerRadii(8), new BorderWidths(1))));
+
+        parNom.setOnAction(new ControleurTrier(this, this.toutesLesVentes));
+
+        return parNom;
+    }
+
 
     // private Button setBoutonNonEncherier() {
     // Circle cercleJaune = new Circle(12);
@@ -294,6 +297,10 @@ private HBox setPrixMaxLabel() {
 
     private HBox setVentes() {
         ScrollPane scrollVentes = this.setScrollVente();
+        System.out.println(this.lesVentes.size());
+        for(Vente lesVentes : this.lesVentes){
+            System.out.print(lesVentes);
+        }
         HBox ventes = new HBox();
         ventes.setPrefWidth(1550);
         if (this.lesVentes.size() > 4)
@@ -355,6 +362,10 @@ private HBox setPrixMaxLabel() {
     public TouteLesVentes getTouteLesVentes() {
         return this.toutesLesVentes;
     }
+
+    // public void setCercle(){
+
+    // }
 
     public List<Vente> getLesVentes() {
         return this.lesVentes;

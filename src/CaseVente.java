@@ -110,7 +110,25 @@ public class CaseVente extends HBox {
 
     private Circle setCercle() {
         Circle cercle = new Circle(15);
-        cercle.setFill(Color.web("#72FF91"));
+        int statut = this.vente.getStatus();
+        switch (statut) {
+            case 1:
+                cercle.setFill(Color.BLUE);
+                break;
+            case 2:
+                cercle.setFill(Color.web("#72FF91"));
+                break;
+            case 3:
+                cercle.setFill(Color.web("#FFFF00"));
+                break;
+            case 4:
+                cercle.setFill(Color.web("#DCDCDC"));
+                break;
+            default:
+                cercle.setFill(Color.BLACK); // non conclue
+                break;
+        }
+
         return cercle;
     }
 

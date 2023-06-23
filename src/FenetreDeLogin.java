@@ -158,16 +158,23 @@ public class FenetreDeLogin extends GridPane{
         return this.mdp.getText();
     }
 
-    public String getTfLog() {
-        return this.email.getText();
+    public String getMdpClair(){
+        return this.mdpClair.getText();
     }
 
     public String getEmail() {
         return this.email.getText();
     }
 
-    public void setMdpErreur() {
-        this.mdp.setStyle("-fx-border-color: red");
+    public void setMdpErreur(boolean hasErreur) {
+        if (hasErreur){
+            this.mdp.setStyle("-fx-border-color: red");
+            this.mdpClair.setStyle("-fx-border-color: red");
+        }
+        else {
+            this.mdp.setStyle("-fx-border-color: #a3a3a3aa");
+            this.mdpClair.setStyle("-fx-border-color: #a3a3a3aa");
+        }
     }
 
     public void setEmailErreur(boolean hasErreur) {

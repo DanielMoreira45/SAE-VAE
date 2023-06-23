@@ -32,10 +32,9 @@ public class ControleurConnexion implements EventHandler<ActionEvent> {
      */
     @Override
     public void handle(ActionEvent actionEvent) {
-        System.out.println("avant");
         try {
             UtilisateurBD userBd = new UtilisateurBD(connexionMySQL);
-            String mail = vue.getTfLog();
+            String mail = vue.getEmail();
             this.utilisateurTrouve = userBd.recherche(mail);
             if (!(utilisateurTrouve.isEmpty())) {
                 this.uti = utilisateurTrouve.get(0);
@@ -44,7 +43,7 @@ public class ControleurConnexion implements EventHandler<ActionEvent> {
             e.printStackTrace();
         }
         try {
-            if (this.vue.getTfLog().equals("erreur"))
+            if (this.vue.getEmail().equals("erreur"))
                 throw new Exception();
             this.vue.setEmailErreur(false);
             this.vue.setMessageEmailErreur("");
@@ -52,15 +51,18 @@ public class ControleurConnexion implements EventHandler<ActionEvent> {
                 throw new Exception();
             }
             try {
-                if (this.vue.getMdp().equals("erreur"))
+                if (this.vue.getMdp().equals("erreur")){
                     throw new Exception();
-                if (!vue.getMdp().equals(this.uti.getMotDePasse())) {
+                }
+                this.vue.setMdpErreur(false);
+                this.vue.setMessageErreur("");
+                if (!vue.getMdp().equals(this.uti.getMotDePasse()) && !vue.getMdpClair().equals(this.uti.getMotDePasse())) {
                     throw new Exception();
                 }
                 if (uti.estActive()) {
                     appli.setUtilisateurActuel(uti);
                     vue.popUpCompteConnecte(this.uti.getPseudo());
-                    System.out.println("Role = " + this.uti.getRole() + "");
+                    //System.out.println("Role = " + this.uti.getRole() + "");
                     if (this.uti.getRole() == (Roles.ADMINISTRATEUR)) {
                         this.appli.modeAdministrateur();
                     } else {
@@ -70,10 +72,14 @@ public class ControleurConnexion implements EventHandler<ActionEvent> {
                     this.vue.popUpCompteDesactive(uti.getPseudo());
                 }
             } catch (Exception e) {
-                System.out.println("b");
-                this.vue.setMdpErreur();
-            this.vue.setEmailErreur(true);
-            this.vue.setMessageEmailErreur("   * Cet Email n'existe pas");
+                if (!vue.getEmail().equals(this.uti.getEmail()) && !vue.getEmail().equals(this.uti.getPseudo())){
+                    System.out.println("is");
+                    this.vue.setEmailErreur(true);
+                    this.vue.setMessageEmailErreur("   * Cet Email/Pseudo n'existe pas");
+                }
+                this.vue.setMdpErreur(true);
+                this.vue.setMessageErreur("   * Ce mot de passe n'est pas bon");
+                
             }
         } catch (Exception e) {
             // TODO: handle exception

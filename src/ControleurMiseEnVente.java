@@ -36,7 +36,6 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
         LocalDate date = LocalDate.now();
         String heureActuelleAc = heureActuelle.toString().substring(0, 8).replace(":", "/");
         String cat = vue.getCategorie();
-        String marque = vue.getMarque();
         Double prixMin = vue.getPrixMin();
         Double prixBase = vue.getprixBase();
         this.dateDeBut = vue.dateDebutToString();
@@ -45,7 +44,6 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
             this.dateFin = this.dateFin.replace("-", "/");
             this.dateDeBut = this.dateDeBut.replace("-", "/");
         }
-        System.out.println(cat);
         String desc = vue.getDesc();
         List<Photo> lesPhotos = vue.getPhotos();
         String titrePh = vue.getTitre();
@@ -58,11 +56,9 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
             e.printStackTrace();
         }
         Button bouton = (Button) actionEvent.getTarget();
-        System.out.println(bouton.getText());
         if (bouton.getText().equals("Ajoutez des photos")) {
             this.photoBd = new PhotoBD(laConnexionMySQL);
-            System.out.println("Connexion PhotoBD");
-            try {
+                        try {
                 vue.ajoutImage();
                 Photo photo = new Photo(photoBd.maxIdPhoto() + 1, vue.getTitre(), vue.getImageView());
                 System.out.println("Creation instance photo");
@@ -89,7 +85,7 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
                     vue.getprixBaseTf().setStyle(
                             "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: red;");
                 }
-                if (vue.valideDate() && prixMin < prixBase) {
+                if (vue.valideDate() && prixMin < prixBase && titreOb.length() > 0) {
                     try {
                         this.obj = new Objet(objetBD.maxIdOb() + 1, desc, titreOb, lesPhotos, vue.getVendeur(),
                                 Categorie.getIntCategorie(cat));
@@ -102,17 +98,11 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
                         e.printStackTrace();
                     }
                     try {
-                        System.out.println("condition1");
-                        System.out.println(Status.calculStatutInsertion(date, vue.getDateDebut().getValue()));
-                        System.out.println(venteDeOb.maxIdVe());
-                        System.out.println("condition2");
                         Vente vente = new Vente(venteDeOb.maxIdVe() + 1, prixBase, prixMin,
                                 dateDeBut + ":00/00/00", dateFin + ":00/00/00",
                                 Status.calculStatutInsertion(date, vue.getDateDebut().getValue()), this.obj);
-                        System.out.println("condition2");
 
                         vue.popUpVenteInserer(titreOb, prixBase);
-                        System.out.println("condition3");
                         venteDeOb.insereVente(vente);
                         appli.modeAccueil();
                     } catch (SQLException e) {
