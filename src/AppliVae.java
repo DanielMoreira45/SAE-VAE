@@ -147,13 +147,12 @@ public class AppliVae extends Application{
      * Permet de passer à l'affichage de la page d'accueil
      */
     public void modeAccueil(){
+        this.pageVente = new VueVente(this, this.connexionMySQL, utilisateurActuel);
+        this.vueEncheresUtilisateur = new VueEncheresUtilisateur(this, this.connexionMySQL, this.utilisateurActuel.getId());
+        
         scene.getStylesheets().setAll("styleNavBar.css", "styleCoInsc.css");
         this.root.setTop(this.navBar);
         this.root.setCenter(this.pageAccueil);
-
-        this.pageVente = new VueVente(this, this.connexionMySQL, utilisateurActuel);
-        this.vueAdminGestionUtilisateurs = new VueAdminGestionUtilisateurs(this.connexionMySQL, utilisateurActuel);
-        this.vueEncheresUtilisateur = new VueEncheresUtilisateur(this, this.connexionMySQL, this.utilisateurActuel.getId());
     }
 
     /**
@@ -172,6 +171,7 @@ public class AppliVae extends Application{
     }
 
     public void modeAdministrateur(){
+        this.vueAdminGestionUtilisateurs = new VueAdminGestionUtilisateurs(this.connexionMySQL, utilisateurActuel);
         this.root.setCenter(this.vueAdminGestionUtilisateurs);
     }
 
