@@ -23,12 +23,12 @@ public class EncherirBD {
     public EncherirBD(ConnexionMySQL laConnexionMySQL) {
         this.laConnexionMySQL = laConnexionMySQL;
         inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
-        DateTimeFormatter.ofPattern("yyyy/MM/dd:hh/mm/ss");
+        outputFormatter =  DateTimeFormatter.ofPattern("yyyy/MM/dd:hh/mm/ss");
     }
 
     public void insereEnchere(Enchere e) throws SQLException {
         PreparedStatement s = this.laConnexionMySQL
-                .preparedStatement("INSERT INTO ENCHERIR VALUES (?,?,STR_TO_DATE(?,'%d/%m/%Y:%h:%i:%s'),?)");
+                .preparedStatement("INSERT INTO ENCHERIR VALUES (?,?,?,?)");
         s.setInt(1, e.getEncherisseur().getId());
         s.setInt(2, e.getVente().getIDVente());
         s.setTimestamp(3, new Timestamp(e.getDateHeure()));
