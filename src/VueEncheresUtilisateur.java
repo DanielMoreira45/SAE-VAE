@@ -31,6 +31,7 @@ public class VueEncheresUtilisateur extends BorderPane {
     private ScrollPane scrollPaneEncheres;
     private TouteLesVentes toutesLesVentes;
     private List<Vente> lesVentes;
+    private int idUtil;
     
     /**
      * Constructeur permettant de créer une page listant les enchères d'un utilisateur.
@@ -40,6 +41,7 @@ public class VueEncheresUtilisateur extends BorderPane {
         // page profil objet
         super();
 
+        this.idUtil = idUtil;
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
         this.toutesLesVentes = new TouteLesVentes(this.connexionMySQL);
@@ -123,7 +125,7 @@ public class VueEncheresUtilisateur extends BorderPane {
         barreDeRecherche.setAlignment(Pos.CENTER_LEFT);
         barreDeRecherche.setStyle("-fx-effect: dropshadow(gaussian, grey, 8, 0, 1, 1); -fx-background-radius: 0.8em; -fx-background-color: white;");
         barreDeRecherche.setPrefWidth(320);
-        // barreDeRecherche.setOnAction(new ControleurRechercheEnchereUtil(this, barreDeRecherche));
+        barreDeRecherche.setOnKeyReleased(new ControleurRechercheEnchereUtil(this, barreDeRecherche));
         return barreDeRecherche;
     }
 
@@ -222,5 +224,9 @@ public class VueEncheresUtilisateur extends BorderPane {
      */
     public void reverseLesVentes() {
         Collections.reverse(this.lesVentes);
+    }
+
+    public int getIdUtilisateur() {
+        return this.idUtil;
     }
 }
