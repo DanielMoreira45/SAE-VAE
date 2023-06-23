@@ -39,7 +39,7 @@ public class ControleurProfilUtilisateurChangementMDP implements EventHandler<Ac
                 if (VerificateurMDP.validar(nouveauConfMotDePasse)) {
                     try {
                         Alert alert = new Alert(AlertType.CONFIRMATION, "Vous ete sur de vouloir changer ?",
-                                ButtonType.YES, ButtonType.NO);
+                                ButtonType.NO, ButtonType.YES);
                         Optional<ButtonType> result = alert.showAndWait();
                         if (result.isPresent() && result.get() == ButtonType.YES) {
                             utilisateur.setMotDePasse(nouveauMotDePasse);
