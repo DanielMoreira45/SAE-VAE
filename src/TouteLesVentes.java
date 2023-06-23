@@ -171,4 +171,8 @@ public class TouteLesVentes {
         return this.venteBD.maxPrixEnchere(idVente);
     }
 
+    public void supprimerVente(Vente vente) throws SQLException {
+        this.venteBD.supprimeVente(vente);
+    }
+
 }
