@@ -14,8 +14,6 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -29,33 +27,14 @@ public class CaseVente extends HBox {
     private Vente vente;
     private AppliVae appli;
     private ConnexionMySQL connexionMySQL;
-    private Double prixMaxEnchere;
-    private VueAdminGestionUtilisateurs parent;
 
-    public CaseVente(Vente vente, Double prixMaxEnchere, AppliVae appli, ConnexionMySQL connexionMySQL) {
+    public CaseVente(Vente vente, AppliVae appli, ConnexionMySQL connexionMySQL) {
         this.appli = appli;
-        this.parent = null;
         this.connexionMySQL = connexionMySQL;
         this.vente = vente;
-        this.prixMaxEnchere = prixMaxEnchere;
         this.setStyle();
         this.setImage();
         this.setContenu();
-
-        this.setFillHeight(true);
-    }
-
-    public CaseVente(Vente vente, ConnexionMySQL connexionMySQL, VueAdminGestionUtilisateurs parent) {
-        this.connexionMySQL = connexionMySQL;
-        this.vente = vente;
-        this.prixMaxEnchere = 0.0;
-        this.appli = null;
-        this.parent = parent;
-        this.setStyle();
-        this.setImage();
-        this.setContenu();
-
-        this.setFillHeight(true);
     }
 
     private void setImage() {
@@ -68,39 +47,31 @@ public class CaseVente extends HBox {
     }
 
     private void setContenu() {
-        // Border contenu = new VBox(this.setHaut(), this.setDescription(), this.setBas());
         BorderPane contenu = new BorderPane();
         contenu.setPadding(new Insets(10, 10, 10, 20));
-        // contenu.setSpacing(16);
 
         contenu.setTop(this.setHaut());
         contenu.setCenter(this.setDescription());
         contenu.setBottom(this.setBas());
 
-        // contenu.setFillWidth(true);
-        // VBox contenuFillWidth = new VBox(contenu);
-        // contenuFillWidth.setFillWidth(true);
         this.getChildren().add(contenu);
-        VBox.setVgrow(contenu, Priority.ALWAYS);
-        HBox.setHgrow(contenu, Priority.ALWAYS);
     }
 
-    private BorderPane setHaut() {
+    private HBox setHaut() {
         Text nomArticle = new Text(this.getTxtMinLongueur(this.vente.getObjet().getNomObjet(), 20));
-        // HBox nomArtBox = new HBox(nomArticle);
+        HBox nomArtBox = new HBox(nomArticle);
+        nomArtBox.setAlignment(Pos.BASELINE_LEFT);
         Text dateFin = new Text(
                 "Fin : " + new Timestamp(this.vente.getFinVente()).toString().substring(0, 10));
         HBox dateFinBox = new HBox(dateFin);
-        dateFinBox.setAlignment(Pos.CENTER_RIGHT);
+        dateFinBox.setAlignment(Pos.BASELINE_RIGHT);
         nomArticle.setFont(Font.font("Valera", FontWeight.MEDIUM, 20));
         nomArticle.setTextAlignment(TextAlignment.LEFT);
         dateFin.setFont(Font.font("Valera", FontWeight.MEDIUM, 20));
         dateFin.setTextAlignment(TextAlignment.RIGHT);
-        BorderPane haut = new BorderPane();
-        haut.setLeft(nomArticle);
-        haut.setRight(dateFinBox);
-        // haut.setSpacing((780 - 280 - 30 - nomArticle.getText().length() * 10 - dateFin.getText().length() * 10));
-        // haut.setPrefWidth(780 - 280 - 30);
+        HBox haut = new HBox(nomArtBox, dateFinBox);
+        haut.setSpacing((780 - 280 - 30 - nomArticle.getText().length() * 10 - dateFin.getText().length() * 10));
+        haut.setPrefWidth(780 - 280 - 30);
         return haut;
     }
 
@@ -111,34 +82,19 @@ public class CaseVente extends HBox {
         return description;
     }
 
-    private BorderPane setBas() {
-        Text prix = new Text("Prix de base : " + this.vente.getPrixBase() + (this.prixMaxEnchere == 0.0 ? "" : " Prix dernière enchère : " + this.prixMaxEnchere + "€"));
-        prix.setFont(Font.font("Valera", FontWeight.MEDIUM, 14));
+    private HBox setBas() {
+        Text prix = new Text("Prix : " + (this.vente.getPrixBase()) + "€");
+        prix.setFont(Font.font("Valera", FontWeight.MEDIUM, 16));
         prix.setTextAlignment(TextAlignment.CENTER);
         HBox prixPane = new HBox(prix);
-        prixPane.setPadding(new Insets(12, 0, 0, 0));
-        HBox bouton = new HBox();
-        if (this.appli == null) bouton.getChildren().addAll(this.setBoutonSupprimer(), prixPane);
-        else bouton.getChildren().addAll(this.setBoutonEncherir(), prixPane);
+        prixPane.setPadding(new Insets(8, 0, 0, 0));
+        HBox bouton = new HBox(this.setBoutonEncherir(), prixPane);
         bouton.setSpacing(20);
         HBox cercleBox = new HBox(this.setCercle());
         cercleBox.setPadding(new Insets(5, 0, 0, 0));
-        BorderPane bas = new BorderPane();
-        bas.setLeft(bouton);
-        bas.setRight(cercleBox);
-        // bas.setSpacing(140);
+        HBox bas = new HBox(bouton, cercleBox);
+        bas.setSpacing(140);
         return bas;
-    }
-
-    private Button setBoutonSupprimer() {
-        Button supprimer = new Button("Supprimer");
-        supprimer.setPadding(new Insets(10));
-        supprimer.setBackground(new Background(new BackgroundFill(Color.web("#ff9292"), CornerRadii.EMPTY, null)));
-        supprimer.setBorder(new Border(new BorderStroke(Color.web("#ff9292"), BorderStrokeStyle.SOLID,
-                CornerRadii.EMPTY, new BorderWidths(2))));
-        supprimer.setOnAction(new ControleurAdminVente(this.parent, this.connexionMySQL, this.vente));
-        supprimer.setCursor(Cursor.HAND);
-        return supprimer;
     }
 
     private Button setBoutonEncherir() {
@@ -147,7 +103,7 @@ public class CaseVente extends HBox {
         encherir.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, null, null)));
         encherir.setBorder(new Border(new BorderStroke(Color.web("#D9D9D9"), BorderStrokeStyle.SOLID,
                 new CornerRadii(16), new BorderWidths(2))));
-        encherir.setOnAction(new ControleurCaseVente(this.appli, this.connexionMySQL));
+        encherir.setOnAction(new ControleurCaseVente(this.appli, this.connexionMySQL, this.vente));
         encherir.setCursor(Cursor.HAND);
         return encherir;
     }
