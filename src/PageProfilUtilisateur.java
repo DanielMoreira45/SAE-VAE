@@ -25,12 +25,17 @@ public class PageProfilUtilisateur extends BorderPane {
     private PasswordField tFieldMDPactuelle;
     private PasswordField tFieldnvMDP;
     private PasswordField tFieldconfinvMDP;
+    private Button boutonModifNomUtilisateur;
+    private Button boutonModifEmail;
+    private TextField textFieldEmail;
+    private TextField textFieldNomUtilisateur;
 
     public PageProfilUtilisateur(AppliVae appli, ConnexionMySQL connexionMySQL, Utilisateur utilisateur) {
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
         this.utilisateur = utilisateur;
 
+        this.booutonModifier();
         this.profileImage = new ImageView("pp.jpeg");
         this.gridPane = new GridPane();
         this.deconnecter = new Button("Se déconnecter");
@@ -44,8 +49,23 @@ public class PageProfilUtilisateur extends BorderPane {
         this.tFieldMDPactuelle = new PasswordField();
         this.tFieldnvMDP = new PasswordField();
         this.tFieldconfinvMDP = new PasswordField();
+        this.textFieldEmail = new TextField();
+        this.textFieldNomUtilisateur = new TextField();
         this.ajouteMenu();
         this.afficherInfoPerso();
+    }
+
+    private void booutonModifier() {
+        this.boutonModifEmail = new Button("Modifier");
+        this.boutonModifNomUtilisateur = new Button("Modifier");
+
+        this.boutonModifEmail
+                .setOnAction(new ControleurProfilUtilisateurChangementinfo(this, connexionMySQL, utilisateur));
+        this.boutonModifNomUtilisateur
+                .setOnAction(new ControleurProfilUtilisateurChangementinfo(this, connexionMySQL, utilisateur));
+
+        this.boutonModifNomUtilisateur.getStyleClass().add("buttonBleu");
+        this.boutonModifEmail.getStyleClass().add("buttonBleu");
     }
 
     public void afficherInfoPerso() {
@@ -108,24 +128,16 @@ public class PageProfilUtilisateur extends BorderPane {
         gridPane.setVgap(50);
 
         gridPane.add(new Text("Nom d'utilisateur "), 0, 0);
-        TextField textFieldNomUtilisateur = new TextField();
         gridPane.add(textFieldNomUtilisateur, 1, 0);
         textFieldNomUtilisateur.setPromptText(this.nomUtilisateur);
-
-        Button boutonModifNomUtilisateur = new Button("Modifier");
-        boutonModifNomUtilisateur.getStyleClass().add("buttonBleu");
-        gridPane.add(boutonModifNomUtilisateur, 2, 0);
+        gridPane.add(this.boutonModifNomUtilisateur, 2, 0);
         textFieldNomUtilisateur.getStyleClass().add("text-fieldU");
 
         gridPane.add(new Text("Email"), 0, 1);
-        TextField textFieldEmail = new TextField();
         gridPane.add(textFieldEmail, 1, 1);
         textFieldEmail.setPromptText(this.email);
-        Button boutonModifNom = new Button("Modifier");
-        boutonModifNom.getStyleClass().add("buttonBleu");
-        gridPane.add(boutonModifNom, 2, 1);
+        gridPane.add(this.boutonModifEmail, 2, 1);
         textFieldEmail.getStyleClass().add("text-fieldU");
-
         gridPane.add(new Text("Photo de Profil"), 0, 4);
         gridPane.add(this.profileImage, 1, 4);
         Button boutonModifPP = new Button("Modifier");
@@ -174,12 +186,6 @@ public class PageProfilUtilisateur extends BorderPane {
         this.setCenter(this.gridPane);
     }
 
-
-
-
-
-
-
     public PasswordField getMDPactuelle() {
         return tFieldMDPactuelle;
     }
@@ -191,4 +197,21 @@ public class PageProfilUtilisateur extends BorderPane {
     public PasswordField getConfinvMDP() {
         return tFieldconfinvMDP;
     }
+
+    public Button getBoutonModifNomUtilisateur() {
+        return boutonModifNomUtilisateur;
+    }
+
+    public Button getBoutonModifEmail() {
+        return boutonModifEmail;
+    }
+
+    public TextField getTextFieldEmail() {
+        return textFieldEmail;
+    }
+
+    public TextField getTextFieldNomUtilisateur() {
+        return textFieldNomUtilisateur;
+    }
+
 }
