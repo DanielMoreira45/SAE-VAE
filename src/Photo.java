@@ -15,7 +15,7 @@ public class Photo {
         this.titreph = titreph;
         this.imageView = imageView;
     }
-
+    
     public ImageView convertirImageView() {
             Image image = imageView.getImage();
             BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);

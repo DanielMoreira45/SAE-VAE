@@ -209,7 +209,7 @@ public class VueEncheresUtilisateur extends BorderPane {
     }
 
     /**
-     * Méthode permettan d'obtenir toutes les ventes.
+     * Méthode permettant d'obtenir toutes les ventes.
      * @return TouteLesVentes : la classe TouteLesVentes.
      */
     public TouteLesVentes getToutesLesVentes() {

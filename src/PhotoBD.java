@@ -7,16 +7,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import javax.imageio.ImageIO;
-
-import javafx.scene.image.ImageView;
 import javafx.embed.swing.SwingFXUtils;
 // import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
 
-
+// non fonctionnel
 public class PhotoBD {
     private ConnexionMySQL laConnexionMySQL;
     

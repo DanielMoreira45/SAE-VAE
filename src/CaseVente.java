@@ -68,18 +68,13 @@ public class CaseVente extends HBox {
     }
 
     private void setContenu() {
-        // Border contenu = new VBox(this.setHaut(), this.setDescription(), this.setBas());
         BorderPane contenu = new BorderPane();
         contenu.setPadding(new Insets(10, 10, 10, 20));
-        // contenu.setSpacing(16);
 
         contenu.setTop(this.setHaut());
         contenu.setCenter(this.setDescription());
         contenu.setBottom(this.setBas());
 
-        // contenu.setFillWidth(true);
-        // VBox contenuFillWidth = new VBox(contenu);
-        // contenuFillWidth.setFillWidth(true);
         this.getChildren().add(contenu);
         VBox.setVgrow(contenu, Priority.ALWAYS);
         HBox.setHgrow(contenu, Priority.ALWAYS);
@@ -87,7 +82,6 @@ public class CaseVente extends HBox {
 
     private BorderPane setHaut() {
         Text nomArticle = new Text(this.getTxtMinLongueur(this.vente.getObjet().getNomObjet(), 20));
-        // HBox nomArtBox = new HBox(nomArticle);
         Text dateFin = new Text(
                 "Fin : " + new Timestamp(this.vente.getFinVente()).toString().substring(0, 10));
         HBox dateFinBox = new HBox(dateFin);
@@ -99,8 +93,7 @@ public class CaseVente extends HBox {
         BorderPane haut = new BorderPane();
         haut.setLeft(nomArticle);
         haut.setRight(dateFinBox);
-        // haut.setSpacing((780 - 280 - 30 - nomArticle.getText().length() * 10 - dateFin.getText().length() * 10));
-        // haut.setPrefWidth(780 - 280 - 30);
+
         return haut;
     }
 
@@ -152,24 +145,28 @@ public class CaseVente extends HBox {
         return encherir;
     }
 
+    /**
+     * Permet d'associer un cercle de couleur en fonction du statut de la vente/enchère.
+     * @return
+     */
     private Circle setCercle() {
         Circle cercle = new Circle(15);
         int statut = this.vente.getStatus();
         switch (statut) {
-            case 1:
+            case 1: //AVENIR
                 cercle.setFill(Color.BLUE);
                 break;
-            case 2:
+            case 2: // ENCOURS
                 cercle.setFill(Color.web("#72FF91"));
                 break;
-            case 3:
+            case 3: //AVALIDER
                 cercle.setFill(Color.web("#FFFF00"));
                 break;
-            case 4:
+            case 4: //VALIDER
                 cercle.setFill(Color.web("#DCDCDC"));
                 break;
-            default:
-                cercle.setFill(Color.BLACK); // non conclue
+            default: // NON CONCLUE
+                cercle.setFill(Color.BLACK); 
                 break;
         }
 

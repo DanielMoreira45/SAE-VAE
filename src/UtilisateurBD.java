@@ -4,9 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 
@@ -23,6 +21,12 @@ public class UtilisateurBD {
         this.laConnexionMySQL = laConnexionMySQL;
     }
 
+    /**
+     * Récupère l'identifiant maximum des utilisateurs.
+     *
+     * @return L'identifiant maximum des utilisateurs.
+     * @throws SQLException
+     */
     int maxIdUtilisateur() throws SQLException {
         this.st = laConnexionMySQL.createStatement();
         ResultSet resultats = this.st.executeQuery("SELECT max(idut) FROM UTILISATEUR;");
@@ -32,6 +36,12 @@ public class UtilisateurBD {
         return nb;
     }
 
+    /**
+     * Insère un utilisateur dans la base de données.
+     *
+     * @param j L'utilisateur à insérer.
+     * @throws SQLException
+     */
     public void insererUtilisateur(Utilisateur j) throws SQLException {
         PreparedStatement ps = laConnexionMySQL.preparedStatement("INSERT INTO UTILISATEUR VALUES(?, ?, ?, ?, ?, ?)");
         ps.setInt((1), idLibre());
@@ -44,11 +54,19 @@ public class UtilisateurBD {
         ps.executeUpdate();
     }
 
+    /**
+     * Supprime un utilisateur de la base de données.
+     *
+     * @param num L'identifiant de l'utilisateur à supprimer.
+     * @throws SQLException En cas d'erreur lors de l'exécution de la requête SQL.
+     */
     public void supprimerUtilisateur(int num) throws SQLException {
-        ResultSet resultNumObj = laConnexionMySQL.createStatement().executeQuery("SELECT idob FROM OBJET WHERE idut =" + num + ";");
+        ResultSet resultNumObj = laConnexionMySQL.createStatement()
+                .executeQuery("SELECT idob FROM OBJET WHERE idut =" + num + ";");
         if (resultNumObj.next()) {
             int numObj = resultNumObj.getInt(1);
-            ResultSet resultNumVe = laConnexionMySQL.createStatement().executeQuery("SELECT idve FROM VENTE WHERE idob =" + numObj + ";");
+            ResultSet resultNumVe = laConnexionMySQL.createStatement()
+                    .executeQuery("SELECT idve FROM VENTE WHERE idob =" + numObj + ";");
             if (resultNumVe.next()) {
                 int numVe = resultNumVe.getInt(1);
                 laConnexionMySQL.createStatement().executeUpdate("DELETE FROM ENCHERIR WHERE idve =" + numVe + ";");
@@ -61,11 +79,12 @@ public class UtilisateurBD {
         laConnexionMySQL.createStatement().executeUpdate("DELETE FROM UTILISATEUR WHERE idut =" + num + ";");
     }
 
-
-
     /**
-     * solution non chosie car si un utilisateur possédant des objets aux enchères est supprimé, l'id libre qui sera dorénavant attribuable
-     * associera un nouvel utilisateur aux ventes de l'ancien, hors nous souhaitons (en vue du temps) ne pas s'impliquer dans la gestion de dépense.*
+     * solution non chosie car si un utilisateur possédant des objets aux enchères
+     * est supprimé, l'id libre qui sera dorénavant attribuable
+     * associera un nouvel utilisateur aux ventes de l'ancien, hors nous souhaitons
+     * (en vue du temps) ne pas s'impliquer dans la gestion de dépense.*
+     * 
      * @return int un id libre (c-a-d l'id le plus bas possible attribuable)
      * @throws SQLException
      */
@@ -105,6 +124,12 @@ public class UtilisateurBD {
         return this.idLibre;
     }
 
+    /**
+     * Met à jour l'état à actif d'un utilisateur dans la base de données.
+     *
+     * @param utilisateur L'utilisateur
+     * @throws SQLException
+     */
     public void setActif(Utilisateur utilisateur) throws SQLException {
         PreparedStatement ps = laConnexionMySQL.preparedStatement("UPDATE UTILISATEUR SET activeut = ? WHERE idut = ?");
         ps.setString(1, utilisateur.estActive() ? "O" : "N");
@@ -157,7 +182,8 @@ public class UtilisateurBD {
 
     public List<Utilisateur> toutAdmin() throws SQLException {
         ResultSet rs = this.laConnexionMySQL.createStatement()
-                .executeQuery("SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR WHERE idrole = 1;");
+                .executeQuery(
+                        "SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR WHERE idrole = 1;");
         List<Utilisateur> listeUtilisateurs = new ArrayList<>();
         while (rs.next()) {
             listeUtilisateurs.add(new Utilisateur(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
@@ -168,7 +194,8 @@ public class UtilisateurBD {
 
     public List<Utilisateur> toutUtilisateurs() throws SQLException {
         ResultSet rs = this.laConnexionMySQL.createStatement()
-                .executeQuery("SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR WHERE idrole = 2;");
+                .executeQuery(
+                        "SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR WHERE idrole = 2;");
         List<Utilisateur> listeUtilisateurs = new ArrayList<>();
         while (rs.next()) {
             listeUtilisateurs.add(new Utilisateur(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
@@ -179,7 +206,8 @@ public class UtilisateurBD {
 
     public List<Utilisateur> actif() throws SQLException {
         ResultSet rs = this.laConnexionMySQL.createStatement()
-                .executeQuery("SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR WHERE activeut = 'O';");
+                .executeQuery(
+                        "SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR WHERE activeut = 'O';");
         List<Utilisateur> listeUtilisateurs = new ArrayList<>();
         while (rs.next()) {
             listeUtilisateurs.add(new Utilisateur(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
@@ -190,7 +218,8 @@ public class UtilisateurBD {
 
     public List<Utilisateur> inactif() throws SQLException {
         ResultSet rs = this.laConnexionMySQL.createStatement()
-                .executeQuery("SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR WHERE activeut = 'N';");
+                .executeQuery(
+                        "SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR WHERE activeut = 'N';");
         List<Utilisateur> listeUtilisateurs = new ArrayList<>();
         while (rs.next()) {
             listeUtilisateurs.add(new Utilisateur(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
@@ -199,6 +228,16 @@ public class UtilisateurBD {
         return listeUtilisateurs;
     }
 
+    /**
+     * Récupère une liste d'utilisateurs basée sur une requête de recherche.
+     * Recherche les utilisateurs dont le nom d'utilisateur ou l'e-mail contient le
+     * texte spécifié.
+     *
+     * @param text le texte de recherche
+     * @return une liste d'objets Utilisateur correspondant à la requête de
+     *         recherche
+     * @throws SQLException 
+     */
     public List<Utilisateur> recherche(String text) throws SQLException {
         ResultSet rs = this.laConnexionMySQL.createStatement().executeQuery(
                 "SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR WHERE pseudout LIKE '%" + text
@@ -217,9 +256,16 @@ public class UtilisateurBD {
         ps.setInt(2, utilisateur.getId());
         ps.executeUpdate();
     }
-    
-    public void updateUtilisateur(Utilisateur utilisateur) throws SQLException{
-        PreparedStatement s = laConnexionMySQL.preparedStatement("UPDATE UTILISATEUR SET pseudout = ?, emailut = ?, mdput = ? where idut = ?");
+
+    /**
+     * Met à jour les informations d'un utilisateur 
+     *
+     * @param utilisateur  Utilisateur contenant les nouvelles informations
+     * @throws SQLException 
+     */
+    public void updateUtilisateur(Utilisateur utilisateur) throws SQLException {
+        PreparedStatement s = laConnexionMySQL
+                .preparedStatement("UPDATE UTILISATEUR SET pseudout = ?, emailut = ?, mdput = ? where idut = ?");
         s.setString(1, utilisateur.getPseudo());
         s.setString(2, utilisateur.getEmail());
         s.setString(3, utilisateur.getMotDePasse());

@@ -20,6 +20,12 @@ public class Categorie {
     public static Integer OUTIL = 4;
 
 
+    /**
+     * Permet à partir du menu vente de sa combobox d'associer un nom de catégorie à un identifiant 
+     * catégorie similaire à la base de données (avec davantage de catégorie d'ailleurs).
+     * @param cate
+     * @return
+     */
     public static Integer getIntCategorie(String cate) {
     Integer intCategorie = null;
     switch (cate) {

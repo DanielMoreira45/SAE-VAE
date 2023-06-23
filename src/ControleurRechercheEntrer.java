@@ -15,7 +15,8 @@ public class ControleurRechercheEntrer implements EventHandler<KeyEvent> {
 
     @Override
     public void handle(KeyEvent event) {
-        try {
+        try { // accède à partir de l'instance d'applieVAE passé en argument le page d'accueil pour placer les ventes à partir de l'instance de navBar pour 
+        // récupérez les entrées clavier de l'utilisateur
             this.appliVae.getPageAccueil().setLesVentes(this.appliVae.getPageAccueil().getTouteLesVentes()
                     .recherche(this.navBar.getTextFieldRecherche().getText()));
             this.appliVae.getPageAccueil().majAffichage();

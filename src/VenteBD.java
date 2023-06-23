@@ -7,7 +7,6 @@ import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -58,7 +57,8 @@ public class VenteBD {
      */
     public void supprimeVente(Vente v) throws SQLException {
         laConnexionMySQL.createStatement().executeUpdate("DELETE FROM ENCHERIR WHERE idve =" + v.getIDVente() + ";");
-        ResultSet resultNumObj = laConnexionMySQL.createStatement().executeQuery("SELECT idob FROM VENTE WHERE idve =" + v.getIDVente() + ";");
+        ResultSet resultNumObj = laConnexionMySQL.createStatement()
+                .executeQuery("SELECT idob FROM VENTE WHERE idve =" + v.getIDVente() + ";");
         this.laConnexionMySQL.createStatement().executeUpdate("DELETE FROM VENTE WHERE idve = " + v.getIDVente());
         if (resultNumObj.next()) {
             int numObj = resultNumObj.getInt(1);
@@ -254,14 +254,16 @@ public class VenteBD {
         return rs.getInt(1);
     }
 
+    /**
+     * Effectue une recherche de ventes en fonction de ce que l'on tape dans la
+     * barre de recherche
+     *
+     * @param text le texte utilisé pour la recherche
+     * @return une liste de ventes correspondant à la recherche
+     * @throws SQLException   en cas d'erreur d'accès à la base de données
+     * @throws ParseException en cas d'erreur lors de la conversion de dates
+     */
     public List<Vente> recherche(String text) throws SQLException, ParseException {
-        // PreparedStatement s = this.laConnexionMySQL.preparedStatement(
-        // "SELECT
-        // idcat,idob,idve,idut,idst,prixbase,prixmin,debutve,finve,nomob,descriptionob
-        // FROM VENTE NATURAL JOIN OBJET WHERE nomob LIKE '%"+text+"%' order by idcat,
-        // idob, idve, idut, idst;");
-        // s.setInt(1, text);
-        // ResultSet rs = s.executeQuery();
         Statement s = this.laConnexionMySQL.createStatement();
         ResultSet rs = s.executeQuery(
                 "SELECT idcat,idob,idve,idut,idst,prixbase,prixmin,debutve,finve,nomob,descriptionob FROM VENTE NATURAL JOIN OBJET WHERE nomob LIKE '%"
@@ -356,18 +358,39 @@ public class VenteBD {
         return ventes;
     }
 
+    /**
+     * le montant maximum d'une enchère pour une vente spécifiée (meilleur enchère).
+     *
+     * @param idVente l'identifiant de la vente
+     * @return le montant maximum de l'enchère pour la vente spécifiée, ou 0.0 si
+     *         aucune enchère n'existe
+     * @throws SQLException
+     */
     public Double maxPrixEnchere(int idVente) throws SQLException {
-        ResultSet resultMaxEnchere = this.laConnexionMySQL.createStatement().executeQuery("SELECT idve, max(montant) montantMax FROM VENTE natural join ENCHERIR WHERE idve = "+idVente+" group by idve;");
-        if (!resultMaxEnchere.next()) return 0.0;
+        ResultSet resultMaxEnchere = this.laConnexionMySQL.createStatement()
+                .executeQuery("SELECT idve, max(montant) montantMax FROM VENTE natural join ENCHERIR WHERE idve = "
+                        + idVente + " group by idve;");
+        if (!resultMaxEnchere.next())
+            return 0.0;
         return resultMaxEnchere.getDouble(2);
-    }  
+    }
 
-
+    /**
+     * Obtient une liste de ventes dont le montant de l'enchère se situe entre un minimum du prix de base
+     * et un prix maximum (non inclus).
+     *
+     * @param prixMin le prix minimum pour filtrer les ventes
+     * @param prixMax le prix maximum  pour filtrer les ventes
+     * @return une liste de ventes satisfaisant les critères de prix, ou une liste
+     *         vide si aucune vente n'est trouvée
+     * @throws SQLException   en cas d'erreur d'accès à la base de données
+     * @throws ParseException en cas d'erreur lors de l'analyse des dates des ventes
+     */
     public List<Vente> ventePrixMinMaxList(Double prixMin, Double prixMax) throws SQLException, ParseException {
         Statement s = this.laConnexionMySQL.createStatement();
         ResultSet rs = s.executeQuery(
-                "select idve, max(montant) montant from VENTE natural join ENCHERIR montant group by idve having "+prixMin+" < montant and "+prixMax+ " > montant");
-                System.out.println("select idve, max(montant) montant from VENTE natural join ENCHERIR montant group by idve having "+prixMin+" < montant and "+prixMax+ " > montant");
+                "select idve, max(montant) montant from VENTE natural join ENCHERIR montant group by idve having "
+                        + prixMin + " < montant and " + prixMax + " > montant");
         List<Vente> ventes = new ArrayList<Vente>();
         while (rs.next()) {
             int idve = rs.getInt(1);

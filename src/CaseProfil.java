@@ -20,7 +20,6 @@ public class CaseProfil extends BorderPane{
     public CaseProfil(Utilisateur utilisateur, VueAdminGestionUtilisateurs parent) {
         this.utilisateur = utilisateur;
         this.parent = parent;
-
         this.setContenu();
         this.setStyle(this.parent.getScrollPaneProfils());
     }
@@ -108,10 +107,8 @@ public class CaseProfil extends BorderPane{
      */
     private VBox getInfosProfil() {
         VBox boiteInfosProfil = new VBox(this.getNomEmailDuProfil(this.utilisateur.getPseudo(), this.utilisateur.getEmail()));
-
         boiteInfosProfil.getChildren().add(this.utilisateur.estActive() ? new Label("Statut : Actif") : new Label("Statut : Inactif"));
         boiteInfosProfil.getChildren().add(this.utilisateur.getRole() == 1 ? new Label("Role : Admin") : new Label("Role : Utilisateur"));
-
         boiteInfosProfil.setPadding(new Insets(10));
         boiteInfosProfil.setSpacing(30);
         boiteInfosProfil.setStyle("-fx-background-color: #f1f1f1;");
