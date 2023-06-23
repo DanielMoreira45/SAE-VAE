@@ -356,12 +356,13 @@ public class VenteBD {
     
 
 
-    public List<Vente> ventePrixMinMaxList(int prixMin, int prixMax) throws SQLException, ParseException {
+    public List<Vente> ventePrixMinMaxList(Double prixMin, Double prixMax) throws SQLException, ParseException {
         Statement s = this.laConnexionMySQL.createStatement();
         ResultSet rs = s.executeQuery(
                 "select idve, max(montant) montant from VENTE natural join ENCHERIR montant group by idve having "+prixMin+" < montant and "+prixMax+ " > montant");
+                System.out.println("select idve, max(montant) montant from VENTE natural join ENCHERIR montant group by idve having "+prixMin+" < montant and "+prixMax+ " > montant");
         List<Vente> ventes = new ArrayList<Vente>();
-        if (rs.next()) {
+        while (rs.next()) {
             int idve = rs.getInt(1);
             Vente vente = this.venteParId(idve);
             ventes.add(vente);
