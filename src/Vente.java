@@ -137,7 +137,7 @@ public class Vente {
      *                        forme est : yyyy/MM/dd:hh/mm/ss
      */
     public void setDebutVente(String nouveauDebutVente) throws ParseException {
-        SimpleDateFormat lecteur = new SimpleDateFormat("dd/MM/yy:HH/mm/ss");
+        SimpleDateFormat lecteur = new SimpleDateFormat("yyyy/MM/dd:hh/mm/ss");
         this.debutVe = lecteur.parse(nouveauDebutVente);
     }
 
