@@ -21,7 +21,7 @@ public class FenetrePageChangerMdp extends GridPane {
     private ConnexionMySQL connexionMySQL;
 
     public FenetrePageChangerMdp(AppliVae appli, ConnexionMySQL connexionMySQL) {
-        this.profileImage = new ImageView("pp.jpeg");
+        this.profileImage = new ImageView("file:/pp.jpeg");
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
         this.creerPageChangerMdp();
