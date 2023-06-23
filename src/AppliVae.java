@@ -106,14 +106,11 @@ public class AppliVae extends Application{
         this.laConnexionEncherir = new EncherirBD(this.connexionMySQL);
 
         this.pageCoInsc = new FenetreCoInsc(this, this.connexionMySQL);
-        this.pageVente = new VueVente(this, this.connexionMySQL, utilisateurActuel);
         this.pageAccueil = new PageAccueil(this, this.connexionMySQL);
         this.pageProfilUtilisateur = new PageProfilUtilisateur(this, this.connexionMySQL);
         this.navBar = new NavBar(this, this.connexionMySQL);
         this.pageProfilObjet = new PageProfilObjet(this, this.connexionMySQL);
-        this.vueAdminGestionUtilisateurs = new VueAdminGestionUtilisateurs(this.connexionMySQL, utilisateurActuel);
         this.fenetrePageMessage = new FenetrePageMessage(this, this.connexionMySQL);
-        //this.vueEncheresUtilisateur = new VueEncheresUtilisateur(this, this.connexionMySQL, this.utilisateurActuel.getId());
         this.root = (BorderPane) this.scene.getRoot();
     }
 
@@ -154,6 +151,8 @@ public class AppliVae extends Application{
         this.root.setTop(this.navBar);
         this.root.setCenter(this.pageAccueil);
 
+        this.pageVente = new VueVente(this, this.connexionMySQL, utilisateurActuel);
+        this.vueAdminGestionUtilisateurs = new VueAdminGestionUtilisateurs(this.connexionMySQL, utilisateurActuel);
         this.vueEncheresUtilisateur = new VueEncheresUtilisateur(this, this.connexionMySQL, this.utilisateurActuel.getId());
     }
 
