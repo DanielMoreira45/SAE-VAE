@@ -56,19 +56,23 @@ public class ControleurProfilUtilisateurChangementinfo implements EventHandler<A
                 String nouveauEmail = vue.getTextFieldEmail().getText();
                 UtilisateurBD utilBD = new UtilisateurBD(connexion);
                 try {
-                    Alert alert = new Alert(AlertType.CONFIRMATION, "Vous ete sur de vouloir changer ?",
-                            ButtonType.YES, ButtonType.NO);
-                    Optional<ButtonType> result = alert.showAndWait();
-                    if (result.isPresent() && result.get() == ButtonType.YES) {
-                        System.out.println("Oui");
-                        utilisateur.setEmail(nouveauEmail);
-                        System.out.println("pseudo set");
-                        utilBD.updateUtilisateur(utilisateur);
-                        System.out.println("update fait");
+                    VerificateurEmail.estValide(nouveauEmail);
+                    try {
+                        Alert alert = new Alert(AlertType.CONFIRMATION, "Vous ete sur de vouloir changer ?",
+                                ButtonType.YES, ButtonType.NO);
+                        Optional<ButtonType> result = alert.showAndWait();
+                        if (result.isPresent() && result.get() == ButtonType.YES) {
+                            utilisateur.setEmail(nouveauEmail);
+                            utilBD.updateUtilisateur(utilisateur);
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                } catch (EmailInvalideException e) {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.show();
                 }
+
             }
         }
     }
