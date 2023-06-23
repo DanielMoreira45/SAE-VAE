@@ -85,29 +85,29 @@ public class PageAccueil extends VBox {
     }
 
     private HBox setPrixMinLabel() {
-    Label prixMinLabel = new Label("Prix Min:");
-    prixMinLabel.setFont(Font.font("Valera", FontWeight.NORMAL, 12));
-    HBox hbox = new HBox(prixMinLabel);
-    hbox.setAlignment(Pos.CENTER_LEFT);
-    return hbox;
+        Label prixMinLabel = new Label("Prix Min:");
+        prixMinLabel.setFont(Font.font("Valera", FontWeight.NORMAL, 12));
+        HBox hbox = new HBox(prixMinLabel);
+        hbox.setAlignment(Pos.CENTER_LEFT);
+        return hbox;
 
-}
+    }
 
-public TextField getPrixMinTf(){
-    return this.prixMin;
-}
+    public TextField getPrixMinTf() {
+        return this.prixMin;
+    }
 
-public TextField getPrixMax(){
-    return this.prixMax;
-}
+    public TextField getPrixMax() {
+        return this.prixMax;
+    }
 
-private HBox setPrixMaxLabel() {
-    Label prixMaxLabel = new Label("Prix Max:");
-    prixMaxLabel.setFont(Font.font("Valera", FontWeight.NORMAL, 12));
-    HBox hbox = new HBox(prixMaxLabel);
-    hbox.setAlignment(Pos.CENTER_LEFT);
-    return hbox;
-}
+    private HBox setPrixMaxLabel() {
+        Label prixMaxLabel = new Label("Prix Max:");
+        prixMaxLabel.setFont(Font.font("Valera", FontWeight.NORMAL, 12));
+        HBox hbox = new HBox(prixMaxLabel);
+        hbox.setAlignment(Pos.CENTER_LEFT);
+        return hbox;
+    }
 
     public void setCategorie(String cat) {
         this.cat = cat;
@@ -148,7 +148,8 @@ private HBox setPrixMaxLabel() {
         try {
             trierVente.getChildren().addAll(this.setBoutonTout(), this.setBoutonTrierParDate(),
                     this.setBoutonTrierParNom(), this.setBoutonEnchereEnCours(), this.setBoutonAVenir(),
-                    this.setBoutonInverse(), this.setBoutonTrierParNom(),this.setPrixMinLabel(),this.prixMin,this.setPrixMaxLabel(), this.prixMax);
+                    this.setBoutonInverse(), this.setPrixMinLabel(), this.prixMin,
+                    this.setPrixMaxLabel(), this.prixMax);
         } catch (SQLException | ParseException e) {
             e.printStackTrace();
         }
@@ -157,9 +158,6 @@ private HBox setPrixMaxLabel() {
 
         return trierVente;
     }
-
-
-    
 
     private Button setBoutonTout() throws SQLException, ParseException {
         Circle cercleBleu = new Circle(12);
@@ -192,6 +190,7 @@ private HBox setPrixMaxLabel() {
 
         return parDate;
     }
+
     private Button setBoutonEnchereEnCours() throws SQLException, ParseException {
         Circle cercleVert = new Circle(12);
         cercleVert.setFill(Color.web("#72FF91"));
@@ -224,7 +223,6 @@ private HBox setPrixMaxLabel() {
 
         return parNom;
     }
-
 
     // private Button setBoutonNonEncherier() {
     // Circle cercleJaune = new Circle(12);
@@ -298,7 +296,7 @@ private HBox setPrixMaxLabel() {
     private HBox setVentes() {
         ScrollPane scrollVentes = this.setScrollVente();
         System.out.println(this.lesVentes.size());
-        for(Vente lesVentes : this.lesVentes){
+        for (Vente lesVentes : this.lesVentes) {
             System.out.print(lesVentes);
         }
         HBox ventes = new HBox();
@@ -321,11 +319,13 @@ private HBox setPrixMaxLabel() {
         gridVentes.setPadding(new Insets(50, 50, 0, 50));
         gridVentes.setHgap(100);
         gridVentes.setVgap(40);
-        for (int i = 0; i < 20; i += 2) {
-            if (this.lesVentes.size() > i + 1) {
-                gridVentes.add(new CaseVente(this.lesVentes.get(i), this.appli, this.connexionMySQL), 0, i);
-                gridVentes.add(new CaseVente(this.lesVentes.get(i + 1), this.appli, this.connexionMySQL), 1, i);
+        try {
+            for (int i = 0; i < 20; i += 2) {
+                if (this.lesVentes.size() > i) gridVentes.add(new CaseVente(this.lesVentes.get(i), this.toutesLesVentes.maxPrixEnchere(this.lesVentes.get(i).getIDVente()), this.appli, this.connexionMySQL), 0, i);
+                if (this.lesVentes.size() > i+1) gridVentes.add(new CaseVente(this.lesVentes.get(i + 1), this.toutesLesVentes.maxPrixEnchere(this.lesVentes.get(i+1).getIDVente()), this.appli, this.connexionMySQL), 1, i);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return gridVentes;
     }
