@@ -259,10 +259,6 @@ public class PageAccueil extends VBox {
 
     private HBox setVentes() {
         ScrollPane scrollVentes = this.setScrollVente();
-        System.out.println(this.lesVentes.size());
-        for (Vente lesVentes : this.lesVentes) {
-            System.out.print(lesVentes);
-        }
         HBox ventes = new HBox();
         ventes.setPrefWidth(1550);
         if (this.lesVentes.size() > 4)
