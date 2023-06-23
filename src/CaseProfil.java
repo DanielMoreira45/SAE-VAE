@@ -25,6 +25,9 @@ public class CaseProfil extends BorderPane{
         this.setStyle(this.parent.getScrollPaneProfils());
     }
 
+    /**
+     * Permet d'initialiser le contenu de la case
+     */
     private void setContenu() {
         VBox boiteBoutonsGestion = this.getLesBoutonsProfil();
         ImageView photoProfil = this.getImageProfil();
@@ -40,6 +43,10 @@ public class CaseProfil extends BorderPane{
         BorderPane.setAlignment(boiteBoutonsGestion, Pos.CENTER);
     }
 
+    /**
+     * Permet d'appliquer le style de la case, avec la largeur du ScrollPane parent
+     * @param scrollPaneProfils Le ScrollPane parent
+     */
     private void setStyle(ScrollPane scrollPaneProfils) {
         this.setPrefWidth(scrollPaneProfils.getWidth());
         this.setStyle("-fx-background-color: #fdfdfd;");
@@ -118,5 +125,9 @@ public class CaseProfil extends BorderPane{
         return boiteInfosProfil;
     }
 
+    /**
+     * Permet d'obtenir l'utilisateur de la case
+     * @return L'utilisateur de la case
+     */
     public Utilisateur getUtilisateur() { return this.utilisateur; }
 }

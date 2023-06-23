@@ -25,6 +25,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+/**
+ * Case contenant toutes les informations sur les ventes
+ */
 public class CaseVente extends HBox {
     private Vente vente;
     private AppliVae appli;
@@ -32,6 +35,13 @@ public class CaseVente extends HBox {
     private Double prixMaxEnchere;
     private VueAdminGestionUtilisateurs parent;
 
+    /**
+     * Constructeur de CaseVente permettant de créer une case dans la partie utilisateur.
+     * @param vente La vente correspondante à la case
+     * @param prixMaxEnchere Le prix maximum des enchères
+     * @param appli L'application VAE
+     * @param connexionMySQL La connexion MySQL
+     */
     public CaseVente(Vente vente, Double prixMaxEnchere, AppliVae appli, ConnexionMySQL connexionMySQL) {
         this.appli = appli;
         this.parent = null;
@@ -45,6 +55,12 @@ public class CaseVente extends HBox {
         this.setFillHeight(true);
     }
 
+    /**
+     * Constructeur de CaseVente permettant de créer une case dans la partie administrateur
+     * @param vente
+     * @param connexionMySQL
+     * @param parent
+     */
     public CaseVente(Vente vente, ConnexionMySQL connexionMySQL, VueAdminGestionUtilisateurs parent) {
         this.connexionMySQL = connexionMySQL;
         this.vente = vente;
@@ -58,6 +74,9 @@ public class CaseVente extends HBox {
         this.setFillHeight(true);
     }
 
+    /**
+     * Permet d'initialiser l'image
+     */
     private void setImage() {
         Rectangle rect = new Rectangle(280, 180);
         rect.setArcHeight(20);
@@ -67,27 +86,28 @@ public class CaseVente extends HBox {
         this.getChildren().add(rect);
     }
 
+    /**
+     * Permet d'initialiser le contenu de la classe (les informations sur la vente)
+     */
     private void setContenu() {
-        // Border contenu = new VBox(this.setHaut(), this.setDescription(), this.setBas());
         BorderPane contenu = new BorderPane();
         contenu.setPadding(new Insets(10, 10, 10, 20));
-        // contenu.setSpacing(16);
 
         contenu.setTop(this.setHaut());
         contenu.setCenter(this.setDescription());
         contenu.setBottom(this.setBas());
 
-        // contenu.setFillWidth(true);
-        // VBox contenuFillWidth = new VBox(contenu);
-        // contenuFillWidth.setFillWidth(true);
         this.getChildren().add(contenu);
         VBox.setVgrow(contenu, Priority.ALWAYS);
         HBox.setHgrow(contenu, Priority.ALWAYS);
     }
 
+    /**
+     * Permet de créer la partie haute du contenu
+     * @return La partie haute du contenu (BorderPane)
+     */
     private BorderPane setHaut() {
         Text nomArticle = new Text(this.getTxtMinLongueur(this.vente.getObjet().getNomObjet(), 20));
-        // HBox nomArtBox = new HBox(nomArticle);
         Text dateFin = new Text(
                 "Fin : " + new Timestamp(this.vente.getFinVente()).toString().substring(0, 10));
         HBox dateFinBox = new HBox(dateFin);
@@ -99,11 +119,13 @@ public class CaseVente extends HBox {
         BorderPane haut = new BorderPane();
         haut.setLeft(nomArticle);
         haut.setRight(dateFinBox);
-        // haut.setSpacing((780 - 280 - 30 - nomArticle.getText().length() * 10 - dateFin.getText().length() * 10));
-        // haut.setPrefWidth(780 - 280 - 30);
         return haut;
     }
 
+    /**
+     * Permet de créer la description de la vente (au milieu)
+     * @return La description de la vente (Text)
+     */
     private Text setDescription() {
         Text description = new Text(
                 this.setDescription(this.getTxtMinLongueur(this.vente.getObjet().getDescription(), 200)));
@@ -111,6 +133,10 @@ public class CaseVente extends HBox {
         return description;
     }
 
+    /**
+     * Permet de créer la partie basse du contenu
+     * @return La partie basse du contenu (BorderPane)
+     */
     private BorderPane setBas() {
         Text prix = new Text("Prix de base : " + this.vente.getPrixBase() + (this.prixMaxEnchere == 0.0 ? "" : " Prix dernière enchère : " + this.prixMaxEnchere + "€"));
         prix.setFont(Font.font("Valera", FontWeight.MEDIUM, 14));
@@ -130,6 +156,10 @@ public class CaseVente extends HBox {
         return bas;
     }
 
+    /**
+     * Permet de créer le bouton "supprimer"
+     * @return Le bouton "supprimer" (Button)
+     */
     private Button setBoutonSupprimer() {
         Button supprimer = new Button("Supprimer");
         supprimer.setPadding(new Insets(10));
@@ -141,6 +171,10 @@ public class CaseVente extends HBox {
         return supprimer;
     }
 
+    /**
+     * Permet de créer le bouton "enchérir"
+     * @return Le bouton "enchérir" (Button)
+     */
     private Button setBoutonEncherir() {
         Button encherir = new Button("Enchérir");
         encherir.setPadding(new Insets(10));
@@ -152,6 +186,10 @@ public class CaseVente extends HBox {
         return encherir;
     }
 
+    /**
+     * Permet de créer le cercle de couleur en fonction du statut de la vente
+     * @return Le cercle de couleur (Circle)
+     */
     private Circle setCercle() {
         Circle cercle = new Circle(15);
         int statut = this.vente.getStatus();
@@ -176,6 +214,9 @@ public class CaseVente extends HBox {
         return cercle;
     }
 
+    /**
+     * Permet d'appliquer le style de case
+     */
     private void setStyle() {
         this.setPrefWidth(780);
         this.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(12), null)));
@@ -183,6 +224,12 @@ public class CaseVente extends HBox {
                 new BorderWidths(4))));
     }
 
+    /**
+     * Permet de trouver le texte de longueur nbLettres avec "..." si le texte dépasse
+     * @param txt Le texte original
+     * @param nbLettres Le nombre de lettre que l'on veut
+     * @return Le texte de longueur nbLettres avec "..." si le texte dépasse (String)
+     */
     private String getTxtMinLongueur(String txt, int nbLettres) {
         String nvTxt = "";
         for (int i = 0; i < nbLettres; i++) {
@@ -194,6 +241,11 @@ public class CaseVente extends HBox {
         return nvTxt;
     }
 
+    /**
+     * Permet de créer la description en permettant d'aller à la ligne
+     * @param desc La description original
+     * @return La description transformée
+     */
     private String setDescription(String desc) {
         String description = "";
         int cpt = 0;

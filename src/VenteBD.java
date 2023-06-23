@@ -267,8 +267,6 @@ public class VenteBD {
                 "SELECT idcat,idob,idve,idut,idst,prixbase,prixmin,debutve,finve,nomob,descriptionob FROM VENTE NATURAL JOIN OBJET WHERE nomob LIKE '%"
                         + text + "%' order by idcat, idob, idve, idut, idst;");
         List<Vente> ventes = new ArrayList<Vente>();
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yy:HH/mm/ss");
         while (rs.next()) {
             int idcat = rs.getInt(1);
             int idob = rs.getInt(2);
