@@ -57,12 +57,14 @@ public class VenteBD {
      * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
      */
     public void supprimeVente(Vente v) throws SQLException {
-        PreparedStatement s = this.laConnexionMySQL
-                .preparedStatement("DELETE FROM VENTE WHERE idve = ?, idob = ?, idst = ?");
-        s.setInt(1, v.getIDVente());
-        s.setInt(2, v.getObjet().getidObjet());
-        s.setInt(3, v.getStatus());
-        s.executeQuery();
+        laConnexionMySQL.createStatement().executeUpdate("DELETE FROM ENCHERIR WHERE idve =" + v.getIDVente() + ";");
+        ResultSet resultNumObj = laConnexionMySQL.createStatement().executeQuery("SELECT idob FROM VENTE WHERE idve =" + v.getIDVente() + ";");
+        this.laConnexionMySQL.createStatement().executeUpdate("DELETE FROM VENTE WHERE idve = " + v.getIDVente());
+        if (resultNumObj.next()) {
+            int numObj = resultNumObj.getInt(1);
+            laConnexionMySQL.createStatement().executeUpdate("DELETE FROM PHOTO WHERE idob =" + numObj + ";");
+            laConnexionMySQL.createStatement().executeUpdate("DELETE FROM OBJET WHERE idob =" + numObj + ";");
+        }
     }
 
     /**

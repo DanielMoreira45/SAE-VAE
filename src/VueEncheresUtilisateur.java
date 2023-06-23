@@ -185,11 +185,16 @@ public class VueEncheresUtilisateur extends BorderPane {
             vboxToutesLesVentes.getChildren().add(texteListeVide);
         }
         else {
-            for (int i = 0; i < this.lesVentes.size(); i++) {
-                CaseVente venteTemp = new CaseVente(this.lesVentes.get(i), this.appli, this.connexionMySQL);
-                venteTemp.setMinWidth(200);
-                venteTemp.setPadding(new Insets(5));
-                vboxToutesLesVentes.getChildren().add(venteTemp);
+            try {
+                for (int i = 0; i < this.lesVentes.size(); i++) {
+                    CaseVente venteTemp;
+                    venteTemp = new CaseVente(this.lesVentes.get(i), this.toutesLesVentes.maxPrixEnchere(this.lesVentes.get(i).getIDVente()), this.appli, this.connexionMySQL);
+                    venteTemp.setMinWidth(200);
+                    venteTemp.setPadding(new Insets(5));
+                    vboxToutesLesVentes.getChildren().add(venteTemp);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
         this.scrollPaneEncheres.setContent(vboxToutesLesVentes);

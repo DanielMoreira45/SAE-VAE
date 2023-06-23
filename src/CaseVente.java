@@ -30,12 +30,27 @@ public class CaseVente extends HBox {
     private AppliVae appli;
     private ConnexionMySQL connexionMySQL;
     private Double prixMaxEnchere;
+    private VueAdminGestionUtilisateurs parent;
 
     public CaseVente(Vente vente, Double prixMaxEnchere, AppliVae appli, ConnexionMySQL connexionMySQL) {
         this.appli = appli;
+        this.parent = null;
         this.connexionMySQL = connexionMySQL;
         this.vente = vente;
         this.prixMaxEnchere = prixMaxEnchere;
+        this.setStyle();
+        this.setImage();
+        this.setContenu();
+
+        this.setFillHeight(true);
+    }
+
+    public CaseVente(Vente vente, ConnexionMySQL connexionMySQL, VueAdminGestionUtilisateurs parent) {
+        this.connexionMySQL = connexionMySQL;
+        this.vente = vente;
+        this.prixMaxEnchere = 0.0;
+        this.appli = null;
+        this.parent = parent;
         this.setStyle();
         this.setImage();
         this.setContenu();
@@ -102,7 +117,9 @@ public class CaseVente extends HBox {
         prix.setTextAlignment(TextAlignment.CENTER);
         HBox prixPane = new HBox(prix);
         prixPane.setPadding(new Insets(12, 0, 0, 0));
-        HBox bouton = new HBox(this.setBoutonEncherir(), prixPane);
+        HBox bouton = new HBox();
+        if (this.appli == null) bouton.getChildren().addAll(this.setBoutonSupprimer(), prixPane);
+        else bouton.getChildren().addAll(this.setBoutonEncherir(), prixPane);
         bouton.setSpacing(20);
         HBox cercleBox = new HBox(this.setCercle());
         cercleBox.setPadding(new Insets(5, 0, 0, 0));
@@ -111,6 +128,17 @@ public class CaseVente extends HBox {
         bas.setRight(cercleBox);
         // bas.setSpacing(140);
         return bas;
+    }
+
+    private Button setBoutonSupprimer() {
+        Button supprimer = new Button("Supprimer");
+        supprimer.setPadding(new Insets(10));
+        supprimer.setBackground(new Background(new BackgroundFill(Color.web("#ff9292"), CornerRadii.EMPTY, null)));
+        supprimer.setBorder(new Border(new BorderStroke(Color.web("#ff9292"), BorderStrokeStyle.SOLID,
+                CornerRadii.EMPTY, new BorderWidths(2))));
+        supprimer.setOnAction(new ControleurAdminVente(this.parent, this.connexionMySQL, this.vente));
+        supprimer.setCursor(Cursor.HAND);
+        return supprimer;
     }
 
     private Button setBoutonEncherir() {
