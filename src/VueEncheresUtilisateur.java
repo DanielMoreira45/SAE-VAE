@@ -36,6 +36,8 @@ public class VueEncheresUtilisateur extends BorderPane {
      * Constructeur permettant de créer une page listant les enchères d'un utilisateur.
      */
     public VueEncheresUtilisateur(AppliVae appli, ConnexionMySQL connexionMySQL, int idUtil) {
+        // suggestion : passer l'objet en paramètre comme on va sur cette page à partir du controleur de case vente
+        // page profil objet
         super();
 
         this.appli = appli;
