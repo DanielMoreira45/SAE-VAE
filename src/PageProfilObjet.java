@@ -1,4 +1,5 @@
 
+import java.sql.SQLException;
 import java.util.Arrays;
 
 import javafx.animation.ScaleTransition;
@@ -112,7 +113,7 @@ public class PageProfilObjet extends BorderPane {
         GridPane gridPane = new GridPane();
         gridPane.setPrefSize(1350, 50);
 
-        Text nomObj = new Text("Nom de l'objet");
+        Text nomObj = new Text(this.vente.getObjet().getNomObjet());
 
         ImageView imagePP = new ImageView(new Image("file:img/pp.jpeg")); // A modif pour mettre la pp du vedeur
         imagePP.setFitWidth(70);
@@ -121,7 +122,7 @@ public class PageProfilObjet extends BorderPane {
         Circle clip = new Circle(30, 30, 30);
         imagePP.setClip(clip);
 
-        Label pseudo = new Label("Pseudo"); // A modif pour mettre le pseudo du vendeur
+        Label pseudo = new Label(this.vente.getObjet().getVendeur().getPseudo()); // A modif pour mettre le pseudo du vendeur
 
         Button boutonContacter = new Button("Contacter >");
         boutonContacter.setFont(new Font("Verdana", 20));
@@ -181,7 +182,7 @@ public class PageProfilObjet extends BorderPane {
         HBox prixMin = new HBox();
         Text textMin = new Text("Prix minimum : ");
         textMin.setFont(new Font("Verdana", 20));
-        Label labelMin = new Label("X");
+        Label labelMin = new Label(this.vente.getPrixMin()+"");
         labelMin.setFont(new Font("Verdana", 20));
         Text textEuro = new Text(" €");
         textEuro.setFont(new Font("Verdana", 20));
@@ -190,7 +191,7 @@ public class PageProfilObjet extends BorderPane {
         HBox prixBase = new HBox();
         Text textBase = new Text("Prix de base : ");
         textBase.setFont(new Font("Verdana", 20));
-        Label labelBase = new Label("X");
+        Label labelBase = new Label(this.vente.getPrixBase()+"");
         labelBase.setFont(new Font("Verdana", 20));
         textEuro = new Text(" €");
         textEuro.setFont(new Font("Verdana", 20));
@@ -199,7 +200,12 @@ public class PageProfilObjet extends BorderPane {
         HBox prixAct = new HBox();
         Text textAct = new Text("Prix actuel : ");
         textAct.setFont(new Font("Verdana", 20));
-        Label labelAct = new Label("X");
+        Label labelAct = null;
+        try {
+            labelAct = new Label(new TouteLesVentes(this.connexionMySQL).maxPrixEnchere(this.vente.getIDVente())+"");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         labelAct.setFont(new Font("Verdana", 20));
         textEuro = new Text(" €");
         textEuro.setFont(new Font("Verdana", 20));
@@ -234,8 +240,7 @@ public class PageProfilObjet extends BorderPane {
         Text titre = new Text("Description");
         titre.setFont(new Font("Verdana", 20));
 
-        Text desc = new Text(
-                "IZEBFOIBEFoiUEBFOIUEBFIOUBZEFOIBIUFB IEUFIUEBIBiubfezifbuziebfi zebfibeifbziefbizebfizebfibefchnbduvbsz uioeqyyyvboiqrb IZEBFO IBEFoiU EBFOIUE BFIOUBZE FOIBIUFBIEUFIUE BIBiub fezifbuz iebfizebfibeifbziefbizeb fizebfibefchnbduvbszui oeqyyyvboiq rbIZEBFOIBEFoiUEBFOIUEBFIOUBZEFOIBI UFBIEUFIUEBIB iubfezifbuzi ebfiz ebfibeifbziefbizebfizebfibefchnbduvbszuioeq yyyvboiqrb");
+        Text desc = new Text(this.vente.getObjet().getDescription());
         desc.setFont(new Font("Verdana", 16));
         desc.setWrappingWidth(1000);
         desc.setTextAlignment(TextAlignment.JUSTIFY);
