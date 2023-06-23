@@ -166,4 +166,9 @@ public class TouteLesVentes {
         }
         return lesEncheresRecherchees;
     }
+    
+    public Double maxPrixEnchere(int idVente) throws SQLException {
+        return this.venteBD.maxPrixEnchere(idVente);
+    }
+
 }
