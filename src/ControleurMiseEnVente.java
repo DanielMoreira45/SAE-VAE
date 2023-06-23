@@ -36,7 +36,6 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
         LocalDate date = LocalDate.now();
         String heureActuelleAc = heureActuelle.toString().substring(0, 8).replace(":", "/");
         String cat = vue.getCategorie();
-        String marque = vue.getMarque();
         Double prixMin = vue.getPrixMin();
         Double prixBase = vue.getprixBase();
         this.dateDeBut = vue.dateDebutToString();
@@ -86,7 +85,7 @@ public class ControleurMiseEnVente implements EventHandler<ActionEvent> {
                     vue.getprixBaseTf().setStyle(
                             "-fx-background-color : white; -fx-background-radius: 0.8em; -fx-border-radius : 0.8em; -fx-border-color: red;");
                 }
-                if (vue.valideDate() && prixMin < prixBase) {
+                if (vue.valideDate() && prixMin < prixBase && titreOb.length() > 0) {
                     try {
                         this.obj = new Objet(objetBD.maxIdOb() + 1, desc, titreOb, lesPhotos, vue.getVendeur(),
                                 Categorie.getIntCategorie(cat));
