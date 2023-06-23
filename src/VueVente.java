@@ -57,7 +57,7 @@ public class VueVente extends VBox {
         super(5);
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
-        Insets insetsParDefaut = new Insets(0, 70, 0, 70);
+        Insets insetsParDefaut = new Insets(0, 500, 0, 500);
         this.setPadding(new Insets(20));
         VBox sectionPhotos = this.sectionDesPhotos();
         VBox sectionTitre = this.sectionTitreVente();
@@ -422,25 +422,6 @@ public class VueVente extends VBox {
     }
 
     /**
-     * Méthode permettant de créer la section contenant le ComboBox de la marque.
-     * 
-     * @param largeur int : la largeur de la boite à créer.
-     * @return VBox : la boite contenant le titre de la section et la ComboBox
-     *         concernée.
-     */
-    private VBox sectionMarque() {
-        VBox vboxMarque = new VBox(5);
-        this.initComboBoxMarque();
-        VBox vboxChoixMarque = new VBox(this.choixMarque);
-        vboxMarque.setStyle(
-                "-fx-background-color : #e1edfb; -fx-background-radius : 0.8em; -fx-border-color: lightgrey; -fx-border-radius : 0.8em;");
-        vboxMarque.getChildren().addAll(this.titreDesSection("Marque"), vboxChoixMarque);
-        VBox.setMargin(vboxChoixMarque, new Insets(20, 20, 40, 20));
-        vboxChoixMarque.setAlignment(Pos.CENTER);
-        return vboxMarque;
-    }
-
-    /**
      * Méthode permettant de créer la section contenant le ComboBox de l'état.
      * 
      * @param largeur int : la largeur de la boite à créer.
@@ -469,14 +450,8 @@ public class VueVente extends VBox {
         GridPane laBoite = new GridPane();
         laBoite.setHgap(15);
         VBox sectionCatVbox = this.sectionCategorie();
-        VBox sectionMarqueVbox = this.sectionMarque();
-        VBox sectionEtatVbox = this.sectionEtat();
         laBoite.add(sectionCatVbox, 0, 0);
-        laBoite.add(sectionMarqueVbox, 1, 0);
-        laBoite.add(sectionEtatVbox, 2, 0);
         GridPane.setHgrow(sectionCatVbox, Priority.ALWAYS);
-        GridPane.setHgrow(sectionMarqueVbox, Priority.ALWAYS);
-        GridPane.setHgrow(sectionEtatVbox, Priority.ALWAYS);
         return laBoite;
     }
 
