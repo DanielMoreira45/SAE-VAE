@@ -107,7 +107,7 @@ public class AppliVae extends Application{
 
         this.pageCoInsc = new FenetreCoInsc(this, this.connexionMySQL);
         this.pageAccueil = new PageAccueil(this, this.connexionMySQL);
-        this.pageProfilUtilisateur = new PageProfilUtilisateur(this, this.connexionMySQL);
+        this.pageProfilUtilisateur = new PageProfilUtilisateur(this, this.connexionMySQL, utilisateurActuel);
         this.navBar = new NavBar(this, this.connexionMySQL);
         this.pageProfilObjet = new PageProfilObjet(this, this.connexionMySQL);
         this.fenetrePageMessage = new FenetrePageMessage(this, this.connexionMySQL);
@@ -161,7 +161,9 @@ public class AppliVae extends Application{
     public void modeProfilUtilisateur(){
         scene.getStylesheets().setAll("styleNavBar.css", "stylePageUtilisateur.css");
         this.root.setTop(this.navBar);
+        this.pageProfilUtilisateur = new PageProfilUtilisateur(this, this.connexionMySQL, utilisateurActuel);
         this.root.setCenter(this.pageProfilUtilisateur);
+        
     }
 
     public void modeProfilObjet(){

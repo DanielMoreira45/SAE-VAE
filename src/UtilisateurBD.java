@@ -208,4 +208,13 @@ public class UtilisateurBD {
         ps.setInt(2, utilisateur.getId());
         ps.executeUpdate();
     }
+    
+    public void updateUtilisateur(Utilisateur utilisateur) throws SQLException{
+        PreparedStatement s = laConnexionMySQL.preparedStatement("UPDATE UTILISATEUR SET pseudout = ?, emailut = ?, mdput = ? where idut = ?");
+        s.setString(1, utilisateur.getPseudo());
+        s.setString(2, utilisateur.getEmail());
+        s.setString(3, utilisateur.getMotDePasse());
+        s.setInt(4, utilisateur.getId());
+        s.executeUpdate();
+    }
 }
