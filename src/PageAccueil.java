@@ -327,6 +327,10 @@ public class PageAccueil extends VBox {
         return this.toutesLesVentes;
     }
 
+    // public void setCercle(){
+
+    // }
+
     public List<Vente> getLesVentes() {
         return this.lesVentes;
     }

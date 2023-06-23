@@ -142,12 +142,16 @@ public class PageProfilObjet extends BorderPane {
             scaleTransitionReverse.play();
         });
 
+        // gridPane.getChildren().addAll(nomObj, imagePP, pseudo, boutonContacter);
         gridPane.add(nomObj, 1, 1);
+        // pseudo.setAlignment(Pos.CENTER_LEFT);
         nomObj.setFont(new Font("Verdana", 20));
         gridPane.add(pseudo, 2, 1);
+        // pseudo.setAlignment(Pos.CENTER_RIGHT);
         pseudo.setFont(new Font("Verdana", 20));
         gridPane.add(imagePP, 3, 1);
         gridPane.add(boutonContacter, 4, 1);
+        // boutonContacter.setAlignment(Pos.CENTER_RIGHT);
         boutonContacter.setFont(new Font("Verdana", 20));
 
         ColumnConstraints col0 = new ColumnConstraints();

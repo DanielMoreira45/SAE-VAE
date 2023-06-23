@@ -109,7 +109,7 @@ public class AppliVae extends Application{
 
         this.pageCoInsc = new FenetreCoInsc(this, this.connexionMySQL);
         this.pageAccueil = new PageAccueil(this, this.connexionMySQL);
-        this.pageProfilUtilisateur = new PageProfilUtilisateur(this, this.connexionMySQL);
+        this.pageProfilUtilisateur = new PageProfilUtilisateur(this, this.connexionMySQL, this.utilisateurActuel);
         this.navBar = new NavBar(this, this.connexionMySQL);
         this.fenetrePageMessage = new FenetrePageMessage(this, this.connexionMySQL);
         this.root = (BorderPane) this.scene.getRoot();
@@ -149,7 +149,7 @@ public class AppliVae extends Application{
      */
     public void modeAccueil(){
         this.pageVente = new VueVente(this, this.connexionMySQL, utilisateurActuel);
-        this.vueEncheresUtilisateur = new VueEncheresUtilisateur(this, this.connexionMySQL, this.utilisateurActuel.getId());
+        this.vueEncheresUtilisateur = new VueEncheresUtilisateur(this, this.connexionMySQL, this.utilisateurActuel.getId(), this.utilisateurActuel);
         
         scene.getStylesheets().setAll("styleNavBar.css", "styleCoInsc.css");
         this.root.setTop(this.navBar);

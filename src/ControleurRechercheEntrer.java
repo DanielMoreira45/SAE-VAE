@@ -19,7 +19,7 @@ public class ControleurRechercheEntrer implements EventHandler<KeyEvent> {
         // récupérez les entrées clavier de l'utilisateur
             this.appliVae.getPageAccueil().setLesVentes(this.appliVae.getPageAccueil().getTouteLesVentes()
                     .recherche(this.navBar.getTextFieldRecherche().getText()));
-            this.appliVae.getPageAccueil().majAffichage();
+            this.appliVae.getPageAccueil().majAffichage(); // met à jour
         } catch (SQLException | ParseException e) {
             e.printStackTrace();
         }
