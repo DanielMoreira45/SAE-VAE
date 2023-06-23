@@ -148,4 +148,14 @@ public class TouteLesVentes {
     public List<Vente> trieVenteIntervalle(String prixMin, String prixMax) throws SQLException, ParseException {
         return venteBD.ventePrixMinMaxList(Double.valueOf(prixMin), Double.valueOf(prixMax));
     }
+
+    public List<Vente> rechercheEnchereUtil(int idve, String nom) throws SQLException, ParseException {
+        List<Vente> lesEncheresRecherchees = new ArrayList<>();
+        for (Vente uneVente : this.ventesPourUnAcheteur(idve)) {
+            if (uneVente.getObjet().getNomObjet().equals(nom)) {
+                lesEncheresRecherchees.add(uneVente);
+            }
+        }
+        return lesEncheresRecherchees;
+    }
 }

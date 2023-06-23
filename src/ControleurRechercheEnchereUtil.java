@@ -5,9 +5,9 @@ import java.util.List;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.KeyEvent;
 
-public class ControleurRechercheEnchereUtil implements EventHandler<MouseEvent> {
+public class ControleurRechercheEnchereUtil implements EventHandler<KeyEvent> {
     private VueEncheresUtilisateur fenetreEncheres;
     private TextField barreRecherche;
 
@@ -17,15 +17,22 @@ public class ControleurRechercheEnchereUtil implements EventHandler<MouseEvent> 
     }
 
     @Override
-    public void handle(MouseEvent event) {
-
-        // List<Vente> lesVentes = new ArrayList<>(this.fenetreEncheres.getLesVentes());
-        // try {
-        //     this.fenetreEncheres.setLesVentes(touteLesVentes.recherche(barreRecherche.getText()));
-        //     this.fenetreEncheres.majAffichage();
-        // } catch (SQLException | ParseException e) {
-        //     e.printStackTrace();
-        // }
+    public void handle(KeyEvent event) {
+        int idUtil = this.fenetreEncheres.getIdUtilisateur();
+        String nom = barreRecherche.getText();
+        List<Vente> lesVentes;
+        try {
+            if (nom.length() != 0) {
+                lesVentes = this.fenetreEncheres.getToutesLesVentes().rechercheEnchereUtil(idUtil, nom);
+            }
+            else {
+                lesVentes = this.fenetreEncheres.getToutesLesVentes().ventesPourUnAcheteur(idUtil);
+            }
+            this.fenetreEncheres.setLesVentes(lesVentes);
+            this.fenetreEncheres.majLesArticles();
+        } catch (SQLException | ParseException e) {
+            e.printStackTrace();
+        }
     }
 
 }
