@@ -8,10 +8,12 @@ public class ControleurCaseVente implements EventHandler<ActionEvent> {
      */
     private AppliVae appli;
     private ConnexionMySQL connexionMySQL;
+    private Vente vente;
 
-    public ControleurCaseVente(AppliVae appli, ConnexionMySQL connexionMySQL) {
+    public ControleurCaseVente(AppliVae appli, ConnexionMySQL connexionMySQL, Vente vente) {
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
+        this.vente = vente;
     }
 
     /**
@@ -21,7 +23,7 @@ public class ControleurCaseVente implements EventHandler<ActionEvent> {
      */
     @Override
     public void handle(ActionEvent actionEvent) {
-        this.appli.modeProfilObjet();
+        this.appli.modeProfilObjet(this.vente);
     }
 
 }

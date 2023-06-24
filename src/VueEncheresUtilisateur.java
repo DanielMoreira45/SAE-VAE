@@ -32,15 +32,16 @@ public class VueEncheresUtilisateur extends BorderPane {
     private TouteLesVentes toutesLesVentes;
     private List<Vente> lesVentes;
     private int idUtil;
+    private Utilisateur utilisateur;
     
     /**
      * Constructeur permettant de créer une page listant les enchères d'un utilisateur.
      */
-    public VueEncheresUtilisateur(AppliVae appli, ConnexionMySQL connexionMySQL, int idUtil) {
+    public VueEncheresUtilisateur(AppliVae appli, ConnexionMySQL connexionMySQL, int idUtil, Utilisateur utilisateur) {
         // suggestion : passer l'objet en paramètre comme on va sur cette page à partir du controleur de case vente
         // page profil objet
         super();
-
+        this.utilisateur = utilisateur;
         this.idUtil = idUtil;
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
@@ -239,3 +240,4 @@ public class VueEncheresUtilisateur extends BorderPane {
         return this.idUtil;
     }
 }
+

@@ -26,10 +26,10 @@ public class UtilisateurBD {
     }
 
     /**
-     * Permer de trouver l'id max de l'utilisateur
-     * 
-     * @return id max de la base de données
-     * @throws SQLException en cas d'erreur d'accès à la base de données
+     * Récupère l'identifiant maximum des utilisateurs.
+     *
+     * @return L'identifiant maximum des utilisateurs.
+     * @throws SQLException
      */
     int maxIdUtilisateur() throws SQLException {
         this.st = laConnexionMySQL.createStatement();
@@ -41,10 +41,10 @@ public class UtilisateurBD {
     }
 
     /**
-     * Permet d'insere un nouveau utilisateur
-     * 
-     * @param j un utilisateur
-     * @throws SQLException en cas d'erreur d'accès à la base de données
+     * Insère un utilisateur dans la base de données.
+     *
+     * @param j L'utilisateur à insérer.
+     * @throws SQLException
      */
     public void insererUtilisateur(Utilisateur j) throws SQLException {
         PreparedStatement ps = laConnexionMySQL.preparedStatement("INSERT INTO UTILISATEUR VALUES(?, ?, ?, ?, ?, ?)");
@@ -59,10 +59,10 @@ public class UtilisateurBD {
     }
 
     /**
-     * Permet de supprimer un tuilisateur par son idut
-     * 
-     * @param num l'idut
-     * @throws SQLException en cas d'erreur d'accès à la base de données
+     * Supprime un utilisateur de la base de données.
+     *
+     * @param num L'identifiant de l'utilisateur à supprimer.
+     * @throws SQLException En cas d'erreur lors de l'exécution de la requête SQL.
      */
     public void supprimerUtilisateur(int num) throws SQLException {
         ResultSet resultNumObj = laConnexionMySQL.createStatement()
@@ -134,10 +134,10 @@ public class UtilisateurBD {
     }
 
     /**
-     * Permet de mettre un utilisateur actif si inactif et inversement
-     * 
-     * @param utilisateur l'utilisateur
-     * @throws SQLException en cas d'erreur d'accès à la base de données
+     * Met à jour l'état à actif d'un utilisateur dans la base de données.
+     *
+     * @param utilisateur L'utilisateur
+     * @throws SQLException
      */
     public void setActif(Utilisateur utilisateur) throws SQLException {
         PreparedStatement ps = laConnexionMySQL.preparedStatement("UPDATE UTILISATEUR SET activeut = ? WHERE idut = ?");
@@ -281,12 +281,14 @@ public class UtilisateurBD {
     }
 
     /**
-     * Permet de faire une recherche sur la base de donnée avec un sertain texte sur
-     * le pseudo et l'email
-     * 
-     * @param text le texte
-     * @return la liste des utilisateurs qui
-     * @throws SQLException en cas d'erreur d'accès à la base de données
+     * Récupère une liste d'utilisateurs basée sur une requête de recherche.
+     * Recherche les utilisateurs dont le nom d'utilisateur ou l'e-mail contient le
+     * texte spécifié.
+     *
+     * @param text le texte de recherche
+     * @return une liste d'objets Utilisateur correspondant à la requête de
+     *         recherche
+     * @throws SQLException 
      */
     public List<Utilisateur> recherche(String text) throws SQLException {
         ResultSet rs = this.laConnexionMySQL.createStatement().executeQuery(
@@ -314,12 +316,11 @@ public class UtilisateurBD {
     }
 
     /**
-     * Met à jour les informations d'un utilisateur
+     * Met à jour les informations d'un utilisateur 
      *
-     * @param utilisateur Utilisateur contenant les nouvelles informations
-     * @throws SQLException en cas d'erreur d'accès à la base de données
+     * @param utilisateur  Utilisateur contenant les nouvelles informations
+     * @throws SQLException 
      */
-
     public void updateUtilisateur(Utilisateur utilisateur) throws SQLException {
         PreparedStatement s = laConnexionMySQL
                 .preparedStatement("UPDATE UTILISATEUR SET pseudout = ?, emailut = ?, mdput = ? where idut = ?");

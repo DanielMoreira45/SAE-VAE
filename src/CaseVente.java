@@ -181,7 +181,7 @@ public class CaseVente extends HBox {
         encherir.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, null, null)));
         encherir.setBorder(new Border(new BorderStroke(Color.web("#D9D9D9"), BorderStrokeStyle.SOLID,
                 new CornerRadii(16), new BorderWidths(2))));
-        encherir.setOnAction(new ControleurCaseVente(this.appli, this.connexionMySQL));
+        encherir.setOnAction(new ControleurCaseVente(this.appli, this.connexionMySQL, this.vente));
         encherir.setCursor(Cursor.HAND);
         return encherir;
     }

@@ -18,8 +18,7 @@ import javafx.scene.text.Text;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 
-
-public class FenetreDeLogin extends GridPane{
+public class FenetreDeLogin extends GridPane {
 
     private TextField email;
     private PasswordField mdp;
@@ -29,7 +28,7 @@ public class FenetreDeLogin extends GridPane{
     private ConnexionMySQL connexionMySQL;
     private TextField mdpClair;
 
-    public FenetreDeLogin(AppliVae appli, ConnexionMySQL connexionMySQL){
+    public FenetreDeLogin(AppliVae appli, ConnexionMySQL connexionMySQL) {
         this.appli = appli;
         this.connexionMySQL = connexionMySQL;
         this.email = new TextField();
@@ -41,19 +40,19 @@ public class FenetreDeLogin extends GridPane{
         this.ajouterBoutonOeil();
     }
 
-    private void ajouteTextField(){
-        //espace entre les lignes et colonnes
+    private void ajouteTextField() {
+        // espace entre les lignes et colonnes
         this.setHgap(10);
         this.setVgap(10);
-        //création de textField
+        // création de textField
         this.email.setPromptText("Entrez l'email ou le pseudo");
         this.mdp.setPromptText("Entrer le mot de passe");
-        //on les place dans le gridPane
-        this.add(this.email,50,30);
-        this.add(this.erreurEmail,50,31);
-        this.add(this.mdp,50,32);
-        this.add(this.erreurMdpMsg,50,33);
-        
+        // on les place dans le gridPane
+        this.add(this.email, 50, 30);
+        this.add(this.erreurEmail, 50, 31);
+        this.add(this.mdp, 50, 32);
+        this.add(this.erreurMdpMsg, 50, 33);
+
         this.email.setPrefWidth(400); // Largeur préférée de 350 pixels
         this.email.setPrefHeight(48); // Hauteur préférée de 40 pixels
         this.erreurEmail.setFont(Font.font("Varela", FontWeight.THIN, 10));
@@ -63,14 +62,14 @@ public class FenetreDeLogin extends GridPane{
         this.erreurMdpMsg.setFont(Font.font("Varela", FontWeight.THIN, 10));
         this.erreurMdpMsg.setFill(Color.RED);
 
-        //modification du style en css
+        // modification du style en css
         this.mdp.getStyleClass().add("text-field");
         this.email.getStyleClass().add("text-field");
 
         // Création du bouton SE CONNECTER
         Button seConnecter = new Button("SE CONNECTER");
         seConnecter.setOnAction(new ControleurConnexion(this, this.appli, this.connexionMySQL));
-        this.add(seConnecter,50,40);
+        this.add(seConnecter, 50, 40);
         seConnecter.getStyleClass().add("button-connection");
 
         seConnecter.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
@@ -80,7 +79,7 @@ public class FenetreDeLogin extends GridPane{
             scaleTransition.play();
         });
         seConnecter.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
-            ScaleTransition scaleTransitionReverse = new ScaleTransition(Duration.millis(200), seConnecter); 
+            ScaleTransition scaleTransitionReverse = new ScaleTransition(Duration.millis(200), seConnecter);
             scaleTransitionReverse.setToX(1); // Retour à la taille d'origine pour l'axe X
             scaleTransitionReverse.setToY(1); // Retour à la taille d'origine pour l'axe Y
             scaleTransitionReverse.play();
@@ -89,6 +88,7 @@ public class FenetreDeLogin extends GridPane{
         Button motDePasseOublie = new Button("Mot de passe oublié");
         motDePasseOublie.getStyleClass().add("button-without-background");
         motDePasseOublie.getStyleClass().add("button-custom");
+        motDePasseOublie.setOnAction(new ControleurMdpOublie(this));
         this.add(motDePasseOublie, 50, 41);
         GridPane.setHalignment(motDePasseOublie, HPos.RIGHT);
 
@@ -99,14 +99,14 @@ public class FenetreDeLogin extends GridPane{
             scaleTransition.play();
         });
         motDePasseOublie.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
-            ScaleTransition scaleTransitionReverse = new ScaleTransition(Duration.millis(200), motDePasseOublie); 
+            ScaleTransition scaleTransitionReverse = new ScaleTransition(Duration.millis(200), motDePasseOublie);
             scaleTransitionReverse.setToX(1); // Retour à la taille d'origine pour l'axe X
             scaleTransitionReverse.setToY(1); // Retour à la taille d'origine pour l'axe Y
             scaleTransitionReverse.play();
         });
     }
 
-    public void ajouterBoutonOeil(){
+    public void ajouterBoutonOeil() {
         ToggleButton voirMdp = new ToggleButton();
         voirMdp.setCursor(Cursor.HAND);
         voirMdp.setStyle("-fx-background-color: transparent;");
@@ -120,7 +120,6 @@ public class FenetreDeLogin extends GridPane{
         voirMdp.setPrefWidth(20);
         voirMdp.setPrefHeight(20);
 
-        
         mdpClair.setPromptText("Entrer le mot de passe");
         mdpClair.getStyleClass().add("text-field");
         mdpClair.setPrefWidth(400); // Largeur préférée de 350 pixels
@@ -130,8 +129,7 @@ public class FenetreDeLogin extends GridPane{
         stackPane.getChildren().add(mdp);
         stackPane.getChildren().add(voirMdp);
         StackPane.setAlignment(voirMdp, Pos.CENTER_RIGHT);
-        this.add(stackPane,50,32);
-
+        this.add(stackPane, 50, 32);
 
         voirMdp.setOnAction(event -> {
             if (voirMdp.isSelected()) {
@@ -141,8 +139,7 @@ public class FenetreDeLogin extends GridPane{
                 stackPane.getChildren().add(voirMdp);
                 mdpClair.setText(mdp.getText());
                 voirMdp.setGraphic(oeilBarre);
-            }
-            else {
+            } else {
                 stackPane.getChildren().remove(mdpClair);
                 stackPane.getChildren().add(mdp);
                 stackPane.getChildren().remove(voirMdp);
@@ -158,7 +155,7 @@ public class FenetreDeLogin extends GridPane{
         return this.mdp.getText();
     }
 
-    public String getMdpClair(){
+    public String getMdpClair() {
         return this.mdpClair.getText();
     }
 
@@ -167,19 +164,20 @@ public class FenetreDeLogin extends GridPane{
     }
 
     public void setMdpErreur(boolean hasErreur) {
-        if (hasErreur){
+        if (hasErreur) {
             this.mdp.setStyle("-fx-border-color: red");
             this.mdpClair.setStyle("-fx-border-color: red");
-        }
-        else {
+        } else {
             this.mdp.setStyle("-fx-border-color: #a3a3a3aa");
             this.mdpClair.setStyle("-fx-border-color: #a3a3a3aa");
         }
     }
 
     public void setEmailErreur(boolean hasErreur) {
-        if (hasErreur) this.email.setStyle("-fx-border-color: red");
-        else this.email.setStyle("-fx-border-color: #a3a3a3aa");
+        if (hasErreur)
+            this.email.setStyle("-fx-border-color: red");
+        else
+            this.email.setStyle("-fx-border-color: #a3a3a3aa");
     }
 
     public void setMessageErreur(String msg) {
@@ -204,20 +202,41 @@ public class FenetreDeLogin extends GridPane{
         alert.showAndWait();
     }
 
-    public void resetTF(){
+    public void resetTF() {
         this.mdpClair.setText("");
         this.mdp.setText("");
         this.email.setText("");
     }
 
+    public void ajouteMdpOublie() {
 
-    // public void popUpCompteInexistant() {
-    //     Alert alert = new Alert(AlertType.INFORMATION);
-    //     alert.setTitle("Le compte n'existe pas.");
-    //     alert.setHeaderText("Vérifiez l'adresse mail.");
-    //     alert.setContentText("L'email n'est associé à aucun compte, veuillez créez un compte");
-    //     alert.showAndWait();
-    // }
+        Text tire = new Text("Mot de passe oublié");
+        tire.setStyle("-fx-font-size: 25px;");
+        this.add(tire, 50, 45);
+
+        TextField mailMdpOublie = new TextField();
+        mailMdpOublie.setPromptText("Entrez votre email de connection");
+        this.add(mailMdpOublie, 50, 48);
+        mailMdpOublie.setPrefWidth(400); // Largeur préférée de 400 pixels
+        mailMdpOublie.setPrefHeight(48); // Hauteur préférée de 48 pixels
+
+        Button envoieMail = new Button("Envoyer un mail de récupération");
+        this.add(envoieMail, 50, 50);
+        envoieMail.getStyleClass().add("button-connection");
+
+        envoieMail.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), envoieMail);
+            scaleTransition.setToX(1.1); // Facteur d'agrandissement horizontal
+            scaleTransition.setToY(1.1); // Facteur d'agrandissement vertical
+            scaleTransition.play();
+        });
+        envoieMail.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
+            ScaleTransition scaleTransitionReverse = new ScaleTransition(Duration.millis(200), envoieMail);
+            scaleTransitionReverse.setToX(1); // Retour à la taille d'origine pour l'axe X
+            scaleTransitionReverse.setToY(1); // Retour à la taille d'origine pour l'axe Y
+            scaleTransitionReverse.play();
+        });
+
+    }
 
 }
-

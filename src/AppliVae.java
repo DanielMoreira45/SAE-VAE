@@ -86,6 +86,8 @@ public class AppliVae extends Application{
 
     private VueEncheresUtilisateur vueEncheresUtilisateur;
 
+    //private Objet objetActuel;
+
 
 
     /**
@@ -107,9 +109,8 @@ public class AppliVae extends Application{
 
         this.pageCoInsc = new FenetreCoInsc(this, this.connexionMySQL);
         this.pageAccueil = new PageAccueil(this, this.connexionMySQL);
-        this.pageProfilUtilisateur = new PageProfilUtilisateur(this, this.connexionMySQL, utilisateurActuel);
+        this.pageProfilUtilisateur = new PageProfilUtilisateur(this, this.connexionMySQL, this.utilisateurActuel);
         this.navBar = new NavBar(this, this.connexionMySQL);
-        this.pageProfilObjet = new PageProfilObjet(this, this.connexionMySQL);
         this.fenetrePageMessage = new FenetrePageMessage(this, this.connexionMySQL);
         this.root = (BorderPane) this.scene.getRoot();
     }
@@ -148,7 +149,7 @@ public class AppliVae extends Application{
      */
     public void modeAccueil(){
         this.pageVente = new VueVente(this, this.connexionMySQL, utilisateurActuel);
-        this.vueEncheresUtilisateur = new VueEncheresUtilisateur(this, this.connexionMySQL, this.utilisateurActuel.getId());
+        this.vueEncheresUtilisateur = new VueEncheresUtilisateur(this, this.connexionMySQL, this.utilisateurActuel.getId(), this.utilisateurActuel);
         
         scene.getStylesheets().setAll("styleNavBar.css", "styleCoInsc.css");
         this.root.setTop(this.navBar);
@@ -161,12 +162,11 @@ public class AppliVae extends Application{
     public void modeProfilUtilisateur(){
         scene.getStylesheets().setAll("styleNavBar.css", "stylePageUtilisateur.css");
         this.root.setTop(this.navBar);
-        this.pageProfilUtilisateur = new PageProfilUtilisateur(this, this.connexionMySQL, utilisateurActuel);
         this.root.setCenter(this.pageProfilUtilisateur);
-        
     }
 
-    public void modeProfilObjet(){
+    public void modeProfilObjet(Vente vente){
+        this.pageProfilObjet = new PageProfilObjet(this, this.connexionMySQL, vente, this.utilisateurActuel);
         scene.getStylesheets().setAll("styleNavBar.css", "stylePageProfilObjet.css");
         this.root.setTop(this.navBar);
         this.root.setCenter(this.pageProfilObjet);
@@ -202,6 +202,12 @@ public class AppliVae extends Application{
     }
 
     public PageAccueil getPageAccueil() { return this.pageAccueil; }
+
+    /*
+    public void setObjet(Objet objet){
+        this.objetActuel = objet;
+    }
+    */
 
     @Override
     public void start(Stage stage){

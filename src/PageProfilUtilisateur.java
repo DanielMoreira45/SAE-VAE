@@ -36,7 +36,7 @@ public class PageProfilUtilisateur extends BorderPane {
         this.utilisateur = utilisateur;
 
         this.booutonModifier();
-        this.profileImage = new ImageView("pp.jpeg");
+        this.profileImage = new ImageView("file:/pp.jpeg");
         this.gridPane = new GridPane();
         this.deconnecter = new Button("Se déconnecter");
         this.profileImage = new ImageView("file:img/pp.jpeg");

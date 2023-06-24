@@ -1,9 +1,7 @@
 import java.sql.SQLException;
 import java.text.ParseException;
 
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
 public class ControleurPrixMinMax implements EventHandler<KeyEvent> {

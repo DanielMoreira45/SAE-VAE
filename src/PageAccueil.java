@@ -224,42 +224,6 @@ public class PageAccueil extends VBox {
         return parNom;
     }
 
-    // private Button setBoutonNonEncherier() {
-    // Circle cercleJaune = new Circle(12);
-    // cercleJaune.setFill(Color.web("#FFED4E"));
-    // Text nbNonEncherier = new Text("7");
-    // nbNonEncherier.setFont(Font.font("Valera", FontWeight.BOLD, 12));
-    // StackPane stackNonEncherier = new StackPane(cercleJaune, nbNonEncherier);
-    // Button objetNonEncherier = new Button("Objets non-enchèries",
-    // stackNonEncherier);
-    // objetNonEncherier.setPadding(new Insets(10));
-    // objetNonEncherier.setFont(Font.font("Valera", 12));
-    // objetNonEncherier.setBackground(new Background(new
-    // BackgroundFill(Color.rgb(0, 0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
-    // objetNonEncherier.setBorder(new Border(new
-    // BorderStroke(Color.valueOf("black"), BorderStrokeStyle.SOLID, new
-    // CornerRadii(8), new BorderWidths(1))));
-    // return objetNonEncherier;
-    // }
-
-    // private Button setBoutonBientotFini() {
-    // Circle cercleRouge = new Circle(12);
-    // cercleRouge.setFill(Color.web("#FF9292"));
-    // Text nbBientotFini = new Text("10");
-    // nbBientotFini.setFont(Font.font("Valera", FontWeight.BOLD, 12));
-    // StackPane stackBientotFini = new StackPane(cercleRouge, nbBientotFini);
-    // Button enchereBientotFini = new Button("Enchères bientôt finies",
-    // stackBientotFini);
-    // enchereBientotFini.setPadding(new Insets(10));
-    // enchereBientotFini.setFont(Font.font("Valera", 12));
-    // enchereBientotFini.setBackground(new Background(new
-    // BackgroundFill(Color.rgb(0, 0, 0, 0), CornerRadii.EMPTY, Insets.EMPTY)));
-    // enchereBientotFini.setBorder(new Border(new
-    // BorderStroke(Color.valueOf("black"), BorderStrokeStyle.SOLID, new
-    // CornerRadii(8), new BorderWidths(1))));
-    // return enchereBientotFini;
-    // }
-
     private Button setBoutonAVenir() throws SQLException, ParseException {
         Circle cercleBleu = new Circle(12);
         cercleBleu.setFill(Color.valueOf("blue"));
@@ -295,10 +259,6 @@ public class PageAccueil extends VBox {
 
     private HBox setVentes() {
         ScrollPane scrollVentes = this.setScrollVente();
-        System.out.println(this.lesVentes.size());
-        for (Vente lesVentes : this.lesVentes) {
-            System.out.print(lesVentes);
-        }
         HBox ventes = new HBox();
         ventes.setPrefWidth(1550);
         if (this.lesVentes.size() > 4)

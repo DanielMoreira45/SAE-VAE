@@ -144,9 +144,12 @@ public class TouteLesVentes {
         return venteBD.ventePourAcheteur(idve);
     }
 
+     public void supprimerVente(Vente vente) throws SQLException {
+        this.venteBD.supprimeVente(vente);
+    }
 
-    public List<Vente> trieVenteIntervalle(String prixMin, String prixMax) throws SQLException, ParseException {
-        return venteBD.ventePrixMinMaxList(Double.valueOf(prixMin), Double.valueOf(prixMax));
+    public Double maxPrixEnchere(int idVente) throws SQLException {
+        return this.venteBD.maxPrixEnchere(idVente);
     }
 
     /**
@@ -186,4 +189,9 @@ public class TouteLesVentes {
         this.venteBD.supprimeVente(vente);
     }
 
+
+
+    public List<Vente> trieVenteIntervalle(String prixMin, String prixMax) throws SQLException, ParseException {
+        return venteBD.ventePrixMinMaxList(Double.valueOf(prixMin), Double.valueOf(prixMax));
+    }
 }
