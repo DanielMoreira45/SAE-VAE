@@ -232,6 +232,10 @@ public class VueEncheresUtilisateur extends BorderPane {
         Collections.reverse(this.lesVentes);
     }
 
+    /**
+     * Permet d'obtenir l'id de l'utilisateur
+     * @return L'id de l'utilisateur
+     */
     public int getIdUtilisateur() {
         return this.idUtil;
     }

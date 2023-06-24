@@ -10,12 +10,16 @@ import java.util.List;
  * 
  */
 public class UtilisateurBD {
+    /** La connextion a la base de données */
     private ConnexionMySQL laConnexionMySQL;
+    /** Le statement */
     Statement st;
+    /** Un idLibre */
     Integer idLibre = null;
 
     /**
-     * Default constructor
+     * Permet de crée l'utilisateur
+     * @param laConnexionMySQL la connextion a la base de données
      */
     public UtilisateurBD(ConnexionMySQL laConnexionMySQL) {
         this.laConnexionMySQL = laConnexionMySQL;
@@ -120,6 +124,11 @@ public class UtilisateurBD {
         return this.idLibre;
     }
 
+    /**
+     * Un Id libre de la base de données
+     * 
+     * @return un int de la base de données
+     */
     public Integer getIDlibre() {
         return this.idLibre;
     }
@@ -137,6 +146,12 @@ public class UtilisateurBD {
         ps.executeUpdate();
     }
 
+    /**
+     * Permet de mettre a jout l'utilisateur
+     * 
+     * @param j l'utilisateur
+     * @throws SQLException en cas d'erreur d'accès à la base de données
+     */
     public void majUtilisateur(Utilisateur j) throws SQLException {
         PreparedStatement ps = laConnexionMySQL.preparedStatement("INSERT INTO UTILISATEUR VALUES(?, ?, ?, ?, ?, ?)");
         ps.setInt((1), idLibre() + 1);
@@ -149,6 +164,13 @@ public class UtilisateurBD {
         ps.executeUpdate();
     }
 
+    /**
+     * Permet de trouver l'utilisateur dans la base de données
+     * 
+     * @param idut l'id de l'utilisateur
+     * @return l'utilisateur
+     * @throws SQLException en cas d'erreur d'accès à la base de données
+     */
     public Utilisateur utilisateurParId(int idut) throws SQLException {
         Statement s = this.laConnexionMySQL.createStatement();
         ResultSet rs = s
@@ -169,6 +191,12 @@ public class UtilisateurBD {
         return util;
     }
 
+    /**
+     * Permet de trouver touts les utilisateurs dans la base de données
+     * 
+     * @return la liste des utilisateurs dans la base de données
+     * @throws SQLException en cas d'erreur d'accès à la base de données
+     */
     public List<Utilisateur> tout() throws SQLException {
         ResultSet rs = this.laConnexionMySQL.createStatement()
                 .executeQuery("SELECT idut, pseudout, emailut, mdput, activeut, idrole FROM UTILISATEUR;");
@@ -180,6 +208,12 @@ public class UtilisateurBD {
         return listeUtilisateurs;
     }
 
+    /**
+     * Permet de trouver tout les admins dans la base de données
+     * 
+     * @return la liste des utilisateurs admin dans la base de données
+     * @throws SQLException en cas d'erreur d'accès à la base de données
+     */
     public List<Utilisateur> toutAdmin() throws SQLException {
         ResultSet rs = this.laConnexionMySQL.createStatement()
                 .executeQuery(
@@ -192,6 +226,12 @@ public class UtilisateurBD {
         return listeUtilisateurs;
     }
 
+    /**
+     * Permet de trouver tout les utilisateurs dans la base de données
+     * 
+     * @return La liste des utilisateurs dans la base de données
+     * @throws SQLException en cas d'erreur d'accès à la base de données
+     */
     public List<Utilisateur> toutUtilisateurs() throws SQLException {
         ResultSet rs = this.laConnexionMySQL.createStatement()
                 .executeQuery(
@@ -204,6 +244,12 @@ public class UtilisateurBD {
         return listeUtilisateurs;
     }
 
+    /**
+     * Permet de trouver les utilisateur actifs dans la base de données
+     * 
+     * @return la liste des utilisateurs actifs
+     * @throws SQLException en cas d'erreur d'accès à la base de données
+     */
     public List<Utilisateur> actif() throws SQLException {
         ResultSet rs = this.laConnexionMySQL.createStatement()
                 .executeQuery(
@@ -216,6 +262,12 @@ public class UtilisateurBD {
         return listeUtilisateurs;
     }
 
+    /**
+     * Permet de trouver les utilisateurs inactifs dans la base de données
+     * 
+     * @return la liste des utilisateurs inactifs
+     * @throws SQLException en cas d'erreur d'accès à la base de données
+     */
     public List<Utilisateur> inactif() throws SQLException {
         ResultSet rs = this.laConnexionMySQL.createStatement()
                 .executeQuery(
@@ -250,6 +302,12 @@ public class UtilisateurBD {
         return listeUtilisateurs;
     }
 
+    /**
+     * Permet de mettre un nouveau role a l'utilisateur dans la base de données
+     * 
+     * @param utilisateur l'utilisateur qui vas etre changer
+     * @throws SQLException en cas d'erreur d'accès à la base de données
+     */
     public void setRole(Utilisateur utilisateur) throws SQLException {
         PreparedStatement ps = laConnexionMySQL.preparedStatement("UPDATE UTILISATEUR SET idrole = ? WHERE idut = ?");
         ps.setInt(1, utilisateur.getRole());

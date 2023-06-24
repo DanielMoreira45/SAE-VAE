@@ -169,7 +169,25 @@ public class TouteLesVentes {
         }
         return lesEncheresRecherchees;
     }
+    
+    /**
+     * Permet d'obtenir le prix maximum des enchères sur une vente
+     * @param idVente L'id de la vente
+     * @return Le prix maximum des enchères sur une vente
+     * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
+     */
+    public Double maxPrixEnchere(int idVente) throws SQLException {
+        return this.venteBD.maxPrixEnchere(idVente);
+    }
 
+    /**
+     * Permet de supprimer une vente
+     * @param vente La vente
+     * @throws SQLException Si il y a un probleme avec l'execution des lignes sql
+     */
+    public void supprimerVente(Vente vente) throws SQLException {
+        this.venteBD.supprimeVente(vente);
+    }
 
 
 
